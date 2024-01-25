@@ -1,5 +1,20 @@
 const express = require('express')
 const router = express.Router()
+const schemat = require('../models/schemas')
+
+//-> esim tervetuloa/uusikayttaja
+router.post('/uusikayttaja'), async(req, res) => {
+const {nimi,puhelinnro,sposti,kayttajatuunnus,adminoikeudet} = req.body
+const kayttajatData = {nimi:nimi,puhelinnro:puhelinnro,sposti:sposti,kayttajatuunnus:kayttajatuunnus,adminoikeudet:adminoikeudet}
+
+const uusikayttaja = new schemat.Kayttajat(kayttajatData)
+const tallennaKayttaja = await uusikayttaja.save()
+if(tallennaKayttaja){
+  res.send('vastaanotto onnistui')
+}
+res.end()
+}
+
 //haku function
 router.get(' ', (req, res) => {
     const userData = 
