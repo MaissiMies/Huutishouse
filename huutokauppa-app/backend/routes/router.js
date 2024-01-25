@@ -1,7 +1,7 @@
 const express = require('express')
 const router = express.Router()
-
-router.get('/users', (req, res) => {
+//haku function
+router.get(' ', (req, res) => {
     const userData = 
     [
         {
