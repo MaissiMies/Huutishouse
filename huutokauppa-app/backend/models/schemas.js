@@ -1,26 +1,23 @@
 const mongoose = require('mongoose')
 const Schema = mongoose.Schema
 
-
-const kayttajat = mongoose.model('Kayttajat', kayttajatSchema, 'kayttajat')
-
-
-
 const kayttajatSchema = new Schema({
-    nimi:{type:string},
-    puhelinnro:{type:string},
-    sposti:{type:string},
-    kayttajatuunnus:{type:string},
-    adminoikeudet: {type:Boolean, default:false}
+    nimi: { type: String },
+    puhelinnro: { type: String },
+    sposti: { type: String },
+    kayttajatuunnus: { type: String },
+    adminoikeudet: { type: Boolean, default: false }
 })
 
 const tuoteSchema = new Schema({
-    nimi:{type:string},
-    lahtohinta:{type:float},
-    hintavaraus:{type:float},
-    kuva:{type:Image}
+    nimi: { type: String },
+    lahtohinta: { type: Number },
+    hintavaraus: { type: Number },
+    kuva: { type: String }
 })
 
-const schemat = {'Kayttajat':kayttajat}
+const Kayttajat = mongoose.model('Kayttajat', kayttajatSchema, 'kayttajat')
+const Tuote = mongoose.model('Tuote', tuoteSchema, 'tuote')
+const schemat = { 'Kayttajat': Kayttajat, 'Tuote':Tuote }
 
 module.exports = schemat

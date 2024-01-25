@@ -1,66 +1,51 @@
-// Myynti.js
-
 import React, { useState } from 'react';
+import axios from "axios"
 
-const Myynti = () => {
-  const [formData, setFormData] = useState({
-    nimi: '',
-    lahtohinta: '',
-    hintavaraus: '',
-    kuva: null,
-  });
+function Myynti(){
 
-  const handleChange = (e) => {
-    const { name, value } = e.target;
-    setFormData({
-      ...formData,
-      [name]: value,
-    });
-  };
+  const [nimi, setNimi] = useState('')
+  const [lahtohinta, setLahtohinta] = useState('')
+  const [hintavaraus, setHintavaraus] = useState('')
+  const [kuva, setKuva] = useState('')
 
-  const handleImageChange = (e) => {
-    const file = e.target.files[0];
-    setFormData({
-      ...formData,
-      kuva: file,
-    });
-  };
-
-  const handleSubmit = async (e) => {
-    e.preventDefault();
-
-    // Create a FormData object to send files along with the POST request
-    const formDataToSend = new FormData();
-    formDataToSend.append('nimi', formData.nimi);
-    formDataToSend.append('lahtohinta', formData.lahtohinta);
-    formDataToSend.append('hintavaraus', formData.hintavaraus);
-    formDataToSend.append('kuva', formData.kuva);
-
-    try {
-      const response = await fetch('http://your-backend-api.com/your-backend-route', {
-        method: 'POST',
-        body: formDataToSend,
-      });
-
-      if (response.ok) {
-        console.log('Form data submitted successfully!');
-      } else {
-        console.error('Error submitting form data');
-      }
-    } catch (error) {
-      console.error('Error:', error);
+  
+  const axiosPostData = async() =>{
+    const postData={
+      nimi:nimi,
+      lahtohinta:lahtohinta,
+      hintavaraus:hintavaraus,
+      kuva:kuva
     }
-  };
 
+    //tälle pitäisi koodata oikeat error ja response lauseet
+    await axios.post('http://localhost:3001/myynti', postData)
+    .then(function (response) {
+      console.log(response);
+    })
+    .catch(function (error) {
+      console.log(error);
+    });
+}
+  const handleSubmit = (e) => {
+    e.preventDefault()
+      
+    axiosPostData()
+    
+  }
+
+  //myynti sivun html
   return (
-    <form onSubmit={handleSubmit}>
+    <>
+    <h1>Laita uusi tuote myynttin</h1>
+    <form onSubmit={handleSubmit} method="post" encType="multipart/form-data">
       <label>
         Nimi:
         <input
           type="text"
+          id="nimi"
           name="nimi"
-          value={formData.nimi}
-          onChange={handleChange}
+          value={nimi}
+          onChange={(e) => setNimi(e.target.value)}
         />
       </label>
 
@@ -68,9 +53,10 @@ const Myynti = () => {
         Lähtöhinta:
         <input
           type="number"
+          id="lahtohinta"
           name="lahtohinta"
-          value={formData.lahtohinta}
-          onChange={handleChange}
+          value={lahtohinta}
+          onChange={(e) => setLahtohinta(e.target.value)}
         />
       </label>
 
@@ -78,19 +64,26 @@ const Myynti = () => {
         Hintavaraus:
         <input
           type="number"
+          id="hintavaraus"
           name="hintavaraus"
-          value={formData.hintavaraus}
-          onChange={handleChange}
+          value={hintavaraus}
+          onChange={(e) => setHintavaraus(e.target.value)}
         />
       </label>
 
       <label>
         Kuva:
-        <input type="file" accept="image/*" onChange={handleImageChange} />
+        <input
+        type="file"
+        accept="image/*"
+        id="image"
+        onChange={(e) => setKuva(e.target.files[0])}
+        />
       </label>
 
       <button type="submit">Submit</button>
     </form>
+    </>
   );
 };
 

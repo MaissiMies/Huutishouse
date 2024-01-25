@@ -7,7 +7,7 @@ export default function Header(){
                 <a href="/">Kotisivu</a>
             </li>
             <li>
-                <a href="tervetuloa">Tervetuloa</a>
+                <a href="myynti">Myynti</a>
             </li>
         </ul>
         </nav>

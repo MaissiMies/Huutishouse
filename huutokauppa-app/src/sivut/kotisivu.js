@@ -1,4 +1,5 @@
 export default function Kotisivu(){
+    //ihan vaan placeholderi
     return(
     <>
     
