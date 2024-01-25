@@ -9,6 +9,7 @@ function Myynti(){
   const [kuva, setKuva] = useState('')
 
   
+  //kerää formista saadut tiedot posDataan, ja lähettää ne backendin router.js axiosin avulla
   const axiosPostData = async() =>{
     const postData={
       nimi:nimi,
@@ -17,6 +18,7 @@ function Myynti(){
       kuva:kuva
     }
 
+    
     //tälle pitäisi koodata oikeat error ja response lauseet
     await axios.post('http://localhost:3001/myynti', postData)
     .then(function (response) {
@@ -26,9 +28,9 @@ function Myynti(){
       console.log(error);
     });
 }
+  //formi ajaa tämän submit painikkeen jälkeen
   const handleSubmit = (e) => {
-    e.preventDefault()
-      
+    e.preventDefault()      
     axiosPostData()
     
   }

@@ -9,6 +9,7 @@ const kayttajatSchema = new Schema({
     adminoikeudet: { type: Boolean, default: false }
 })
 
+//vielä vähän kysymysmerkki toimiiko kuva stringinä, ottaa kai talteen kuvan sijainnin
 const tuoteSchema = new Schema({
     nimi: { type: String },
     lahtohinta: { type: Number },

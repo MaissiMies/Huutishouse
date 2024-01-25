@@ -15,7 +15,7 @@ const schemat = require('../models/schemas')
 // res.end()
 // }
 
-//ottaa vastaan myynti sivun sumbitit
+//ottaa vastaan myynti sivun sumbitit, ja lähettää databaseen
 router.post('/myynti', async (req, res) => {
   const { nimi, lahtohinta, hintavaraus, kuva } = req.body
   const tuoteData = {nimi, lahtohinta, hintavaraus, kuva}
