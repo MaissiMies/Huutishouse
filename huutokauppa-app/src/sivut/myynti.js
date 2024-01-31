@@ -7,27 +7,28 @@ function Myynti(){
   const [lahtohinta, setLahtohinta] = useState('')
   const [hintavaraus, setHintavaraus] = useState('')
   const [kuva, setKuva] = useState('')
-
-  
-  //kerää formista saadut tiedot posDataan, ja lähettää ne backendin router.js axiosin avulla
-  const axiosPostData = async() =>{
-    const postData={
-      nimi:nimi,
-      lahtohinta:lahtohinta,
-      hintavaraus:hintavaraus,
-      kuva:kuva
-    }
-
     
     //tälle pitäisi koodata oikeat error ja response lauseet
-    await axios.post('http://localhost:3001/myynti', postData)
-    .then(function (response) {
-      console.log(response);
-    })
-    .catch(function (error) {
-      console.log(error);
-    });
-}
+    const axiosPostData = async () => {
+      const formData = new FormData();
+      formData.append('nimi', nimi);
+      formData.append('lahtohinta', lahtohinta);
+      formData.append('hintavaraus', hintavaraus);
+      formData.append('kuva', kuva);
+    
+      try {
+        const response = await axios.post('http://localhost:3001/myynti', formData, {
+          headers: {
+            'Content-Type': 'multipart/form-data',
+          },
+        });
+    
+        console.log(response);
+      } catch (error) {
+        console.log(error);
+      }
+    };
+    
   //formi ajaa tämän submit painikkeen jälkeen
   const handleSubmit = (e) => {
     e.preventDefault()      
@@ -38,8 +39,9 @@ function Myynti(){
   //myynti sivun html
   return (
     <>
-    <h1>Laita uusi tuote myynttin</h1>
-    <form onSubmit={handleSubmit} method="post" encType="multipart/form-data">
+    <h1>Laita uusi tuote myyntiin</h1>
+      <form onSubmit={handleSubmit} method="post" encType="multipart/form-data">
+
       <label>
         Nimi:
         <input
@@ -78,8 +80,8 @@ function Myynti(){
         <input
         type="file"
         accept="image/*"
-        id="image"
-        onChange={(e) => setKuva(e.target.files[0])}
+        id="kuva"
+        onChange={(e) => setKuva(e.target.filess[0])}
         />
       </label>
 

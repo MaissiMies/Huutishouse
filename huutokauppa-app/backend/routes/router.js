@@ -1,6 +1,10 @@
 const express = require('express')
 const router = express.Router()
 const schemat = require('../models/schemas')
+const fs = require('fs');
+const path = require('path');
+const multer = require('multer');
+const upload = multer({ dest: 'uploads/' }); // Specify the directory where you want to save the files
 
 // //-> post ( /uusikayttaja )
 // router.post('/uusikayttaja'), async(req, res) => {
@@ -16,19 +20,28 @@ const schemat = require('../models/schemas')
 // }
 
 //ottaa vastaan myynti sivun sumbitit, ja lähettää databaseen
-router.post('/myynti', async (req, res) => {
-  const { nimi, lahtohinta, hintavaraus, kuva } = req.body
-  const tuoteData = {nimi, lahtohinta, hintavaraus, kuva}
+router.post('/myynti', upload.single('kuva'), async (req, res) => {
+  const { nimi, lahtohinta, hintavaraus } = req.body;
 
-  const newTuote = new schemat.Tuote({tuoteData})
-  const saveTuote = await newTuote.save()
-  if(saveTuote){
-    res.send('vastaanotto onnistui')
+  try {
+    const kuvaPath = req.file.path;
+
+    const newTuote = new schemat.Tuote({
+      nimi,
+      lahtohinta,
+      hintavaraus,
+      kuva: kuvaPath,
+    });
+
+    await newTuote.save();
+    console.log(newTuote);
+    res.send('vastaanotto onnistui');
+  } catch (error) {
+    console.error('virhe', error);
+    res.status(500).send('Internal Server Error');
   }
+});
 
-  
- res.end()
-})
 
 //haku function
 router.get(' ', (req, res) => {

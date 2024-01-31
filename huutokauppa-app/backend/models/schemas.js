@@ -1,6 +1,7 @@
 const mongoose = require('mongoose')
 const Schema = mongoose.Schema
 
+
 const kayttajatSchema = new Schema({
     nimi: { type: String },
     puhelinnro: { type: String },
@@ -16,9 +17,10 @@ const tuoteSchema = new Schema({
     hintavaraus: { type: Number },
     kuva: { type: String }
 })
+const Tuote = mongoose.model('Tuote', tuoteSchema, 'tuotteet')
 
 const Kayttajat = mongoose.model('Kayttajat', kayttajatSchema, 'kayttajat')
-const Tuote = mongoose.model('Tuote', tuoteSchema, 'tuote')
+
 const schemat = { 'Kayttajat': Kayttajat, 'Tuote':Tuote }
 
 module.exports = schemat
