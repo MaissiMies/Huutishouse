@@ -81,7 +81,7 @@ function Myynti(){
         type="file"
         accept="image/*"
         id="kuva"
-        onChange={(e) => setKuva(e.target.filess[0])}
+        onChange={(e) => setKuva(e.target.files[0])}
         />
       </label>
 
