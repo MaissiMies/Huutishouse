@@ -82,5 +82,30 @@ ul {
 li {
   padding: 10px;
 }
+.app {
+  text-align: center;
+}
+
+.product-list {
+  display: flex;
+  flex-wrap: wrap;
+  justify-content: center;
+}
+
+.product {
+  border: 1px solid #ccc;
+  border-radius: 5px;
+  padding: 10px;
+  margin: 10px;
+  width: 200px;
+}
+
+.product h3 {
+  margin-top: 0;
+}
+
+.product p {
+  margin-bottom: 0;
+}
 
 

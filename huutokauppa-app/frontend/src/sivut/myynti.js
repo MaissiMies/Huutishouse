@@ -29,12 +29,28 @@ function Myynti(){
       }
     };
     
+    
   //formi ajaa tämän submit painikkeen jälkeen
   const handleSubmit = (e) => {
     e.preventDefault()      
     axiosPostData()
     
   }
+  const productsData = [
+    { id: 1, name: 'Product 1', price: 10 },
+    { id: 2, name: 'Product 2', price: 20 },
+    { id: 3, name: 'Product 3', price: 30 },
+    { id: 4, name: 'Product 4', price: 40 },
+  ];
+  
+  const Product = ({ name, price }) => (
+    <div className="product">
+      <h3>{name}</h3>
+      <p>Price: ${price}</p>
+    </div>
+  );
+  const [products] = useState(productsData);
+
 
   //myynti sivun html
   return (
@@ -87,8 +103,17 @@ function Myynti(){
 
       <button type="submit">Submit</button>
     </form>
+    <div className="app">
+      <h1>myyntilista placeholderi</h1>
+      <div className="product-list">
+        {products.map(product => (
+          <Product key={product.id} name={product.name} price={product.price} />
+        ))}
+      </div>
+    </div>
     </>
   );
+  
 };
 
 export default Myynti;
