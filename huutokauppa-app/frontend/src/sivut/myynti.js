@@ -34,6 +34,7 @@ function Myynti(){
   const handleSubmit = (e) => {
     e.preventDefault()      
     axiosPostData()
+    handleFetchData();
     
   }
   
