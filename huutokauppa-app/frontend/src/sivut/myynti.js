@@ -55,14 +55,16 @@ function Myynti(){
   const [products, setProducts] = useState([]);
 
   useEffect(() => {
-    axios.get('/tuotteet')
-      .then(response => {
+    const fetchData = async () => {
+      try {
+        const response = await axios.get('http://localhost:3001/tuotteet');
         setProducts(response.data);
-      })
-      
-      .catch(error => {
+      } catch (error) {
         console.error('Error fetching products:', error);
-      });
+      }
+    };
+
+    fetchData();
   }, []);
 
 
@@ -121,7 +123,7 @@ function Myynti(){
       <h1>myyntilista placeholderi</h1>
       <div className="product-list">
       {products.map(products => (
-          <li key={products._id}>{products.name}</li>
+          <li key={products._id}>Myyjän nimi:{products.nimi} Lähtöhinta:{products.lahtohinta} Hintavaraus:{products.hintavaraus} </li>
         ))}
       </div>
     </div>

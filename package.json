@@ -1,4 +1,3 @@
-
 {
   "name": "huutokauppa",
   "version": "1.0.0",
@@ -7,7 +6,7 @@
     "backend": "cd huutokauppa-app/backend && npm start",
     "startfull": "concurrently \"npm run backend\" \"npm run frontend\""
   },
-    "devDependencies": {
+  "devDependencies": {
     "concurrently": "^8.2.2"
-    }  
+  }
 }
