@@ -1,6 +1,7 @@
-import logo from './logo.svg';
+
 import './App.css';
 import Header from './Komponentit/Header';
+import Footer from './Komponentit/Footer';
 import Myynti from './sivut/myynti' //<---esim myynti
 import Kotisivu from './sivut/kotisivu'
 import { BrowserRouter as Router, Route, Switch, Routes } from 'react-router-dom';
@@ -14,7 +15,8 @@ function App() {
 const Layout = ({ children }) => {
   return (
     <div className="layout">
-      <header />
+      <Header />
+      
       <div className="container">
         <div className="sidebar">
           {/* Sidebar content goes here */}
@@ -27,7 +29,8 @@ const Layout = ({ children }) => {
         </div>
         <main className="main-content">{children}</main>
       </div>
-      <footer />
+      
+      <Footer />
     </div>
   );
 };
