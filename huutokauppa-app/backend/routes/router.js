@@ -41,6 +41,16 @@ router.post('/myynti', upload.single('kuva'), async (req, res) => {
     res.status(500).send('Internal Server Error');
   }
 });
+router.get('/tuotteet', async (req, res) => {
+  try {
+    const products = await tuotteet.find();
+    console.log(products);
+    res.json(products);
+    
+  } catch (err) {
+    res.status(500).json({ message: err.message });
+  }
+});
 
 
 //haku function

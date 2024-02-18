@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import React, { useState, useEffect } from 'react';
 import axios from "axios"
 
 function Myynti(){
@@ -36,6 +36,7 @@ function Myynti(){
     axiosPostData()
     
   }
+  
   const productsData = [
     { id: 1, name: 'Product 1', price: 10 },
     { id: 2, name: 'Product 2', price: 20 },
@@ -49,7 +50,20 @@ function Myynti(){
       <p>Price: ${price}</p>
     </div>
   );
-  const [products] = useState(productsData);
+  //const [products] = useState(productsData);
+
+  const [products, setProducts] = useState([]);
+
+  useEffect(() => {
+    axios.get('/tuotteet')
+      .then(response => {
+        setProducts(response.data);
+      })
+      
+      .catch(error => {
+        console.error('Error fetching products:', error);
+      });
+  }, []);
 
 
   //myynti sivun html
@@ -106,8 +120,8 @@ function Myynti(){
     <div className="app">
       <h1>myyntilista placeholderi</h1>
       <div className="product-list">
-        {products.map(product => (
-          <Product key={product.id} name={product.name} price={product.price} />
+      {products.map(products => (
+          <li key={products._id}>{products.name}</li>
         ))}
       </div>
     </div>
