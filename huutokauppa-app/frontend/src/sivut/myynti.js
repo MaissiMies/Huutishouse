@@ -44,10 +44,10 @@ function Myynti(){
     { id: 4, name: 'Product 4', price: 40 },
   ];
   
-  const Product = ({ name, price }) => (
+  const Product = ({ nimi, lahtohinta }) => (
     <div className="product">
-      <h3>{name}</h3>
-      <p>Price: ${price}</p>
+      <h3>{nimi}</h3>
+      <p>Price: ${lahtohinta}</p>
     </div>
   );
   //const [products] = useState(productsData);
@@ -123,7 +123,12 @@ function Myynti(){
       <h1>myyntilista placeholderi</h1>
       <div className="product-list">
       {products.map(products => (
-          <li key={products._id}>Myyjän nimi:{products.nimi} Lähtöhinta:{products.lahtohinta} Hintavaraus:{products.hintavaraus} </li>
+           <Product 
+           key={products.id} 
+           nimi={products.nimi} 
+           lahtohinta={products.lahtohinta} 
+           
+         />
         ))}
       </div>
     </div>
