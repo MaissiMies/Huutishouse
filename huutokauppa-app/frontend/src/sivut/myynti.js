@@ -54,18 +54,23 @@ function Myynti(){
 
   const [products, setProducts] = useState([]);
 
-  useEffect(() => {
-    const fetchData = async () => {
-      try {
-        const response = await axios.get('http://localhost:3001/tuotteet');
-        setProducts(response.data);
-      } catch (error) {
-        console.error('Error fetching products:', error);
-      }
-    };
+  const fetchData = async () => {
+    try {
+      const response = await axios.get('http://localhost:3001/tuotteet');
+      setProducts(response.data);
+    } catch (error) {
+      console.error('Error fetching products:', error);
+    }
+  };
 
+  useEffect(() => {
     fetchData();
   }, []);
+
+  // You can call fetchData from elsewhere in your component if needed
+  const handleFetchData = () => {
+    fetchData();
+  };
 
 
   //myynti sivun html
