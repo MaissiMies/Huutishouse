@@ -29,7 +29,7 @@ const Tuote = mongoose.model('Tuote', tuoteSchema, 'tuotteet')
 
 const Kayttajat = mongoose.model('Kayttajat', kayttajatSchema, 'kayttajat')
 
-const schemat = { 'Kayttajat': Kayttajat, 'Tuote':Tuote }
+const schemat = { 'Kayttajat': Kayttajat, 'Tuote':Tuote, 'Kategoria': Kategoria}
 
 
 module.exports = schemat
