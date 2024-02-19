@@ -42,6 +42,11 @@ const Layout = ({ children }) => {
             <li><a href="/otayhteytta">Ota yhteyttä</a></li>
             <li><a href="/kayttoehdot">Käyttöehdot</a></li>
           </ul>
+          <ul>
+            {kategoria.map(kategoria =>(
+              <li key={index}>{kategoria.selite}</li>
+            ))}
+          </ul>
         </div>
         <main className="main-content">{children}</main>
       </div>
