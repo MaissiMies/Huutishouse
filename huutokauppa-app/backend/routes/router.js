@@ -6,6 +6,7 @@ const path = require('path');
 const multer = require('multer');
 const upload = multer({ dest: 'uploads/' }); // Specify the directory where you want to save the files
 
+
 // //-> post ( /uusikayttaja )
 // router.post('/uusikayttaja'), async(req, res) => {
 // const {nimi,puhelinnro,sposti,kayttajatuunnus,adminoikeudet} = req.body
@@ -48,6 +49,16 @@ router.get('/tuotteet', async (req, res) => {
     const products = await tuotteet.find();
     console.log(products);
     res.json(products);
+
+  } catch (err) {
+    res.status(500).json({ message: err.message });
+  }
+});router.get('/kategoria', async (req, res) => {
+  try {
+    const kategoriat = schemat.Kategoria
+    const Kategoria = await kategoriat.find();
+    console.log(Kategoria);
+    res.json(Kategoria);
 
   } catch (err) {
     res.status(500).json({ message: err.message });
@@ -131,5 +142,8 @@ router.get(' ', (req, res) => {
 
     res.send(userData)
 })
+
+
+
 
 module.exports = router

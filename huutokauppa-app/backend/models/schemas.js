@@ -17,10 +17,19 @@ const tuoteSchema = new Schema({
     hintavaraus: { type: Number },
     kuva: { type: String }
 })
+
+const kategoriaSchema = new Schema({
+    selite: {type: String },
+
+})
+
+const Kategoria = mongoose.model('Kategoria', kategoriaSchema, 'Kategoriat')
+
 const Tuote = mongoose.model('Tuote', tuoteSchema, 'tuotteet')
 
 const Kayttajat = mongoose.model('Kayttajat', kayttajatSchema, 'kayttajat')
 
 const schemat = { 'Kayttajat': Kayttajat, 'Tuote':Tuote }
+
 
 module.exports = schemat
