@@ -37,8 +37,8 @@ const Layout = ({ children }) => {
         <div className="sidebar">
           {/* Sidebar content goes here */}
           <ul>
-            <li><a href="/myynti">Myynti</a></li>
             <li><a href="/">Kotisivu</a></li>
+            <li><a href="/myynti">Myynti</a></li>
             <li><a href="/otayhteytta">Ota yhteyttä</a></li>
             <li><a href="/kayttoehdot">Käyttöehdot</a></li>
           </ul>

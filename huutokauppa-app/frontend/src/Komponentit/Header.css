@@ -1,0 +1,24 @@
+
+.logo {
+    height: 150px; /* Säädä korkeus tarpeen mukaan */
+    margin-right: 10px; /* Lisää tarvittaessa oikea väli */
+}
+
+.site-name {
+    font-size: 32px; /* Muuta fonttikokoa tarpeen mukaan */
+    color: #000;
+    margin: 0; /* Nollaa marginaali */
+}
+
+.logo-container {
+    display: flex;
+    align-items: center;
+    justify-content: flex-start; /* Aseta logo vasemmalle */
+    padding: 10px; /* Lisää tarvittaessa ylimääräinen tila ympärille */
+}
+
+header {
+    background-color: #F5F411;
+    text-align: center; /* Keskitä otsikko */
+    padding: 10px; /* Lisää tarvittaessa ylimääräinen tila ylä- ja alapuolelle */
+}

@@ -1,0 +1,16 @@
+
+
+
+
+.logo1 {
+    height: 50px; /* Säädä korkeus tarpeen mukaan */
+  }
+  
+  .logo1-container {
+    display: flex;
+    align-items: center;
+    justify-content: flex-start; /* Aseta logo vasempaan reunaan */
+  }
+  
+
+  
