@@ -16,18 +16,18 @@ import axios from "axios"
 function App() {
   const[kategoria,setkategoria] = useState([])
   useEffect(() => {
-    // Hae kategoriat tietokannasta ja päivitä tila
     const fetchData = async () => {
       try {
-        const data = await axios('http://localhost:3001/kategoriat');
-        setkategoria(data);
+        const response = await axios.get('http://localhost:3001/kategoriat');
+        console.log('Response:', response.data); // Log the response data
+        setkategoria(response.data);
       } catch (error) {
         console.error('Virhe kategorioiden haussa:', error);
       }
     };
-
+  
     fetchData();
-  }, []); 
+  }, []);
 const Layout = ({ children }) => {
   return (
     <div className="layout">
@@ -43,9 +43,13 @@ const Layout = ({ children }) => {
             <li><a href="/kayttoehdot">Käyttöehdot</a></li>
             </ul>
             <ul>
-  {kategoria.map((kategoria) => (
-    <li >{kategoria.selite}</li>
-  ))}
+  {Array.isArray(kategoria) ? (
+    kategoria.map((kategoria) => (
+      <li key={kategoria.id}>{kategoria.selite}</li>
+    ))
+  ) : (
+    <li>No categories found</li>
+  )}
 </ul>
         </div>
         <main className="main-content">{children}</main>
