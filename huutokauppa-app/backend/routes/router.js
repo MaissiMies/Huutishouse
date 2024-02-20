@@ -53,7 +53,8 @@ router.get('/tuotteet', async (req, res) => {
   } catch (err) {
     res.status(500).json({ message: err.message });
   }
-});router.get('/kategoria', async (req, res) => {
+});
+router.get('/kategoriat', async (req, res) => {
   try {
     const kategoriat = schemat.Kategoria
     const Kategoria = await kategoriat.find();
