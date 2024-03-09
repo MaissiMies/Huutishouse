@@ -20,8 +20,8 @@ export function Otayhteytta() {
   return (
     <div>
       <h2>Ota yhteyttä</h2>
-      <form onSubmit={kasitteleLahetys}>
-        <div>
+      <form onSubmit={kasitteleLahetys} style={{ display: 'flex', flexDirection: 'column', maxWidth: '300px' }}>
+        <div style={{ display: 'flex', flexDirection: 'column', marginBottom: '10px' }}>
           <label htmlFor="nimi">Nimi:</label>
           <input
             type="text"
@@ -31,7 +31,7 @@ export function Otayhteytta() {
             required
           />
         </div>
-        <div>
+        <div style={{ display: 'flex', flexDirection: 'column', marginBottom: '10px' }}>
           <label htmlFor="sahkoposti">Sähköposti:</label>
           <input
             type="email"
@@ -41,7 +41,7 @@ export function Otayhteytta() {
             required
           />
         </div>
-        <div>
+        <div style={{ display: 'flex', flexDirection: 'column', marginBottom: '10px' }}>
           <label htmlFor="viesti">Viesti:</label>
           <textarea
             id="viesti"
@@ -54,4 +54,5 @@ export function Otayhteytta() {
       </form>
     </div>
   );
+  
 }

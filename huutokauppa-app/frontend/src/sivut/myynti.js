@@ -1,5 +1,6 @@
 import React, { useState, useEffect } from 'react';
 import axios from "axios"
+import '../App.css'
 
 function Myynti(){
 
@@ -76,69 +77,65 @@ function Myynti(){
 
   //myynti sivun html
   return (
-    <>
-    <h1>Laita uusi tuote myyntiin</h1>
-      <form onSubmit={handleSubmit} method="post" encType="multipart/form-data">
+    <div className="myynti-container">
+      <h1>Laita uusi tuote myyntiin</h1>
+      <form onSubmit={handleSubmit} encType="multipart/form-data" className="add-product-form">
+        <label>
+          Nimi:
+          <input
+            type="text"
+            id="nimi"
+            name="nimi"
+            value={nimi}
+            onChange={(e) => setNimi(e.target.value)}
+          />
+        </label>
+        <label>
+          Lähtöhinta:
+          <input
+            type="number"
+            id="lahtohinta"
+            name="lahtohinta"
+            value={lahtohinta}
+            onChange={(e) => setLahtohinta(e.target.value)}
+          />
+        </label>
+        <label>
+          Hintavaraus:
+          <input
+            type="number"
+            id="hintavaraus"
+            name="hintavaraus"
+            value={hintavaraus}
+            onChange={(e) => setHintavaraus(e.target.value)}
+          />
+        </label>
+        <label>
+          Kuva:
+          <input
+            type="file"
+            accept="image/*"
+            id="kuva"
+            onChange={(e) => setKuva(e.target.files[0])}
+          />
+        </label>
+        <button type="submit">Submit</button>
+      </form>
 
-      <label>
-        Nimi:
-        <input
-          type="text"
-          id="nimi"
-          name="nimi"
-          value={nimi}
-          onChange={(e) => setNimi(e.target.value)}
-        />
-      </label>
+      <br/>
+      <br/>
 
-      <label>
-        Lähtöhinta:
-        <input
-          type="number"
-          id="lahtohinta"
-          name="lahtohinta"
-          value={lahtohinta}
-          onChange={(e) => setLahtohinta(e.target.value)}
-        />
-      </label>
 
-      <label>
-        Hintavaraus:
-        <input
-          type="number"
-          id="hintavaraus"
-          name="hintavaraus"
-          value={hintavaraus}
-          onChange={(e) => setHintavaraus(e.target.value)}
-        />
-      </label>
-
-      <label>
-        Kuva:
-        <input
-        type="file"
-        accept="image/*"
-        id="kuva"
-        onChange={(e) => setKuva(e.target.files[0])}
-        />
-      </label>
-
-      <button type="submit">Submit</button>
-    </form>
-    <div className="app">
-      <h1>myyntilista placeholderi</h1>
       <div className="product-list">
-      {products.map(products => (
-           <Product 
-           key={products.id} 
-           nimi={products.nimi} 
-           lahtohinta={products.lahtohinta} 
-           
-         />
+        {products.map(product => (
+          <Product 
+            key={product.id} 
+            nimi={product.nimi} 
+            lahtohinta={product.lahtohinta} 
+          />
         ))}
       </div>
     </div>
-    </>
   );
   
 };
