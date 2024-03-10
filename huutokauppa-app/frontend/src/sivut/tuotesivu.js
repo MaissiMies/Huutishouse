@@ -7,7 +7,7 @@ const ProductPage = () => {
 
   useEffect(() => {
     // Fetch product data based on productId
-    fetchproductData(productID);
+    fetchproductData(productId);
   }, [productId]);
 
   const fetchproductData = async (productId) => {
