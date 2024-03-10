@@ -7,8 +7,10 @@ import Kotisivu from './sivut/kotisivu'
 import { BrowserRouter as Router, Route, Switch, Routes } from 'react-router-dom';
 import { Otayhteytta } from './sivut/otayhteyytta';
 import { Kayttoehdot } from './sivut/kayttoehdot';
+import UserPage from'./sivut/kayttajasivu';
 import React, { useState, useEffect } from 'react';
 import axios from "axios"
+import ProductPage from './sivut/tuotesivu';
 
 //routet pitäisi laittaa omaan tiedostoonsa,myös frontendissä esim komponentit/routes yms
 //routet käytännössä linkkejä, esim myynti haetaan hakemistosta, ja nimetään. käytetään sitten routessa elementtinä.
@@ -67,6 +69,8 @@ return (
     <Route path="/myynti" element={<Layout><Myynti /></Layout>} />
     <Route path="/otayhteytta" element={<Layout><Otayhteytta /></Layout>} />
     <Route path="/kayttoehdot" element={<Layout><Kayttoehdot /></Layout>} />
+    <Route path="/user/:userId" component={UserPage} element={<Layout><UserPage /></Layout>}/>
+    <Route path="/product/:productId" component={ProductPage} element={<Layout><ProductPage /></Layout>}/>
      
     </Routes>
   </Router>
