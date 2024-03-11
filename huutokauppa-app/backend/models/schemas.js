@@ -2,11 +2,12 @@ const mongoose = require('mongoose');
 const Schema = mongoose.Schema;
 
 const kayttajatSchema = new Schema({
+    //id: { type: Int16Array },
     nimi: { type: String },
-    puhelinnro: { type: String },
+    puhnum: { type: String },
     sposti: { type: String },
-    kayttajatuunnus: { type: String },
-    adminoikeudet: { type: Boolean, default: false }
+    kayttajatunnus: { type: String },
+    //adminoikeudet: { type: Boolean, default: false }
 });
 
 const tuoteSchema = new Schema({
@@ -19,6 +20,7 @@ const tuoteSchema = new Schema({
 const kategoriaSchema = new Schema({
     selite: { type: String, required: true }
 });
+
 
 const Kayttaja = mongoose.model('Kayttaja', kayttajatSchema, 'kayttajat');
 const Tuote = mongoose.model('Tuote', tuoteSchema, 'tuotteet');

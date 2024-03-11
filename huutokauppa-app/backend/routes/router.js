@@ -65,6 +65,17 @@ router.get('/kategoriat', async (req, res) => {
     res.status(500).json({ message: err.message });
   }
 });
+router.get('/kayttajat', async (req, res) => {
+  try {
+    const kayttajat = schemat.Kayttaja
+    const Kayttaja = await kayttajat.find();
+    console.log(Kayttaja);
+    res.json(Kayttaja);
+
+  } catch (err) {
+    res.status(500).json({ message: err.message });
+  }
+});
 
 //haku function
 router.get(' ', (req, res) => {

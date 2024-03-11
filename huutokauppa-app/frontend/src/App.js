@@ -7,6 +7,7 @@ import Kotisivu from './sivut/kotisivu'
 import { BrowserRouter as Router, Route, Switch, Routes } from 'react-router-dom';
 import { Otayhteytta } from './sivut/otayhteyytta';
 import { Kayttoehdot } from './sivut/kayttoehdot';
+import { KategoriaUL } from './Komponentit/kategoriatUL';
 import UserPage from'./sivut/kayttajasivu';
 import React, { useState, useEffect } from 'react';
 import axios from "axios"
@@ -16,20 +17,7 @@ import ProductPage from './sivut/tuotesivu';
 //routet käytännössä linkkejä, esim myynti haetaan hakemistosta, ja nimetään. käytetään sitten routessa elementtinä.
 //<outletin /> alle <Footer /> kun tehty
 function App() {
-  const[kategoria,setkategoria] = useState([])
-  useEffect(() => {
-    const fetchData = async () => {
-      try {
-        const response = await axios.get('http://localhost:3001/kategoriat');
-        console.log('Response:', response.data); // Log the response data
-        setkategoria(response.data);
-      } catch (error) {
-        console.error('Virhe kategorioiden haussa:', error);
-      }
-    };
   
-    fetchData();
-  }, []);
 const Layout = ({ children }) => {
   return (
     <div className="layout">
@@ -44,15 +32,7 @@ const Layout = ({ children }) => {
             <li><a href="/otayhteytta">Ota yhteyttä</a></li>
             <li><a href="/kayttoehdot">Käyttöehdot</a></li>
             </ul>
-            <ul>
-  {Array.isArray(kategoria) ? (
-    kategoria.map((kategoria) => (
-      <li key={kategoria.id}>{kategoria.selite}</li>
-    ))
-  ) : (
-    <li>No categories found</li>
-  )}
-</ul>
+           <KategoriaUL/>
         </div>
         <main className="main-content">{children}</main>
       </div>
