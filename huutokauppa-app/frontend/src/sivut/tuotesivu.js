@@ -1,33 +1,33 @@
 import React, { useState, useEffect } from 'react';
 import { useParams } from 'react-router-dom';
+import axios from 'axios';
 
-const ProductPage = () => {
+
+function ProductPage() {
   const { productId } = useParams();
-  const [productData, setproductData] = useState(null);
-
+  const [productData, setProductData] = useState(null);
   useEffect(() => {
-    // Fetch product data based on productId
-    fetchproductData(productId);
+    const fetchProductData = async () => {
+      try {
+        const response = await axios.get(`http://localhost:3001/tuotteet/${productId}`);
+        setProductData(response.data); 
+      } catch (error) {
+        console.error('Error fetching product data:', error);
+      }
+    };
+
+    fetchProductData();
   }, [productId]);
 
-  const fetchproductData = async (productId) => {
-    try {
-      const response = await fetch(/*`Tähän mikä sinne fetchi nyt tulee`*/);
-      const data = await response.json();
-      setproductData(data);
-    } catch (error) {
-      console.error('Error fetching product data:', error);
-    }
-  };
+ 
+  console.log(productData);
 
   return (
     <div>
       {productData ? (
         <div>
-          <h2>product Details</h2>
-          <p>Name: {productData.name}</p>
-          <p>Email: {productData.email}</p>
-          {/* Render other product data */}
+          <h2>Product Details</h2>
+          <p>ID: {productData.productId}</p>
         </div>
       ) : (
         <p>Loading...</p>

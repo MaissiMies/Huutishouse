@@ -54,6 +54,23 @@ router.get('/tuotteet', async (req, res) => {
     res.status(500).json({ message: err.message });
   }
 });
+
+router.get('/tuotteet/:productId', async (req, res) => {
+  try {
+    const tuotteet = schemat.Tuote;
+    const tuoteId = parseInt(req.params.productId);
+    const product = await tuotteet.findOne({ productId: tuoteId });
+    console.log(product);
+    if (!product) {
+      return res.status(404).json({ error: 'Product not found' });
+    }
+    res.json(product);
+  } catch (error) {
+    console.error('Error fetching product data:', error);
+    res.status(500).json({ error: 'Internal server error' });
+  }  
+});
+
 router.get('/kategoriat', async (req, res) => {
   try {
     const kategoriat = schemat.Kategoria

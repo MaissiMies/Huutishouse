@@ -1,4 +1,5 @@
 import React, { useState, useEffect } from 'react';
+import { Link } from 'react-router-dom';
 import axios from "axios"
 import '../App.css'
 
@@ -127,14 +128,16 @@ function Myynti(){
 
 
       <div className="product-list">
-        {products.map(product => (
+      {products.map(product => (
+        <Link key={product.productId} to={`/tuotteet/${product.productId}`}>
           <Product 
-            key={product.id} 
+            key={product.productId} 
             nimi={product.nimi} 
             lahtohinta={product.lahtohinta} 
           />
-        ))}
-      </div>
+        </Link>
+      ))}
+    </div>
     </div>
   );
   

@@ -52,10 +52,9 @@ return (
     <Route path="/otayhteytta" element={<Otayhteytta />} />
     <Route path="/kayttoehdot" element={<Kayttoehdot />} />
     <Route path="/users/:id" element={<UserPage />}/>
-    <Route path="/product/:productId" element={<ProductPage />}/>
+    <Route path="/tuotteet/:productId" element={<ProductPage />}/>
      
-    </Routes>
-    
+    </Routes>  
       </Layout>
   </Router>
 );
