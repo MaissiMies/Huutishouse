@@ -2,7 +2,7 @@ const mongoose = require('mongoose');
 const Schema = mongoose.Schema;
 
 const kayttajatSchema = new Schema({
-    //id: { type: Int16Array },
+    //id: { type: Int32Array },
     nimi: { type: String },
     puhnum: { type: String },
     sposti: { type: String },

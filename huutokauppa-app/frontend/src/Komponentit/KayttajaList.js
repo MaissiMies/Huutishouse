@@ -1,5 +1,6 @@
 import React, { useState, useEffect } from 'react';
 import axios from "axios"
+import { Link } from 'react-router-dom';
 
 export const KayttajaUL = () => {
   const[kayttaja,setkayttaja] = useState([])
@@ -16,15 +17,22 @@ export const KayttajaUL = () => {
   
     fetchData();
   }, []);
-  return(<ul>
+  
+
+return (
+  <ul>
     {Array.isArray(kayttaja) ? (
       kayttaja.map((kayttaja) => (
         <li key={kayttaja.id}>
-          {kayttaja.nimi} - {kayttaja.puhnum} - {kayttaja.sposti} - {kayttaja.kayttajatunnus}
+         {kayttaja.id} - {kayttaja.nimi} - {kayttaja.puhnum} - {kayttaja.sposti} - {kayttaja.kayttajatunnus}
+          <Link to={`/users/${kayttaja.id}`}>
+            <button>View Details</button>
+          </Link>
         </li>
       ))
     ) : (
       <li>No users found</li>
     )}
-  </ul>)
+  </ul>
+);
 }

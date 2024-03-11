@@ -1,39 +1,42 @@
-import React, { useState, useEffect } from 'react';
+import React, { useEffect, useState } from 'react';
 import { useParams } from 'react-router-dom';
+import axios from 'axios';
 
-const UserPage = () => {
-  const { userId } = useParams();
+
+  
+
+ function UserPage() {
+  const { id } = useParams();
   const [userData, setUserData] = useState(null);
-
   useEffect(() => {
-    // Fetch user data based on userId
-    fetchUserData(userId);
-  }, [userId]);
+    const fetchUserData = async () => {
+      try {
+        const response = await axios.get(`http://localhost:3001/users/${id}`);
+        setUserData(response.data);
+        console.log(userData+"tämä")
+      } catch (error) {
+        console.error('Error fetching user data:', error);
+      }
+    };
 
-  const fetchUserData = async (userId) => {
-    try {
-      const response = await fetch(/*`Tähän mikä sinne fetchi nyt tulee`*/);
-      const data = await response.json();
-      setUserData(data);
-    } catch (error) {
-      console.error('Error fetching user data:', error);
-    }
-  };
+    fetchUserData();
+  }, [id]);
+
+
+  if (!userData) {
+    return <div>Loading...</div>;
+  }
 
   return (
     <div>
-      {userData ? (
-        <div>
-          <h2>User Details</h2>
-          <p>Name: {userData.name}</p>
-          <p>Email: {userData.email}</p>
-          {/* Render other user data */}
-        </div>
-      ) : (
-        <p>Loading...</p>
-      )}
+      <h2>User Details</h2>
+      <p>Name: {userData.nimi}</p>
+      <p>Phone Number: {userData.puhnum}</p>
+      <p>Email: {userData.sposti}</p>
+      <p>Username: {userData.kayttajatunnus}</p>
     </div>
   );
 };
+
 
 export default UserPage;

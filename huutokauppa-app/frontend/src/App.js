@@ -44,15 +44,19 @@ const Layout = ({ children }) => {
 
 return (
   <Router>
+    <Layout>
+      
     <Routes>
-    <Route path="/" element={<Layout><Kotisivu /></Layout>} />
-    <Route path="/myynti" element={<Layout><Myynti /></Layout>} />
-    <Route path="/otayhteytta" element={<Layout><Otayhteytta /></Layout>} />
-    <Route path="/kayttoehdot" element={<Layout><Kayttoehdot /></Layout>} />
-    <Route path="/user/:userId" component={UserPage} element={<Layout><UserPage /></Layout>}/>
-    <Route path="/product/:productId" component={ProductPage} element={<Layout><ProductPage /></Layout>}/>
+    <Route path="/" element={<Kotisivu />} />
+    <Route path="/myynti" element={<Myynti />} />
+    <Route path="/otayhteytta" element={<Otayhteytta />} />
+    <Route path="/kayttoehdot" element={<Kayttoehdot />} />
+    <Route path="/users/:id" element={<UserPage />}/>
+    <Route path="/product/:productId" element={<ProductPage />}/>
      
     </Routes>
+    
+      </Layout>
   </Router>
 );
 };

@@ -76,6 +76,20 @@ router.get('/kayttajat', async (req, res) => {
     res.status(500).json({ message: err.message });
   }
 });
+router.get('/users/:id', async (req, res) => {
+  try {
+    const kayttjat = schemat.Kayttaja;
+    const userId = parseInt(req.params.id);
+    const user = await kayttjat.findOne({id: userId});
+    if (!user) {
+      return res.status(404).json({ error: 'User not found' });
+    }
+    res.json(user);
+  } catch (error) {
+    console.error('Error fetching user data:', error);
+    res.status(500).json({ error: 'Internal server error' });
+  }
+});
 
 //haku function
 router.get(' ', (req, res) => {
