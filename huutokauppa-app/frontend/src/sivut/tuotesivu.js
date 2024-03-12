@@ -40,14 +40,14 @@ function ProductPage() {
     <p>Hintavaraus: {productData.hintavaraus}</p>
     <p>Kuva: {productData.kuva}</p>
 
-    <h3>Update Product Data</h3>
+    <h3>Päivitä tuotteen tietoja</h3>
     <input
       type="text"
-      placeholder="New Name"
+      placeholder="Uusi nimi"
       value={updatedProductData?.nimi || ''}
       onChange={(e) => setUpdatedProductData({ ...updatedProductData, nimi: e.target.value })}
     />
-    <button onClick={handleUpdateProductData} >Update Product Data</button>
+    <button onClick={handleUpdateProductData} >Päivitä</button>
   </div>
   );
 };

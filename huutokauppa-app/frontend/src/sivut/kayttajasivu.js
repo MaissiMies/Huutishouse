@@ -36,22 +36,22 @@ function UserPage() {
 
   return (
     <div>
-      <h2>User Details</h2>
-      <p>Name: {userData.nimi}</p>
-      <p>Phone Number: {userData.puhnum}</p>
-      <p>Email: {userData.sposti}</p>
-      <p>Username: {userData.kayttajatunnus}</p>
+      <h2>Käyttäjän tiedot</h2>
+      <p>Nimi: {userData.nimi}</p>
+      <p>Puhelinnumero: {userData.puhnum}</p>
+      <p>Sähköposti: {userData.sposti}</p>
+      <p>Käyttäjänimi: {userData.kayttajatunnus}</p>
 
-      <h3>Update User Data</h3>
+      <h3>Päivitä Käyttäjän tietoja</h3>
       <input
         type="text"
-        placeholder="New Name"
+        placeholder="Uusi nimi"
         value={updatedUserData?.nimi || ''}
         onChange={(e) => setUpdatedUserData({ ...updatedUserData, nimi: e.target.value })}
       />
       {/* Add more input fields for other fields you want to update */}
 
-      <button onClick={handleUpdateUserData} >Update User Data</button>
+      <button onClick={handleUpdateUserData} >Päivitä</button>
     </div>
   );
 }
