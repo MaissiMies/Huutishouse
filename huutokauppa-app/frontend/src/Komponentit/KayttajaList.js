@@ -25,7 +25,7 @@ return (
       kayttaja.map((kayttaja) => (
         <li key={kayttaja.id}>
          {kayttaja.id} - {kayttaja.nimi} - {kayttaja.puhnum} - {kayttaja.sposti} - {kayttaja.kayttajatunnus}
-          <Link to={`/users/${kayttaja.id}`}>
+          <Link to={`/users/${kayttaja.id}`} onClick={() => window.scrollTo(0, 0)}>
             <button>View Details</button>
           </Link>
         </li>

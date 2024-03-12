@@ -129,7 +129,7 @@ function Myynti(){
 
       <div className="product-list">
       {products.map(product => (
-        <Link key={product.productId} to={`/tuotteet/${product.productId}`}>
+        <Link key={product.productId} to={`/tuotteet/${product.productId}`} onClick={() => window.scrollTo(0, 0)}>
           <Product 
             key={product.productId} 
             nimi={product.nimi} 
