@@ -35,7 +35,6 @@ router.post('/myynti', upload.single('kuva'), async (req, res) => {
     });
 
     await newTuote.save();
-    console.log(newTuote);
     res.send('vastaanotto onnistui');
   } catch (error) {
     console.error('virhe', error);
@@ -47,7 +46,6 @@ router.get('/tuotteet', async (req, res) => {
   try {
     const tuotteet = schemat.Tuote
     const products = await tuotteet.find();
-    console.log(products);
     res.json(products);
 
   } catch (err) {
@@ -60,7 +58,6 @@ router.get('/tuotteet/:productId', async (req, res) => {
     const tuotteet = schemat.Tuote;
     const tuoteId = parseInt(req.params.productId);
     const product = await tuotteet.findOne({ productId: tuoteId });
-    console.log(product);
     if (!product) {
       return res.status(404).json({ error: 'Product not found' });
     }
@@ -71,11 +68,30 @@ router.get('/tuotteet/:productId', async (req, res) => {
   }  
 });
 
+router.put('/tuotteet/:productId', async (req, res) => {
+  const productId = parseInt(req.params.productId);
+  const updatedProductData = req.body;
+  try {
+    const product = await schemat.Tuote.findOneAndUpdate(
+      { productId: productId }, // Find user by id
+      updatedProductData, // Updated user data
+      { new: true } // Return the modified user
+    );
+
+    if (!product) {
+      return res.status(404).send('Product not found');
+    }
+
+    res.json(product); // Send updated user data as response
+  } catch (error) {
+    console.error('Error updating product data:', error);
+    res.status(500).send('Internal Server Error');
+  }
+});
 router.get('/kategoriat', async (req, res) => {
   try {
     const kategoriat = schemat.Kategoria
     const Kategoria = await kategoriat.find();
-    console.log(Kategoria);
     res.json(Kategoria);
 
   } catch (err) {
@@ -86,7 +102,6 @@ router.get('/kayttajat', async (req, res) => {
   try {
     const kayttajat = schemat.Kayttaja
     const Kayttaja = await kayttajat.find();
-    console.log(Kayttaja);
     res.json(Kayttaja);
 
   } catch (err) {
@@ -105,6 +120,27 @@ router.get('/users/:id', async (req, res) => {
   } catch (error) {
     console.error('Error fetching user data:', error);
     res.status(500).json({ error: 'Internal server error' });
+  }
+});
+
+router.put('/users/:id', async (req, res) => {
+  const id = parseInt(req.params.id);
+  const updatedUserData = req.body;
+  try {
+    const user = await schemat.Kayttaja.findOneAndUpdate(
+      { id: id }, // Find user by id
+      updatedUserData, // Updated user data
+      { new: true } // Return the modified user
+    );
+
+    if (!user) {
+      return res.status(404).send('User not found');
+    }
+
+    res.json(user); // Send updated user data as response
+  } catch (error) {
+    console.error('Error updating user data:', error);
+    res.status(500).send('Internal Server Error');
   }
 });
 
