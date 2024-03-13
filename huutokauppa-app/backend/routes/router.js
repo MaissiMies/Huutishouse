@@ -42,6 +42,12 @@ router.post('/myynti', upload.single('kuva'), async (req, res) => {
   }
 });
 
+router.get('/uploads/:kuva', (req, res) => {
+  const kuva = req.params.kuva;
+  const filePath = path.join(__dirname, '../uploads', kuva);
+  res.sendFile(filePath);
+});
+
 router.get('/tuotteet', async (req, res) => {
   try {
     const tuotteet = schemat.Tuote
@@ -73,16 +79,16 @@ router.put('/tuotteet/:productId', async (req, res) => {
   const updatedProductData = req.body;
   try {
     const product = await schemat.Tuote.findOneAndUpdate(
-      { productId: productId }, // Find user by id
-      updatedProductData, // Updated user data
-      { new: true } // Return the modified user
+      { productId: productId },
+      updatedProductData,
+      { new: true }
     );
 
     if (!product) {
       return res.status(404).send('Product not found');
     }
 
-    res.json(product); // Send updated user data as response
+    res.json(product);
   } catch (error) {
     console.error('Error updating product data:', error);
     res.status(500).send('Internal Server Error');

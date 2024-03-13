@@ -47,10 +47,12 @@ function Myynti(){
     { id: 4, name: 'Product 4', price: 40 },
   ];
   
-  const Product = ({ nimi, lahtohinta }) => (
+  const Product = ({ nimi, lahtohinta, imageUrl, hintavaraus }) => (
     <div className="product">
       <h3>{nimi}</h3>
-      <p>Price: ${lahtohinta}</p>
+      <p>Lähtöhinta: {lahtohinta}€</p>
+      <p>Hintavaraus: {hintavaraus}€</p>
+      <img src={imageUrl} style={{ maxWidth: '100px', maxHeight: '100px' }} alt="Product" className="product-image" />
     </div>
   );
   //const [products] = useState(productsData);
@@ -128,16 +130,18 @@ function Myynti(){
 
 
       <div className="product-list">
-      {products.map(product => (
-        <Link key={product.productId} to={`/tuotteet/${product.productId}`} onClick={() => window.scrollTo(0, 0)}>
-          <Product 
-            key={product.productId} 
-            nimi={product.nimi} 
-            lahtohinta={product.lahtohinta} 
-          />
-        </Link>
-      ))}
-    </div>
+  {products.map(product => (
+    <Link key={product.productId} to={`/tuotteet/${product.productId}`} onClick={() => window.scrollTo(0, 0)}>
+      <Product 
+        key={product.productId} 
+        nimi={product.nimi} 
+        lahtohinta={product.lahtohinta}
+        hintavaraus={product.hintavaraus} 
+        imageUrl={`http://localhost:3001/${product.kuva}`} // Adjust this URL to match your backend
+      />
+    </Link>
+  ))}
+</div>
     </div>
   );
   

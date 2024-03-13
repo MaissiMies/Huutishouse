@@ -13,6 +13,7 @@ function ProductPage() {
       try {
         const response = await axios.get(`http://localhost:3001/tuotteet/${productId}`);
         setProductData(response.data); 
+        console.log(response.data)
       } catch (error) {
         console.error('Error fetching product data:', error);
       }
@@ -38,7 +39,7 @@ function ProductPage() {
     <p>Nimi: {productData.nimi}</p>
     <p>Lähtöhinta: {productData.lahtohinta}</p>
     <p>Hintavaraus: {productData.hintavaraus}</p>
-    <p>Kuva: {productData.kuva}</p>
+    <p>Kuva: <img src={`http://localhost:3001/${productData.kuva}`}style={{ maxWidth: '400px', maxHeight: '400px' }} alt="Tuotekuva" /></p>
 
     <h3>Päivitä tuotteen tietoja</h3>
     <input
