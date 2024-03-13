@@ -4,6 +4,7 @@ import Header from './Komponentit/Header';
 import Footer from './Komponentit/Footer';
 import Myynti from './sivut/myynti' //<---esim myynti
 import Kotisivu from './sivut/kotisivu'
+import Eiloyda from './sivut/eiloyda_sivu'
 import { BrowserRouter as Router, Route, Switch, Routes } from 'react-router-dom';
 import { Otayhteytta } from './sivut/otayhteyytta';
 import { Kayttoehdot } from './sivut/kayttoehdot';
@@ -50,7 +51,8 @@ return (
     <Route path="/otayhteytta" element={<Otayhteytta />} />
     <Route path="/kayttoehdot" element={<Kayttoehdot />} />
     <Route path="/users/:id" element={<UserPage />}/>
-    <Route path="/tuotteet/:productId" element={<ProductPage />}/>    
+    <Route path="/tuotteet/:productId" element={<ProductPage />}/>   
+    <Route path="*" element={<Eiloyda />} />
     </Routes>  
       </Layout>
   </Router>
