@@ -29,8 +29,7 @@ const Layout = ({ children }) => {
           <ul>
             <li><a href="/">Kotisivu</a></li>
             <li><a href="/myynti">Myynti</a></li>
-            <li><a href="/otayhteytta">Ota yhteyttä</a></li>
-            <li><a href="/kayttoehdot">Käyttöehdot</a></li>
+            
             </ul>
            <KategoriaUL/>
         </div>
@@ -44,16 +43,14 @@ const Layout = ({ children }) => {
 
 return (
   <Router>
-    <Layout>
-      
+    <Layout>      
     <Routes>
     <Route path="/" element={<Kotisivu />} />
     <Route path="/myynti" element={<Myynti />} />
     <Route path="/otayhteytta" element={<Otayhteytta />} />
     <Route path="/kayttoehdot" element={<Kayttoehdot />} />
     <Route path="/users/:id" element={<UserPage />}/>
-    <Route path="/tuotteet/:productId" element={<ProductPage />}/>
-     
+    <Route path="/tuotteet/:productId" element={<ProductPage />}/>    
     </Routes>  
       </Layout>
   </Router>

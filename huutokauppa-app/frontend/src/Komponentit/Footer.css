@@ -1,7 +1,4 @@
 
-
-
-
 .logo1 {
     height: 50px; /* Säädä korkeus tarpeen mukaan */
   }
@@ -12,5 +9,27 @@
     justify-content: flex-start; /* Aseta logo vasempaan reunaan */
   }
   
-
+  footer {
+    display: flex;
+    align-items: center;
+    background-color: #282c34; /* Set the background color */
+    padding: 20px; /* Add padding for spacing */
+  }
+  
+  .links-container {
+    display: flex;
+    gap: 20px; /* Adjust the gap between links */
+  }
+  
+  .links-container li a {
+    color: #ffffff; /* Set the text color to white */
+    text-decoration: none; /* Remove underline */
+    font-size: 16px; /* Adjust the font size */
+    font-weight: bold; /* Add bold font weight */
+    padding: 10px; /* Add padding for spacing */
+  }
+  
+  .links-container li a:hover {
+    text-decoration: underline; /* Add underline on hover */
+  }
   

@@ -11,6 +11,10 @@ function Footer() {
           <img src={logo1} alt="Logo" className="logo"  onClick={() => window.scrollTo(0, 0)} /> 
         </Link>
       </div>
+      <div className="links-container">
+        <li><a href="/otayhteytta">Ota yhteyttä</a></li>
+        <li><a href="/kayttoehdot">Käyttöehdot</a></li>
+      </div>
     </footer>
   );
 }
