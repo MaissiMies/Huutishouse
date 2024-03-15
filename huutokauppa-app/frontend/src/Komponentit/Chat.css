@@ -1,15 +1,11 @@
-
-
-
-
-main {
+.chat-main {
     height: 100vh;
     padding: 1rem;
     display: flex;
     flex-flow: column;
 }
 
-form {
+.chat-main form {
     width: 100%;
     margin: auto;
     max-width: 600px;
@@ -19,24 +15,24 @@ form {
     gap: .25rem;
 }
 
-input,
-textarea {
+.chat-main input,
+.chat-main textarea {
     flex-grow: 1;
     max-width: calc(80% - .25rem);
 }
 
-button {
+.chat-main button {
     width: 20%;
 }
 
-input,
-button,
-textarea {
+.chat-main input,
+.chat-main button,
+.chat-main textarea {
     border-radius: 10px;
     padding: .5rem;
 }
 
-.chat-display {
+.chat-main .chat-display {
     background-color: #333;
     list-style-type: none;
     width: 100%;
@@ -51,7 +47,7 @@ textarea {
     flex-grow: 1;
 }
 
-.post {
+.chat-main .post {
     background-color: #eee;
     border-radius: 10px;
     padding: 0 0 .25rem;
@@ -60,17 +56,17 @@ textarea {
     flex-shrink: 0;
 }
 
-.post--left {
+.chat-main .post--left {
     width: 60%;
     align-self: flex-start;
 }
 
-.post--right {
+.chat-main .post--right {
     width: 60%;
     align-self: flex-end;
 }
 
-.post__header {
+.chat-main .post__header {
     color: #fff;
     padding: .25rem .5rem;
     display: flex;
@@ -79,31 +75,31 @@ textarea {
     gap: .5rem;
 }
 
-.post__header--user {
+.chat-main .post__header--user {
     background-color: blue;
 }
 
-.post__header--reply {
+.chat-main .post__header--reply {
     background-color: purple;
 }
 
-.post__header--name {
+.chat-main .post__header--name {
     font-weight: bold;
 }
 
-.post__header--time {
+.chat-main .post__header--time {
     font-size: .8rem;
 }
 
-.post__text {
+.chat-main .post__text {
     margin-top: 5px;
     color: #333;
     padding: .25rem .5rem;
 }
 
-.user-list,
-.room-list,
-.activity {
+.chat-main .user-list,
+.chat-main .room-list,
+.chat-main .activity {
     width: 100%;
     min-height: 2.65rem;
     margin: 0 auto;
@@ -111,6 +107,6 @@ textarea {
     padding: .75rem .25rem;
 }
 
-.activity {
+.chat-main .activity {
     font-style: italic;
 }

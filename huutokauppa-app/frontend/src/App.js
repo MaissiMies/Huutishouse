@@ -2,6 +2,7 @@
 import './App.css';
 import Header from './Komponentit/Header';
 import Footer from './Komponentit/Footer';
+import Chat from './Komponentit/Chat'
 import Myynti from './sivut/myynti' //<---esim myynti
 import Kotisivu from './sivut/kotisivu'
 import Eiloyda from './sivut/eiloyda_sivu'
@@ -30,6 +31,7 @@ const Layout = ({ children }) => {
           <ul>
             <li><a href="/">Kotisivu</a></li>
             <li><a href="/myynti">Myynti</a></li>
+            <li><a href="/Chat">Chat</a></li>
             
             </ul>
            <KategoriaUL/>
@@ -53,6 +55,8 @@ return (
     <Route path="/users/:id" element={<UserPage />}/>
     <Route path="/tuotteet/:productId" element={<ProductPage />}/>   
     <Route path="*" element={<Eiloyda />} />
+    <Route path="/Chat" element={<Chat />} />
+
     </Routes>  
       </Layout>
   </Router>
