@@ -22,6 +22,24 @@ const kategoriaSchema = new Schema({
 });
 
 
+// Määritellään viestin skeema
+const ViestiSchema = new mongoose.Schema({
+    käyttäjänimi: {
+      type: String,
+      required: true
+    },
+    viesti: {
+      type: String,
+      required: true
+    },
+    aikaleima: {
+      type: Date,
+      default: Date.now
+    }
+  });
+  
+// Luo Viesti-malli tietokantataululle
+const Viesti = mongoose.model('Viesti', ViestiSchema, 'viestit');
 const Kayttaja = mongoose.model('Kayttaja', kayttajatSchema, 'kayttajat');
 const Tuote = mongoose.model('Tuote', tuoteSchema, 'tuotteet');
 const Kategoria = mongoose.model('Kategoria', kategoriaSchema, 'kategoriat');
@@ -29,5 +47,6 @@ const Kategoria = mongoose.model('Kategoria', kategoriaSchema, 'kategoriat');
 module.exports = {
     Kayttaja,
     Tuote,
-    Kategoria
+    Kategoria,
+    Viesti
 };

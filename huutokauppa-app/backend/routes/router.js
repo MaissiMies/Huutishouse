@@ -6,6 +6,8 @@ const path = require('path');
 const multer = require('multer');
 const upload = multer({ dest: 'uploads/' }); // Specify the directory where you want to save the files
 
+const io = require('socket.io')();
+
 
 // //-> post ( /uusikayttaja )
 // router.post('/uusikayttaja'), async(req, res) => {
@@ -228,6 +230,29 @@ router.get(' ', (req, res) => {
     res.send(userData)
 })
 
+
+// Listening for a message event 
+socket.on('message', async ({ name, text, aikaleima }) => { 
+  
+  // Lisää async ja await
+  const room = getUser(socket.id)?.room;
+  if (room) {
+      io.to(room).emit('message', buildMsg(name, text));
+
+      try {
+          // Tallenna viesti tietokantaan
+          const uusiViesti = new Viesti({
+              käyttäjänimi: name,
+              viesti: text,
+              aikaleima: new Date().toLocaleString()
+          });
+          await uusiViesti.save();
+      } catch (error) {
+          console.error('Virhe tallennettaessa viestiä tietokantaan:', error);
+          // Voit lisätä tässä virheen käsittelyn tarpeesi mukaan
+      }
+  }
+});
 
 
 

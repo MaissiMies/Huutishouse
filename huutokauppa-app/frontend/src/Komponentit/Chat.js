@@ -2,6 +2,11 @@ import React from 'react';
 import './Chat.css';
 
 function ChatComponent() {
+
+
+
+
+    
     return (
         <main className="chat-main"> 
             <form className="form-join">
