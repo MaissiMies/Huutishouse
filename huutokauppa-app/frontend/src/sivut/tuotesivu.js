@@ -7,6 +7,7 @@ function ProductPage() {
   const { productId } = useParams();
   const [productData, setProductData] = useState(null);
   const [updatedProductData, setUpdatedProductData] = useState(null);
+  const [iseditable, setiseditable] = useState(false);
 
   useEffect(() => {
     const fetchProductData = async () => {
@@ -18,9 +19,17 @@ function ProductPage() {
         console.error('Error fetching product data:', error);
       }
     };
-
+    
     fetchProductData();
   }, [productId]);
+  const handlePrivilegeCheck = () =>{
+    if (iseditable) {
+      setiseditable (false)
+    }
+    else {
+      setiseditable (true)
+    }
+  }
   const handleUpdateProductData = async () => {
     try {
       const response = await axios.put(`http://localhost:3001/tuotteet/${productId}`, updatedProductData);     
@@ -35,13 +44,19 @@ function ProductPage() {
   }
   return (
     <div>
+      {iseditable ? (
+        <>
+        <button onClick={handlePrivilegeCheck}>Päivitä</button>
     <h2>Tuotetiedot</h2>
     <p>Nimi: {productData.nimi}</p>
     <p>Lähtöhinta: {productData.lahtohinta}</p>
     <p>Hintavaraus: {productData.hintavaraus}</p>
     <p>Kuva:</p>
     <p> <img src={`http://localhost:3001/${productData.kuva}`}style={{ maxWidth: '400px', maxHeight: '400px' }} alt="Tuotekuva" /></p>
-
+    </>
+    ) : (
+      <>
+      <button onClick={handlePrivilegeCheck}>Päivitä</button>
     <h3>Päivitä tuotteen tietoja</h3>
     <input
       type="text"
@@ -49,7 +64,24 @@ function ProductPage() {
       value={updatedProductData?.nimi || ''}
       onChange={(e) => setUpdatedProductData({ ...updatedProductData, nimi: e.target.value })}
     />
+    <br/>
+    <input
+      type="text"
+      placeholder="Uusi lahtohinta"
+      value={updatedProductData?.lahtohinta || ''}
+      onChange={(e) => setUpdatedProductData({ ...updatedProductData, lahtohinta: e.target.value })}
+    />
+    <br/>
+    <input
+      type="text"
+      placeholder="Uusi hintavaraus"
+      value={updatedProductData?.hintavaraus || ''}
+      onChange={(e) => setUpdatedProductData({ ...updatedProductData, hintavaraus: e.target.value })}
+    />
+    <br/>
     <button onClick={handleUpdateProductData} >Päivitä</button>
+    </>
+    )}
   </div>
   );
 };
