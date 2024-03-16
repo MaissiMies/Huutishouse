@@ -6,6 +6,7 @@ function UserPage() {
   const { id } = useParams();
   const [userData, setUserData] = useState(null);
   const [updatedUserData, setUpdatedUserData] = useState(null);
+  const [iseditable, setiseditable] = useState(false);
 
   useEffect(() => {
     const fetchUserData = async () => {
@@ -19,7 +20,14 @@ function UserPage() {
 
     fetchUserData();
   }, [id]);
-
+  const handlePrivilegeCheck = () =>{
+    if (iseditable) {
+      setiseditable (false)
+    }
+    else {
+      setiseditable (true)
+    }
+  }
   const handleUpdateUserData = async () => {
     try {
       const response = await axios.put(`http://localhost:3001/users/${id}`, updatedUserData);     
@@ -36,22 +44,52 @@ function UserPage() {
 
   return (
     <div>
-      <h2>Käyttäjän tiedot</h2>
-      <p>Nimi: {userData.nimi}</p>
-      <p>Puhelinnumero: {userData.puhnum}</p>
-      <p>Sähköposti: {userData.sposti}</p>
-      <p>Käyttäjänimi: {userData.kayttajatunnus}</p>
-
-      <h3>Päivitä Käyttäjän tietoja</h3>
-      <input
-        type="text"
-        placeholder="Uusi nimi"
-        value={updatedUserData?.nimi || ''}
-        onChange={(e) => setUpdatedUserData({ ...updatedUserData, nimi: e.target.value })}
-      />
-      {/* Add more input fields for other fields you want to update */}
-
-      <button onClick={handleUpdateUserData} >Päivitä</button>
+      {iseditable ? (
+        <>
+        <button onClick={handlePrivilegeCheck}>Päivitä</button>
+          <h2>Käyttäjän tiedot</h2>
+          <p>Nimi: {userData.nimi}</p>
+          <p>Puhelinnumero: {userData.puhnum}</p>
+          <p>Sähköposti: {userData.sposti}</p>
+          <p>Käyttäjänimi: {userData.kayttajatunnus}</p>
+        </>
+      ) : (
+        <>
+        <button onClick={handlePrivilegeCheck}>Päivitä</button>
+          <h3>Päivitä Käyttäjän tietoja</h3>
+          <input
+            type="text"
+            placeholder="Uusi nimi"
+            value={updatedUserData?.nimi || ''}
+            onChange={(e) => setUpdatedUserData({ ...updatedUserData, nimi: e.target.value })}
+          />
+          <br/>
+          <input
+            type="text"
+            placeholder="Uusi puhnum"
+            value={updatedUserData?.puhnum || ''}
+            onChange={(e) => setUpdatedUserData({ ...updatedUserData, puhnum: e.target.value })}
+          />
+          <br/>
+          <input
+          type="text"
+          placeholder="Uusi sposti"
+          value={updatedUserData?.sposti || ''}
+          onChange={(e) => setUpdatedUserData({ ...updatedUserData, sposti: e.target.value })}
+        />
+        <br/>
+        <input
+            type="text"
+            placeholder="Uusi kayttajatunnus"
+            value={updatedUserData?.kayttajatunnus || ''}
+            onChange={(e) => setUpdatedUserData({ ...updatedUserData, kayttajatunnus: e.target.value })}
+          />
+          {/* Lisää tarvittaessa muita input-kenttiä päivitettäville tiedoille */}
+          <br/>
+  
+          <button onClick={handleUpdateUserData}>Päivitä</button>
+        </>
+      )}
     </div>
   );
 }

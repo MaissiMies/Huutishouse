@@ -232,7 +232,7 @@ router.get(' ', (req, res) => {
 
 
 // Listening for a message event 
-socket.on('message', async ({ name, text, aikaleima }) => { 
+/*socket.on('message', async ({ name, text, aikaleima }) => { 
   
   // Lisää async ja await
   const room = getUser(socket.id)?.room;
@@ -253,7 +253,7 @@ socket.on('message', async ({ name, text, aikaleima }) => {
       }
   }
 });
-
+*/
 
 
 module.exports = router
