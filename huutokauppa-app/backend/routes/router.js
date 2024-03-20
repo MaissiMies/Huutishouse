@@ -151,6 +151,17 @@ router.put('/users/:id', async (req, res) => {
     res.status(500).send('Internal Server Error');
   }
 });
+router.post('/api/register', async (req, res) => {
+  try {
+    const kayttajat = schemat.Kayttaja
+    const { nimi, salasana, sposti, puhnum } = req.body;
+    const user = new kayttajat({ nimi, salasana, sposti, puhnum });
+    await user.save();
+    res.status(201).send('User registered successfully');
+  } catch (error) {
+    res.status(500).send('Error registering user');
+  }
+});
 
 //haku function
 router.get(' ', (req, res) => {
@@ -252,8 +263,10 @@ router.get(' ', (req, res) => {
           // Voit lisätä tässä virheen käsittelyn tarpeesi mukaan
       }
   }
+  
 });
 */
+
 
 
 module.exports = router

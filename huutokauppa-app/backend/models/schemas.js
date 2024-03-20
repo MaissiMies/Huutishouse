@@ -6,7 +6,7 @@ const kayttajatSchema = new Schema({
     nimi: { type: String },
     puhnum: { type: String },
     sposti: { type: String },
-    kayttajatunnus: { type: String },
+    salasana: { type: String },
     //adminoikeudet: { type: Boolean, default: false }
 });
 
