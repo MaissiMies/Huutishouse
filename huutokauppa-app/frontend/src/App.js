@@ -47,28 +47,28 @@ const Layout = ({ children }) => {
   );
 };
 
-function App() {
+
   return (
     <Router>
-      <UserContextProvider> {/* Wrap the entire app with UserContextProvider */}
+      <UserProvider> {/* Wrap the entire app with UserContextProvider */}
         <Layout>
           <Routes>
             <Route path="/" element={<Kotisivu />} />
             <Route path="/myynti" element={<Myynti />} />
             <Route path="/otayhteytta" element={<Otayhteytta />} />
             <Route path="/kayttoehdot" element={<Kayttoehdot />} />
-            <Route path="/users/:id" element={<UserPage />} />
+            <Route path="/users/:_id" element={<UserPage />} />
             <Route path="/tuotteet/:productId" element={<ProductPage />} />
             <Route path="*" element={<Eiloyda />} />
             <Route path="/Chat" element={<Chat />} />
             <Route path="/rekisteröidy" element={<Register />} />
           </Routes>
         </Layout>
-      </UserContextProvider>
+      </UserProvider>
     </Router>
   );
 }
-}
+
 
 
 

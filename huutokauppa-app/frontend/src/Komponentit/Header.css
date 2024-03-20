@@ -22,3 +22,54 @@ header {
     text-align: center; /* Keskitä otsikko */
     padding: 10px; /* Lisää tarvittaessa ylimääräinen tila ylä- ja alapuolelle */
 }
+.drop-popout-login {
+    display: flex;
+    position: absolute;
+    right: 0px;
+    width: 300px;
+   
+    padding: 10px;
+  }
+ .loggedintext{
+    display: flex;
+    justify-content: flex-end;
+    right: 150px;
+    width: 300px;
+    color: seagreen;
+    padding: 10px;
+ } 
+  
+  .popout {
+    position: absolute;
+    top: 100%;
+    left: 0;
+    background: gray;
+    border: 1px solid #ccc;
+    padding: 10px;
+    box-shadow: 0 2px 5px rgba(0, 0, 0, 0.1);
+  }
+  
+  .login-button {
+    background: #007bff;
+    color: white;
+    border: none;
+    padding: 8px 16px;
+    cursor: pointer;
+  }
+  
+  .login-button:hover {
+    background: #0056b3;
+  }
+  
+  .login-submit {
+    margin-top: 10px;
+    background: #007bff;
+    color: white;
+    border: none;
+    padding: 8px 16px;
+    cursor: pointer;
+  }
+  
+  .login-submit:hover {
+    background: #0056b3;
+  }

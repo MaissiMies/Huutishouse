@@ -2,6 +2,7 @@ const express = require('express')
 const router = express.Router()
 const schemat = require('../models/schemas')
 const fs = require('fs');
+const bcrypt = require('bcryptjs');
 const path = require('path');
 const multer = require('multer');
 const upload = multer({ dest: 'uploads/' }); // Specify the directory where you want to save the files
@@ -116,11 +117,11 @@ router.get('/kayttajat', async (req, res) => {
     res.status(500).json({ message: err.message });
   }
 });
-router.get('/users/:id', async (req, res) => {
+router.get('/users/:_id', async (req, res) => {
   try {
     const kayttjat = schemat.Kayttaja;
-    const userId = parseInt(req.params.id);
-    const user = await kayttjat.findOne({id: userId});
+    const userId = req.params._id;
+    const user = await kayttjat.findOne({_id:userId});
     if (!user) {
       return res.status(404).json({ error: 'User not found' });
     }
@@ -155,11 +156,40 @@ router.post('/api/register', async (req, res) => {
   try {
     const kayttajat = schemat.Kayttaja
     const { nimi, salasana, sposti, puhnum } = req.body;
-    const user = new kayttajat({ nimi, salasana, sposti, puhnum });
+    const hashedPassword = await bcrypt.hash(salasana, 10);
+    const user = new kayttajat({ nimi, salasana: hashedPassword, sposti, puhnum });
     await user.save();
     res.status(201).send('User registered successfully');
   } catch (error) {
     res.status(500).send('Error registering user');
+  }
+});
+
+
+router.post('/api/login', async (req, res) => {
+  try {
+    const { nimi, salasana } = req.body;
+    const kayttajat = schemat.Kayttaja;
+    
+    // Find the user by username
+    const user = await kayttajat.findOne({ nimi });
+
+    if (!user) {
+      return res.status(404).send('User not found');
+    }
+
+    // Compare passwords using a hashing library like bcrypt
+    const passwordsMatch = await bcrypt.compare(salasana, user.salasana);
+    if (passwordsMatch) {
+      // If passwords match, send a success response
+      res.status(200).json({ objectId: user._id,nimi: user.nimi, message: 'Login successful' });
+    } else {
+      // If passwords don't match, send an unauthorized response
+      res.status(401).send('Invalid credentials');
+    }
+  } catch (error) {
+    // Handle any errors
+    res.status(500).send('Error logging in: ' + error.message);
   }
 });
 
