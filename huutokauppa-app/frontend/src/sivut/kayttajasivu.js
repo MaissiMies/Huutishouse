@@ -3,7 +3,7 @@ import { useParams } from 'react-router-dom';
 import axios from 'axios';
 
 function UserPage() {
-  const { id } = useParams();
+  const { _id } = useParams();
   const [userData, setUserData] = useState(null);
   const [updatedUserData, setUpdatedUserData] = useState(null);
   const [iseditable, setiseditable] = useState(false);
@@ -11,7 +11,7 @@ function UserPage() {
   useEffect(() => {
     const fetchUserData = async () => {
       try {
-        const response = await axios.get(`http://localhost:3001/users/${id}`);
+        const response = await axios.get(`http://localhost:3001/users/${_id}`);
         setUserData(response.data);
       } catch (error) {
         console.error('Error fetching user data:', error);
@@ -19,7 +19,7 @@ function UserPage() {
     };
 
     fetchUserData();
-  }, [id]);
+  }, [_id]);
   const handlePrivilegeCheck = () =>{
     if (iseditable) {
       setiseditable (false)
@@ -30,7 +30,7 @@ function UserPage() {
   }
   const handleUpdateUserData = async () => {
     try {
-      const response = await axios.put(`http://localhost:3001/users/${id}`, updatedUserData);     
+      const response = await axios.put(`http://localhost:3001/users/${_id}`, updatedUserData);     
       console.log('User data updated successfully:', response.data);
       window.location.reload();
     } catch (error) {

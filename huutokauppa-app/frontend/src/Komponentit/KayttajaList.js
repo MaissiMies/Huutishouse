@@ -10,6 +10,7 @@ export const KayttajaUL = () => {
         const response = await axios.get('http://localhost:3001/kayttajat');
         console.log('Response:', response.data); // Log the response data
         setkayttaja(response.data);
+        
       } catch (error) {
         console.error('Virhe kayttajien haussa:', error);
       }
@@ -24,7 +25,7 @@ return (
     {Array.isArray(kayttaja) ? (
       kayttaja.map((kayttaja) => (
         <li key={kayttaja.id}>
-         {kayttaja.id} - {kayttaja.nimi} - {kayttaja.puhnum} - {kayttaja.sposti} - {kayttaja.kayttajatunnus}
+         {kayttaja._id} - {kayttaja.nimi} - {kayttaja.puhnum} - {kayttaja.sposti} - {kayttaja.kayttajatunnus}
           <Link to={`/users/${kayttaja._id}`} onClick={() => window.scrollTo(0, 0)}>
             <button>View Details</button>
           </Link>
