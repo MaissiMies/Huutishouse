@@ -1,6 +1,5 @@
-
 import { Link } from 'react-router-dom';
-import React, { useState } from 'react';
+import React, { useState, useEffect } from 'react';
 import './Header.css';
 import logo from '../assets/Huutis House-logos.jpeg';
 import axios from "axios"
@@ -11,16 +10,23 @@ function Header(){
   const [isOpen, setIsOpen] = useState(false);
   const [nimi, setUsername] = useState('');
   const [salasana, setPassword] = useState('');
-  const [userData, setUserData] = useState([])
+  const [userData, setUserData] = useState([]);
+  const [showNotification, setShowNotification] = useState(false); // Tilaa ilmoitukselle
 
   const handleLogin = async () => {
     try {
+      if (!nimi || !salasana) {
+        setShowNotification(true); // Näytä ilmoitus jos käyttäjänimi tai salasana puuttuu
+        setTimeout(() => setShowNotification(false), 3000); // Aseta ajastin ilmoituksen piilottamiseksi 5 sekunnin kuluttua
+        return; // Älä jatka kirjautumista
+      }
+
       const response = await axios.post('/api/login', { nimi, salasana });
       console.log('Login successful');
       setUserData(response.data)
       setUserData(prevData =>({
         ...prevData, // Spread existing JSON data
-      nimi: nimi
+        nimi: nimi
       }))
       login(userData);
       console.log(userData)
@@ -28,8 +34,6 @@ function Header(){
       console.error('Error logging in:', error);
     }
   };
- 
-
 
   return (
     <header>
@@ -37,11 +41,22 @@ function Header(){
         <Link to="/">
           <img src={logo} alt="Logo" className="logo" onClick={() => window.scrollTo(0, 0)}  />
         </Link>
-        <h1 className="site-name">Huutis House</h1>
-        <div className="drop-popout-login" >
-          <button className="login-button" onClick={() => setIsOpen(!isOpen)}>
-            Login
-          </button>
+        <div className="site-info">
+          <h1 className="site-name">Huutis House</h1>
+          <p className="slogan">Tervetuloa Huutis Houseen - missä jokainen huuto on askel kohti unelma kauppoja</p>
+        </div>
+        <div className="drop-popout-login">
+          <div className="login-area">
+            <p className='loggedintext'>Kirjaudu {userData.nimi}</p>
+            <button className="login-button" onClick={() => setIsOpen(!isOpen)}>
+              Login
+            </button>
+            {showNotification && ( // Näytä ilmoitus jos showNotification on true
+              <div className="notification">
+                Kirjaudu sisään kirjoittamalla käyttäjänimi ja salasana.
+              </div>
+            )}
+          </div>
           {isOpen && (
             <div className="popout">
               <input
@@ -50,6 +65,7 @@ function Header(){
                 value={nimi}
                 onChange={(e) => setUsername(e.target.value)}
               />
+              
               <input
                 type="password"
                 placeholder="Password"
@@ -62,7 +78,6 @@ function Header(){
             </div>
           )}
         </div>
-        <p className='loggedintext'>tervetuloa {userData.nimi}</p>
       </div>
     </header>
   );

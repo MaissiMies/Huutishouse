@@ -1,75 +1,104 @@
+/* huutokauppa-app\frontend\src\Komponentit\Header.css */
 
 .logo {
-    height: 150px; /* Säädä korkeus tarpeen mukaan */
-    margin-right: 10px; /* Lisää tarvittaessa oikea väli */
+  height: 150px; /* Säädä korkeus tarpeen mukaan */
+  margin-right: 10px; /* Lisää tarvittaessa oikea väli */
 }
 
 .site-name {
-    font-size: 32px; /* Muuta fonttikokoa tarpeen mukaan */
-    color: #000;
-    margin: 0; /* Nollaa marginaali */
+  font-size: 32px; /* Muuta fonttikokoa tarpeen mukaan */
+  color: #000;
+  margin: 0; /* Nollaa marginaali */
+}
+
+.slogan {
+  font-size: 20px; /* Määrittele sopiva fonttikoko */
+  color: #333; /* Valitse tyylikäs väri */
+  margin-top: 5px; /* Aseta sopiva väli yläpuolelle */
+  text-align: center; /* Keskitä teksti */
+  padding: 0 10px;
 }
 
 .logo-container {
-    display: flex;
-    align-items: center;
-    justify-content: flex-start; /* Aseta logo vasemmalle */
-    padding: 10px; /* Lisää tarvittaessa ylimääräinen tila ympärille */
+  display: flex;
+  align-items: center;
+  justify-content: space-between; /* Tasaa elementit */
+  padding: 10px; /* Lisää tarvittaessa ylimääräinen tila ympärille */
 }
 
 header {
-    background-color: #F5F411;
-    text-align: center; /* Keskitä otsikko */
-    padding: 10px; /* Lisää tarvittaessa ylimääräinen tila ylä- ja alapuolelle */
+  background-color: #F5F411;
+  text-align: center; /* Keskitä otsikko */
+  padding: 10px; /* Lisää tarvittaessa ylimääräinen tila ylä- ja alapuolelle */
 }
+
 .drop-popout-login {
-    display: flex;
-    position: absolute;
-    right: 0px;
-    width: 300px;
-   
-    padding: 10px;
-  }
- .loggedintext{
-    display: flex;
-    justify-content: flex-end;
-    right: 150px;
-    width: 300px;
-    color: seagreen;
-    padding: 10px;
- } 
-  
-  .popout {
-    position: absolute;
-    top: 100%;
-    left: 0;
-    background: gray;
-    border: 1px solid #ccc;
-    padding: 10px;
-    box-shadow: 0 2px 5px rgba(0, 0, 0, 0.1);
-  }
-  
-  .login-button {
-    background: #007bff;
-    color: white;
-    border: none;
-    padding: 8px 16px;
-    cursor: pointer;
-  }
-  
-  .login-button:hover {
-    background: #0056b3;
-  }
-  
-  .login-submit {
-    margin-top: 10px;
-    background: #007bff;
-    color: white;
-    border: none;
-    padding: 8px 16px;
-    cursor: pointer;
-  }
-  
-  .login-submit:hover {
-    background: #0056b3;
-  }
+  display: flex;
+  position: relative; /* Muuta sijaintia suhteelliseksi */
+  width: 300px;
+  padding: 10px;
+  align-items: center;
+}
+
+.login-area {
+  display: flex;
+  align-items: center;
+  position: relative; /* Muuta sijaintia suhteelliseksi */
+}
+
+.loggedintext {
+  color: seagreen;
+  margin-right: 10px; /* Lisää tarvittaessa oikea väli */
+}
+
+.popout {
+  position: absolute;
+  top: calc(100% + 5px); /* Lisää väli yläpuolelle */
+  left: 0;
+  background: gray;
+  border: 1px solid #ccc;
+  padding: 10px;
+  border-radius: 5px;
+  align-items: center;
+}
+
+.login-button {
+  background: #007bff;
+  color: white;
+  border: none;
+  padding: 8px 16px;
+  cursor: pointer;
+  margin-left: 10px; /* Lisää tarvittaessa oikea väli */
+}
+
+.login-button:hover {
+  background: #0056b3;
+}
+
+.login-submit {
+  margin-top: 10px;
+  background: #007bff;
+  color: white;
+  border: none;
+  padding: 8px 16px;
+  cursor: pointer;
+  margin-left: 10px; /* Lisää tarvittaessa oikea päli */
+}
+
+.login-submit:hover {
+  background: #0056b3;
+}
+
+.notification {
+  position: absolute;
+  top: 0;
+  left: 50%;
+  transform: translateX(-50%);
+  background-color: #ff6961; /* Punainen väri */
+  color: white;
+  padding: 10px;
+  border-radius: 5px;
+  z-index: 1; /* Varmista, että ilmoitus näkyy päällimmäisenä */
+}
+
+

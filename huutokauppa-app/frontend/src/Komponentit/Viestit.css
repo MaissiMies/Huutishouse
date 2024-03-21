@@ -1,0 +1,81 @@
+.viestikeskus {
+    margin: 20px;
+    padding: 20px;
+    border: 1px solid #ccc;
+    border-radius: 5px;
+    background-color: #f9f9f9;
+  }
+  
+  .viestikeskus h2 {
+    font-size: 20px;
+    margin-bottom: 10px;
+  }
+  
+  .viestikeskus form {
+    margin-bottom: 20px;
+  }
+  
+  .viestikeskus input[type="text"],
+  .viestikeskus textarea {
+    width: 100%;
+    margin-bottom: 10px;
+    padding: 10px;
+    border: 1px solid #ccc;
+    border-radius: 5px;
+  }
+  
+  .viestikeskus button {
+    padding: 10px 20px;
+    background-color: #007bff;
+    color: #fff;
+    border: none;
+    border-radius: 5px;
+    cursor: pointer;
+  }
+  
+  .viestikeskus button:hover {
+    background-color: #0056b3;
+  }
+  
+  .saapuneet-viestit {
+    margin-top: 20px;
+  }
+  
+  .saapuneet-viestit h3 {
+    font-size: 18px;
+    margin-bottom: 10px;
+  }
+  
+  .saapuneet-viestit table {
+    width: 100%;
+    border-collapse: collapse;
+  }
+  
+  .saapuneet-viestit th,
+  .saapuneet-viestit td {
+    padding: 12px;
+    border: 1px solid #ccc;
+  }
+  
+  .saapuneet-viestit th {
+    background-color: #007bff;
+    color: #fff;
+  }
+  
+  .saapuneet-viestit td button {
+    padding: 8px 16px;
+    background-color: #dc3545;
+    color: #fff;
+    border: none;
+    border-radius: 5px;
+    cursor: pointer;
+  }
+  
+  .saapuneet-viestit td button:hover {
+    background-color: #c82333;
+  }
+  
+  .viestikeskus .saapuneet-viestit tbody .viesti-rivi:hover {
+    background-color: #f0f0f0;
+    cursor: pointer;
+  }  

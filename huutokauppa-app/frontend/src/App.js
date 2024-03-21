@@ -2,7 +2,6 @@
 import './App.css';
 import Header from './Komponentit/Header';
 import Footer from './Komponentit/Footer';
-import Chat from './Komponentit/Chat'
 import Myynti from './sivut/myynti' //<---esim myynti
 import Kotisivu from './sivut/kotisivu'
 import Eiloyda from './sivut/eiloyda_sivu'
@@ -16,6 +15,7 @@ import UserPage from'./sivut/kayttajasivu';
 import React, { useState, useEffect } from 'react';
 import axios from "axios"
 import ProductPage from './sivut/tuotesivu';
+import Viestit from './Komponentit/Viestit';
 
 //routet pitäisi laittaa omaan tiedostoonsa,myös frontendissä esim komponentit/routes yms
 //routet käytännössä linkkejä, esim myynti haetaan hakemistosta, ja nimetään. käytetään sitten routessa elementtinä.
@@ -33,7 +33,7 @@ const Layout = ({ children }) => {
           <ul>
             <li><a href="/">Kotisivu</a></li>
             <li><a href="/myynti">Myynti</a></li>
-            <li><a href="/Chat">Chat</a></li>
+            <li><a href="/Viestit">Viestit  </a></li>
             <li><a href='/rekisteröidy'>rekisteröidy</a></li>
             
             </ul>
@@ -60,7 +60,7 @@ const Layout = ({ children }) => {
             <Route path="/users/:_id" element={<UserPage />} />
             <Route path="/tuotteet/:productId" element={<ProductPage />} />
             <Route path="*" element={<Eiloyda />} />
-            <Route path="/Chat" element={<Chat />} />
+            <Route path="/Viestit" element={<Viestit />} />
             <Route path="/rekisteröidy" element={<Register />} />
           </Routes>
         </Layout>
