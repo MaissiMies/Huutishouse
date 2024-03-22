@@ -1,3 +1,5 @@
+// frontend/src/sivut/rekistrointisivu.js
+
 import React, { useState } from 'react';
 import axios from 'axios';
 
@@ -6,19 +8,38 @@ const Register = () => {
   const [salasana, setSalasana] = useState('');
   const [sposti, setSposti] = useState('');
   const [puhnum, setPuhnum] = useState('');
+  const [registrationSuccess, setRegistrationSuccess] = useState(false);
+  const [errorMessage, setErrorMessage] = useState('');
 
   const handleRegister = async () => {
     try {
-      await axios.post('/api/register', { nimi, salasana, sposti, puhnum });
-      console.log('User registered successfully');
+      const response = await axios.post('/api/register', { nimi, salasana, sposti, puhnum });
+      console.log(response.data);
+      setRegistrationSuccess(true);
+      setErrorMessage('');
+      setNimi('');
+      setSalasana('');
+      setSposti('');
+      setPuhnum('');
+      setTimeout(() => {
+        window.location.href = '/';
+      }, 5000);
     } catch (error) {
       console.error('Error registering user:', error);
+      setRegistrationSuccess(false);
+      setErrorMessage(error.response.data);
     }
   };
 
   return (
     <div style={styles.container}>
       <h1 style={styles.title}>User Registration</h1>
+      {registrationSuccess && (
+        <p style={styles.successMessage}>Registration successful! You will be redirected to the homepage shortly.</p>
+      )}
+      {errorMessage && (
+        <p style={styles.errorMessage}>{errorMessage}</p>
+      )}
       <input
         type="text"
         placeholder="Username"
@@ -78,6 +99,16 @@ const styles = {
     border: 'none',
     borderRadius: '5px',
     cursor: 'pointer',
+    fontSize: '16px',
+  },
+  successMessage: {
+    marginBottom: '10px',
+    color: 'green',
+    fontSize: '16px',
+  },
+  errorMessage: {
+    marginBottom: '10px',
+    color: 'red',
     fontSize: '16px',
   },
 };

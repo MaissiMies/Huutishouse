@@ -152,16 +152,27 @@ router.put('/users/:id', async (req, res) => {
     res.status(500).send('Internal Server Error');
   }
 });
+
+
 router.post('/api/register', async (req, res) => {
   try {
-    const kayttajat = schemat.Kayttaja
     const { nimi, salasana, sposti, puhnum } = req.body;
+    
+    // Tarkista, onko sähköpostiosoite jo käytössä
+    const existingUser = await schemat.Kayttaja.findOne({ sposti });
+    if (existingUser) {
+      return res.status(400).send('Sähköpostiosoite on jo rekisteröity.');
+    }
+    
+    // Luo uusi käyttäjä
     const hashedPassword = await bcrypt.hash(salasana, 10);
-    const user = new kayttajat({ nimi, salasana: hashedPassword, sposti, puhnum });
-    await user.save();
-    res.status(201).send('User registered successfully');
+    const newUser = new schemat.Kayttaja({ nimi, salasana: hashedPassword, sposti, puhnum });
+    await newUser.save();
+
+    res.status(201).send('Käyttäjä rekisteröityi onnistuneesti.');
   } catch (error) {
-    res.status(500).send('Error registering user');
+    console.error('Virhe rekisteröidessä käyttäjää:', error);
+    res.status(500).send('Rekisteröinti epäonnistui.');
   }
 });
 
