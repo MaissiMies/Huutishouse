@@ -37,16 +37,26 @@ const ViestiSchema = new mongoose.Schema({
       default: Date.now
     }
   });
+
+  const conversationSchema = new mongoose.Schema({
+    participants: [{ type: Schema.Types.ObjectId, ref: 'User' }], // Reference to User model
+    messages: [{
+      sender: { type: Schema.Types.ObjectId, ref: 'User' }, // Reference to User model
+      text: String,
+    }]
+  });
   
 // Luo Viesti-malli tietokantataululle
 const Viesti = mongoose.model('Viesti', ViestiSchema, 'viestit');
 const Kayttaja = mongoose.model('Kayttaja', kayttajatSchema, 'kayttajat');
 const Tuote = mongoose.model('Tuote', tuoteSchema, 'tuotteet');
 const Kategoria = mongoose.model('Kategoria', kategoriaSchema, 'kategoriat');
+const Keskustelu = mongoose.model("Keskustelu", conversationSchema, 'keskustelut')
 
 module.exports = {
     Kayttaja,
     Tuote,
     Kategoria,
-    Viesti
+    Viesti,
+    Keskustelu
 };
