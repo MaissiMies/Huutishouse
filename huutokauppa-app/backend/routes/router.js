@@ -287,6 +287,19 @@ router.post('/api/conversations/:conversationId/messages', async (req, res) => {
     res.status(500).json({ error: 'Internal server error' });
   }
 });
+router.get('/api/user/:userId/conversations', async (req, res) => {
+  const { userId } = req.params;
+
+  try {
+    // Find all conversations where the user's ID appears in the participants array
+    const conversations = await Conversation.find({ participants: userId });
+
+    res.status(200).json(conversations);
+  } catch (error) {
+    console.error('Error finding conversations:', error);
+    res.status(500).json({ error: 'Internal server error' });
+  }
+});
 
 //haku function
 router.get(' ', (req, res) => {
