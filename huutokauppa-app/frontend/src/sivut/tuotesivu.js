@@ -1,12 +1,12 @@
 import React, { useState, useEffect, useContext } from 'react';
 import { useParams } from 'react-router-dom';
 import axios from 'axios';
-import UserContext from '../Komponentit/kayttajacontext';
+import { useAuth } from '../Komponentit/kayttajacontext';
 
 
 
 function ProductPage() {
-  const user = useContext(UserContext)
+  const { user, login, logout } = useAuth();
   const { productId } = useParams();
   const [productData, setProductData] = useState(null);
   const [updatedProductData, setUpdatedProductData] = useState(null);
@@ -46,9 +46,10 @@ function ProductPage() {
     
   };
   const handleHuutoUpdate = async () =>{
-    setHuutoData({...HuutoData, kayttajaid : user.user.objectId});
+    setHuutoData({...HuutoData, kayttajaid : user.objectId});
     console.log("user", user);
     console.log("Huutodata", HuutoData);
+    setHuutoData({...HuutoData, kayttajaid : user.objectId});
     try{
       const response = await axios.post(`http://localhost:3001/tuotteet/${productId}/huudot`, HuutoData)
       console.log('Product data updated successfully:', response.data);
@@ -105,7 +106,7 @@ function ProductPage() {
       type="text"
       placeholder="huuto hinta"
       value={HuutoData?.huuto || ''}
-      onChange={(e) => setHuutoData({ ...HuutoData, huuto: e.target.value })}
+      onChange={(e) => setHuutoData({ ...HuutoData, huuto: e.target.value, kayttajaid : user.objectId })}
     />
     <button onClick={handleHuutoUpdate} >Huuda</button>
     </div>
