@@ -250,27 +250,14 @@ router.post('/api/conversations', async (req, res) => {
   const { participants } = req.body;
 
   try {
-    /* Jos tarvitsee luoda keskustelu Tässä Front end Koodi
-    -----------------------------------------------------------------------------------------------------
-    async function createConversation(participants) {
-  try {
-    const response = await axios.post('/api/conversations', {
-      participants
-    });
-    console.log('New conversation created:', response.data);
-    return response.data; // Return the created conversation
-  } catch (error) {
-    console.error('Error creating conversation:', error.response.data.error);
-    throw error; // Propagate the error
-  }
-}
--------------------------------------------------------------------------------------------------------------------------
-    */
+   
+
     // Create a new conversation document
     const Conversation = schemat.Keskustelu
     const newConversation = new Conversation({
       participants,
-      messages: [] // Initially empty
+      messages:[] // This ensures an empty array by default
+      
     });
 
     // Save the new conversation document to the database
@@ -279,7 +266,7 @@ router.post('/api/conversations', async (req, res) => {
     res.status(201).json(savedConversation);
   } catch (error) {
     console.error('Error creating conversation:', error);
-    res.status(500).json({ error: 'Internal server error' });
+    res.status(500).json({ error: error.message });
   }
 });
 router.post('/api/conversations/:conversationId/messages', async (req, res) => {

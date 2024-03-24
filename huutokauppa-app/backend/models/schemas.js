@@ -50,7 +50,7 @@ const ViestiSchema = new mongoose.Schema({
   });
 
   const conversationSchema = new mongoose.Schema({
-    participants: [{ type: Schema.Types.ObjectId, ref: 'kayttajaschema' }], // Reference to User model
+    participants: [], // Reference to User model
     messages: [{
       sender: { type: Schema.Types.ObjectId, ref: 'kayttajaschema' }, // Reference to User model
       text: String,

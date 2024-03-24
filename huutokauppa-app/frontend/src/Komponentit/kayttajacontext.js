@@ -1,19 +1,26 @@
-import React, { createContext, useState, useContext } from 'react';
+import React, { createContext, useState, useContext, useEffect } from 'react';
 
 const UserContext = createContext();
 
 export const UserProvider = ({ children }) => {
-  const [user, setUser] = useState([]);
+  const [user, setUser] = useState(null);
+
+  useEffect(() => {
+    // Check local storage for user data on component mount
+    const storedUser = localStorage.getItem('user');
+    if (storedUser) {
+      setUser(JSON.parse(storedUser));
+    }
+  }, []);
 
   const login = (userData) => {
     setUser(userData);
-    // You can also store user data in localStorage or sessionStorage for persistence
-    // localStorage.setItem('user', JSON.stringify(userData));
+    localStorage.setItem('user', JSON.stringify(userData));
   };
 
   const logout = () => {
     setUser(null);
-    // localStorage.removeItem('user');
+    localStorage.removeItem('user');
   };
 
   return (
@@ -23,6 +30,6 @@ export const UserProvider = ({ children }) => {
   );
 };
 
-export const useAuth = () => useContext(UserContext); // Custom hook to access authentication context
+export const useAuth = () => useContext(UserContext);
 
 export default UserContext;
