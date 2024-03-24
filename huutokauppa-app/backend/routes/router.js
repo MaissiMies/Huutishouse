@@ -25,7 +25,7 @@ const io = require('socket.io')();
 
 //ottaa vastaan myynti sivun sumbitit, ja lähettää databaseen
 router.post('/myynti', upload.single('kuva'), async (req, res) => {
-  const { kayttajaid, nimi, lahtohinta, hintavaraus } = req.body;
+  const { kayttajaid, nimi, lahtohinta, endingTime, hintavaraus } = req.body;
 
   try {
     const kuvaPath = req.file.path;
@@ -35,6 +35,7 @@ router.post('/myynti', upload.single('kuva'), async (req, res) => {
       nimi,
       lahtohinta,
       hintavaraus,
+      endingTime,
       kuva: kuvaPath,
       huudot: {
         type: Array,
@@ -102,6 +103,8 @@ router.put('/tuotteet/:_id', async (req, res) => {
     res.status(500).send('Internal Server Error');
   }
 });
+
+
 router.post('/tuotteet/:_id/huudot', async (req, res) => {
   const productId = req.params._id;
   const huuto = req.body
@@ -110,6 +113,11 @@ router.post('/tuotteet/:_id/huudot', async (req, res) => {
     if (!product) {
       return res.status(404).json({ error: 'product not found' });
     }
+
+    // Tarkista, onko huutokauppa päättynyt
+    if (new Date() > new Date(product.endingTime)) {
+      return res.status(400).json({ error: 'Huutokauppa on jo päättynyt' });
+    }    
 
     // Construct the new message object
     const newhuuto = {

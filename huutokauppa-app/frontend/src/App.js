@@ -34,7 +34,7 @@ const Layout = ({ children }) => {
             <li><a href="/">Kotisivu</a></li>
             <li><a href="/myynti">Myynti</a></li>
             <li><a href="/Viestit">Viestit  </a></li>
-            <li><a href='/rekisteröidy'>rekisteröidy</a></li>
+            <li><a href='/rekisteröidy'>Rekisteröidy</a></li>
             
             </ul>
            <KategoriaUL/>

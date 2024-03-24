@@ -12,26 +12,20 @@ const kayttajatSchema = new Schema({
 });
 
 const tuoteSchema = new Schema({
-    kayttajaid: { type: String, required: true },
-    nimi: { type: String, required: true },
-    lahtohinta: { type: Number, required: true },
-    hintavaraus: { type: Number },
-    kuva: { type: String },
-    
-    huudot:[{
-      kayttajaid :String,
-      huuto : String,
-      timestamp: {type: Date, default: Date.now}
-    }
-    ],
-    createdAt: {
-      type: Date,
-      default: Date.now
-    },
-    endingTime: Date
-  }, {
-    timestamps: true
-  
+  kayttajaid: { type: String, required: true },
+  nimi: { type: String, required: true },
+  lahtohinta: { type: Number, required: true },
+  hintavaraus: { type: Number },
+  kuva: { type: String },
+  huudot: [{
+    kayttajaid: String,
+    huuto: String,
+    timestamp: { type: Date, default: Date.now }
+  }],
+  createdAt: { type: Date, default: Date.now },
+  endingTime: { type: Date, required: true } // Lisätty endingTime-kenttä
+}, {
+  timestamps: true
 });
 
 const kategoriaSchema = new Schema({

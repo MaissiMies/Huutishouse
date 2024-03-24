@@ -2,6 +2,11 @@ import React, { useState } from 'react';
 import './Viestit.css'; // Tuodaan tyylitiedosto
 
 const SaapuneetViestit = () => {
+
+  const [selectedThread, setSelectedThread] = useState(null);
+  const [replyText, setReplyText] = useState('');
+  const [replying, setReplying] = useState(false); // Seurataan, onko vastaamassa
+  
   const [viestiketjut, setViestiketjut] = useState([
     // Kovakoodatut viestiketjut
     {
@@ -30,9 +35,8 @@ const SaapuneetViestit = () => {
       }
   ]);
 
-  const [selectedThread, setSelectedThread] = useState(null);
-  const [replyText, setReplyText] = useState('');
-  const [replying, setReplying] = useState(false); // Seurataan, onko vastaamassa
+
+  
 
   const handleThreadClick = (threadId) => {
     setSelectedThread(threadId === selectedThread ? null : threadId);
