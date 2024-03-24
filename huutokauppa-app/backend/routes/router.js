@@ -113,9 +113,9 @@ router.post('/tuotteet/:_id/huudot', async (req, res) => {
 
     // Construct the new message object
     const newhuuto = {
-      kayttajaid: senderId,
-      huuto: huuto,
-      timestamp: new Date()
+      kayttajaid: huuto.kayttajaid,
+      huuto: huuto.huuto,
+      
     };
 
     // Update the messages array in the conversation document
@@ -127,7 +127,7 @@ router.post('/tuotteet/:_id/huudot', async (req, res) => {
     res.status(200).json({ message: 'huuto added to conversation' });
   } catch (error) {
     console.error('Error adding huuto to tuote:', error);
-    res.status(500).json({ error: 'Internal server error' });
+    res.status(500).json({ error:  error.message });
   }
   
 

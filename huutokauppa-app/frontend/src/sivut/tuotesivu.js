@@ -1,14 +1,18 @@
-import React, { useState, useEffect } from 'react';
+import React, { useState, useEffect, useContext } from 'react';
 import { useParams } from 'react-router-dom';
 import axios from 'axios';
+import UserContext from '../Komponentit/kayttajacontext';
+
 
 
 function ProductPage() {
+  const user = useContext(UserContext)
   const { productId } = useParams();
   const [productData, setProductData] = useState(null);
   const [updatedProductData, setUpdatedProductData] = useState(null);
   const [HuutoData, setHuutoData] = useState([]);
   const [iseditable, setiseditable] = useState(false);
+ 
 
   useEffect(() => {
     const fetchProductData = async () => {
@@ -39,7 +43,20 @@ function ProductPage() {
     } catch (error) {
       console.error('Error updating product data:', error);
     }
+    
   };
+  const handleHuutoUpdate = async () =>{
+    setHuutoData({...HuutoData, kayttajaid : user.user.objectId});
+    console.log("user", user);
+    console.log("Huutodata", HuutoData);
+    try{
+      const response = await axios.post(`http://localhost:3001/tuotteet/${productId}/huudot`, HuutoData)
+      console.log('Product data updated successfully:', response.data);
+
+    }catch(error){
+      console.error('Error updating product data:', error);
+    }
+  }
   if (!productData) {
     return <div>Loading...</div>;
   }
@@ -90,6 +107,7 @@ function ProductPage() {
       value={HuutoData?.huuto || ''}
       onChange={(e) => setHuutoData({ ...HuutoData, huuto: e.target.value })}
     />
+    <button onClick={handleHuutoUpdate} >Huuda</button>
     </div>
   </div>
   );

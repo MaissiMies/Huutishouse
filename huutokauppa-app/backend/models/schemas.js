@@ -21,7 +21,7 @@ const tuoteSchema = new Schema({
     huudot:[{
       kayttajaid :String,
       huuto : String,
-      timestamp: Date
+      timestamp: {type: Date, default: Date.now}
     }
     ],
     createdAt: {
