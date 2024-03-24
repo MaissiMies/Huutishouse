@@ -2,19 +2,36 @@ const mongoose = require('mongoose');
 const Schema = mongoose.Schema;
 
 const kayttajatSchema = new Schema({
-    //_id: { type: String },
+  
     nimi: { type: String },
     puhnum: { type: String },
     sposti: { type: String },
     salasana: { type: String },
-    //adminoikeudet: { type: Boolean, default: false }
+    
+    
 });
 
 const tuoteSchema = new Schema({
+    kayttajaid: { type: String, required: true },
     nimi: { type: String, required: true },
     lahtohinta: { type: Number, required: true },
     hintavaraus: { type: Number },
-    kuva: { type: String }
+    kuva: { type: String },
+    
+    huudot:[{
+      kayttajaid :String,
+      huuto : String,
+      timestamp: Date
+    }
+    ],
+    createdAt: {
+      type: Date,
+      default: Date.now
+    },
+    endingTime: Date
+  }, {
+    timestamps: true
+  
 });
 
 const kategoriaSchema = new Schema({
@@ -39,9 +56,9 @@ const ViestiSchema = new mongoose.Schema({
   });
 
   const conversationSchema = new mongoose.Schema({
-    participants: [{ type: Schema.Types.ObjectId, ref: 'User' }], // Reference to User model
+    participants: [{ type: Schema.Types.ObjectId, ref: 'kayttajaschema' }], // Reference to User model
     messages: [{
-      sender: { type: Schema.Types.ObjectId, ref: 'User' }, // Reference to User model
+      sender: { type: Schema.Types.ObjectId, ref: 'kayttajaschema' }, // Reference to User model
       text: String,
     }]
   });

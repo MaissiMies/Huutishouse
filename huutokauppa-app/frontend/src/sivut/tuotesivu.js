@@ -7,6 +7,7 @@ function ProductPage() {
   const { productId } = useParams();
   const [productData, setProductData] = useState(null);
   const [updatedProductData, setUpdatedProductData] = useState(null);
+  const [HuutoData, setHuutoData] = useState([]);
   const [iseditable, setiseditable] = useState(false);
 
   useEffect(() => {
@@ -82,6 +83,14 @@ function ProductPage() {
     <button onClick={handleUpdateProductData} >Päivitä</button>
     </>
     )}
+    <div>
+    <input
+      type="text"
+      placeholder="huuto hinta"
+      value={HuutoData?.huuto || ''}
+      onChange={(e) => setHuutoData({ ...HuutoData, huuto: e.target.value })}
+    />
+    </div>
   </div>
   );
 };

@@ -23,13 +23,14 @@ function Header(){
 
       const response = await axios.post('/api/login', { nimi, salasana });
       console.log('Login successful');
+      console.log(response.data)
       setUserData(response.data)
       setUserData(prevData =>({
         ...prevData, // Spread existing JSON data
         nimi: nimi
       }))
       login(userData);
-      console.log(userData)
+      console.log(userData, "tämä")
     } catch (error) {
       console.error('Error logging in:', error);
     }

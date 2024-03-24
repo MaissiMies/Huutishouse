@@ -1,10 +1,11 @@
-import React, { useState, useEffect } from 'react';
+import React, { useState, useEffect, useContext } from 'react';
 import { Link } from 'react-router-dom';
+import UserContext from '../Komponentit/kayttajacontext';
 import axios from "axios"
 import '../App.css'
 
 function Myynti(){
-
+  const user = useContext(UserContext)
   const [nimi, setNimi] = useState('')
   const [lahtohinta, setLahtohinta] = useState('')
   const [hintavaraus, setHintavaraus] = useState('')
@@ -12,7 +13,9 @@ function Myynti(){
     
     //tälle pitäisi koodata oikeat error ja response lauseet
     const axiosPostData = async () => {
+      console.log("kayttajadata", user)
       const formData = new FormData();
+      formData.append('kayttajaid', user.user.objectId);
       formData.append('nimi', nimi);
       formData.append('lahtohinta', lahtohinta);
       formData.append('hintavaraus', hintavaraus);
@@ -131,7 +134,7 @@ function Myynti(){
 
       <div className="product-list">
   {products.map(product => (
-    <Link key={product.productId} to={`/tuotteet/${product.productId}`} onClick={() => window.scrollTo(0, 0)}>
+    <Link key={product.id} to={`/tuotteet/${product._id}`} onClick={() => window.scrollTo(0, 0)}>
       <Product 
         key={product.productId} 
         nimi={product.nimi} 

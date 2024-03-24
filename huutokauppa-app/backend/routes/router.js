@@ -25,16 +25,21 @@ const io = require('socket.io')();
 
 //ottaa vastaan myynti sivun sumbitit, ja lähettää databaseen
 router.post('/myynti', upload.single('kuva'), async (req, res) => {
-  const { nimi, lahtohinta, hintavaraus } = req.body;
+  const { kayttajaid, nimi, lahtohinta, hintavaraus } = req.body;
 
   try {
     const kuvaPath = req.file.path;
 
     const newTuote = new schemat.Tuote({
+      kayttajaid,
       nimi,
       lahtohinta,
       hintavaraus,
       kuva: kuvaPath,
+      huudot: {
+        type: Array,
+        default: [] // This ensures an empty array by default
+      }
     });
 
     await newTuote.save();
@@ -62,11 +67,11 @@ router.get('/tuotteet', async (req, res) => {
   }
 });
 
-router.get('/tuotteet/:productId', async (req, res) => {
+router.get('/tuotteet/:_id', async (req, res) => {
   try {
     const tuotteet = schemat.Tuote;
-    const tuoteId = parseInt(req.params.productId);
-    const product = await tuotteet.findOne({ productId: tuoteId });
+    const tuoteId = req.params._id;
+    const product = await tuotteet.findOne({ _id:tuoteId});
     if (!product) {
       return res.status(404).json({ error: 'Product not found' });
     }
@@ -77,12 +82,12 @@ router.get('/tuotteet/:productId', async (req, res) => {
   }  
 });
 
-router.put('/tuotteet/:productId', async (req, res) => {
-  const productId = parseInt(req.params.productId);
+router.put('/tuotteet/:_id', async (req, res) => {
+  const productId = req.params._id;
   const updatedProductData = req.body;
   try {
     const product = await schemat.Tuote.findOneAndUpdate(
-      { productId: productId },
+      { _id:productId },
       updatedProductData,
       { new: true }
     );
@@ -97,12 +102,42 @@ router.put('/tuotteet/:productId', async (req, res) => {
     res.status(500).send('Internal Server Error');
   }
 });
+router.post('/tuotteet/:_id/huudot', async (req, res) => {
+  const productId = req.params._id;
+  const huuto = req.body
+  try{
+    const product = await schemat.Tuote.findOne({ _id : productId})
+    if (!product) {
+      return res.status(404).json({ error: 'product not found' });
+    }
+
+    // Construct the new message object
+    const newhuuto = {
+      kayttajaid: senderId,
+      huuto: huuto,
+      timestamp: new Date()
+    };
+
+    // Update the messages array in the conversation document
+    product.huudot.push(newhuuto);
+
+    // Save the updated conversation document back to the database
+    await product.save();
+
+    res.status(200).json({ message: 'huuto added to conversation' });
+  } catch (error) {
+    console.error('Error adding huuto to tuote:', error);
+    res.status(500).json({ error: 'Internal server error' });
+  }
+  
+
+});
 router.get('/kategoriat', async (req, res) => {
   try {
     const kategoriat = schemat.Kategoria
     const Kategoria = await kategoriat.find();
     res.json(Kategoria);
-
+    
   } catch (err) {
     res.status(500).json({ message: err.message });
   }
@@ -133,11 +168,11 @@ router.get('/users/:_id', async (req, res) => {
 });
 
 router.put('/users/:id', async (req, res) => {
-  const id = parseInt(req.params.id);
+  const id = (req.params.id);
   const updatedUserData = req.body;
   try {
-    const user = await schemat.Kayttaja.findOneAndUpdate(
-      { id: id }, // Find user by id
+    const user = await schemat.Kayttaja.findByIdAndUpdate(
+      { id }, // Find user by id
       updatedUserData, // Updated user data
       { new: true } // Return the modified user
     );
