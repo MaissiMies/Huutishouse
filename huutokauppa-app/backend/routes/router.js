@@ -81,7 +81,40 @@ router.get('/palauteviesti', async (req, res) => {
   }
 });
 
+router.get('/recenttuotteet', async (req, res) => {
+  try {
+    const tuotteet = schemat.Tuote;
 
+    const threeDaysAgo = new Date();
+    threeDaysAgo.setDate(threeDaysAgo.getDate() - 3); // Get date 3 days ago
+
+    // Fetch items added in the past 3 days
+    const recentTuotteet = await tuotteet.find({ createdAt: { $gte: threeDaysAgo } });
+
+    res.json(recentTuotteet);
+  } catch (error) {
+    console.error('Error fetching recent items:', error);
+    res.status(500).json({ error: 'Internal server error' });
+  }
+});
+
+
+///HAKUKENTÄN ROUTER, EI TOIMINNASSA
+router.get('/tuotteet/:nimi', async (req, res) => {
+  try {
+    const tuotteet = schemat.Tuote;
+    const tuotenimi = req.params.nimi;
+
+    const product = await tuotteet.findOne({ nimi:tuotenimi});
+    if (!product) {
+      return res.status(404).json({ error: 'Product not found' });
+    }
+    res.json(product);
+  } catch (error) {
+    console.error('Error fetching product data:', error);
+    res.status(500).json({ error: 'Internal server error' });
+  } 
+});
 
 
 // GET /tuotteet/:kategoria - Hakee tuotteet tietyltä kategorialta
