@@ -12,6 +12,8 @@ function Myynti(){
   const [kuva, setKuva] = useState('');
   const [aika, setAika] = useState('');
   const [endingTime, setEndingTime] = useState('');
+  const [selectedKategoria, setSelectedKategoria] = useState('');
+  const [kategoriat, setKategoriat] = useState([]);
 
   const axiosPostData = async () => {
     const formData = new FormData();
@@ -66,6 +68,19 @@ function Myynti(){
 
     return timeLeft;
   };
+  useEffect(() => {
+    const fetchData = async () => {
+      try {
+        const response = await axios.get('http://localhost:3001/kategoriat');
+        setKategoriat(response.data);
+        console.log(kategoriat,"tämä")
+      } catch (error) {
+        console.error('Error fetching data:', error);
+      }
+    };
+
+    fetchData();
+  }, []);
 
   useEffect(() => {
     const timer = setTimeout(() => {
@@ -93,6 +108,9 @@ function Myynti(){
     fetchData();
   }, []);
 
+  const handleSelectChange = (event) => {
+    setSelectedKategoria(event.target.value);
+  }
   return (
     <div className="myynti-container">
       <h1>Laita uusi tuote myyntiin</h1>
@@ -149,6 +167,16 @@ function Myynti(){
         <button type="submit">Submit</button>
       </form>
       <br/>
+      <label htmlFor="kategoria">Valitse:
+              <select id="kategoria" value={selectedKategoria} onChange={handleSelectChange}>
+                <option value="">Valitse...</option>
+                {kategoriat.map((kategoria) => (
+                  <option key={kategoria._id} value={kategoria.selite}>
+                    {kategoria.selite}
+                  </option>
+                ))}
+              </select>
+            </label>
       <br/>
       <div className="product-list">
         {products.map(product => (

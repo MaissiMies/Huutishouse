@@ -1,6 +1,7 @@
 import React, { useState, useEffect } from 'react';
 import { Link } from 'react-router-dom';
 import axios from 'axios';
+import { KayttajaUL } from '../Komponentit/KayttajaList';
 import '../App.css';
 
 function Kotisivu() {
@@ -65,6 +66,7 @@ function Kotisivu() {
         </div>
         ))}
       </div>
+      <KayttajaUL/>
     </div>
   );
 }
