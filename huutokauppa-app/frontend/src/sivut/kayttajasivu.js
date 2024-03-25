@@ -162,7 +162,10 @@ function UserPage() {
       <p>Puhelinnumero: {userData.puhnum}</p>
       <p>Sähköposti: {userData.sposti}</p>
       <p>Käyttäjänimi: {userData.kayttajatunnus}</p>
-      <button onClick={handlePrivilegeCheck} style={styles.button}>
+      
+       {access ? (
+        <>
+        <button onClick={handlePrivilegeCheck} style={styles.button}>
         {isEditable ? "Takaisin" : "Päivitä"}
       </button>
       
@@ -212,8 +215,6 @@ function UserPage() {
           <button onClick={handleUpdateUserData} style={styles.button}>Päivitä</button>
         </>
       )}
-       {access ? (
-        <>
           <h1>Laita uusi tuote myyntiin</h1>
           <form onSubmit={handleSubmit} encType="multipart/form-data" className="add-product-form">
             <label>
