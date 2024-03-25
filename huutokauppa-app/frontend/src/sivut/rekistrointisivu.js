@@ -33,7 +33,7 @@ const Register = () => {
 
   return (
     <div style={styles.container}>
-      <h1 style={styles.title}>User Registration</h1>
+      <h1 style={styles.title}>Käyttäjän rekisteröityminen</h1>
       {registrationSuccess && (
         <p style={styles.successMessage}>Registration successful! You will be redirected to the homepage shortly.</p>
       )}
@@ -42,33 +42,33 @@ const Register = () => {
       )}
       <input
         type="text"
-        placeholder="Username"
+        placeholder="Nimi"
         value={nimi}
         onChange={(e) => setNimi(e.target.value)}
         style={styles.input}
       />
       <input
         type="password"
-        placeholder="Password"
+        placeholder="Salasana"
         value={salasana}
         onChange={(e) => setSalasana(e.target.value)}
         style={styles.input}
       />
       <input
         type="text"
-        placeholder="Email"
+        placeholder="Sähköposti"
         value={sposti}
         onChange={(e) => setSposti(e.target.value)}
         style={styles.input}
       />
       <input
         type="text"
-        placeholder="Phone number"
+        placeholder="Puhelinnumero"
         value={puhnum}
         onChange={(e) => setPuhnum(e.target.value)}
         style={styles.input}
       />
-      <button onClick={handleRegister} style={styles.button}>Register</button>
+      <button onClick={handleRegister} style={styles.button}>Rekisteröi</button>
     </div>
   );
 };

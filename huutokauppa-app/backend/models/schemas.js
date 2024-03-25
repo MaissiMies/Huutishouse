@@ -14,6 +14,7 @@ const kayttajatSchema = new Schema({
 const tuoteSchema = new Schema({
   kayttajaid: { type: String, required: true },
   nimi: { type: String, required: true },
+  kategoria: {type : String},
   lahtohinta: { type: Number, required: true },
   hintavaraus: { type: Number },
   kuva: { type: String },

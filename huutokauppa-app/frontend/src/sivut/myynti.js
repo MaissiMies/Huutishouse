@@ -12,11 +12,14 @@ function Myynti(){
   const [kuva, setKuva] = useState('');
   const [aika, setAika] = useState('');
   const [products, setProducts] = useState([]);
+  const [kategoriat, setKategoriat] = useState([]);
+  const [selectedKategoria, setSelectedKategoria] = useState('');
 
   const axiosPostData = async () => {
     const formData = new FormData();
     formData.append('kayttajaid', user.user.objectId);
     formData.append('nimi', nimi);
+    formData.append('kategoria', selectedKategoria);
     formData.append('lahtohinta', lahtohinta);
     formData.append('hintavaraus', hintavaraus);
     formData.append('kuva', kuva);
@@ -33,6 +36,27 @@ function Myynti(){
       console.log(error);
     }
   };
+
+
+  
+
+  useEffect(() => {
+    const fetchData = async () => {
+      try {
+        const response = await axios.get('http://localhost:3001/kategoriat');
+        setKategoriat(response.data);
+        console.log(kategoriat,"tämä")
+      } catch (error) {
+        console.error('Error fetching data:', error);
+      }
+    };
+
+    fetchData();
+  }, []);
+  
+  const handleSelectChange = (event) => {
+    setSelectedKategoria(event.target.value);
+  }
 
   const handleSubmit = (e) => {
     e.preventDefault();
@@ -66,6 +90,7 @@ function Myynti(){
     return (
       <div className="product">
         <h3>{nimi}</h3>
+        
         <p>Lähtöhinta: {lahtohinta}€</p>
         <p>Hintavaraus: {hintavaraus}€</p>
         <p>Aika jäljellä: {timeLeft.days} päivää, {timeLeft.hours} tuntia, {timeLeft.minutes} minuuttia, {timeLeft.seconds} sekuntia</p>
@@ -139,6 +164,17 @@ function Myynti(){
             id="kuva"
             onChange={(e) => setKuva(e.target.files[0])}
           />
+          
+      <label htmlFor="kategoria">Choose a category:
+      <select id="kategoria" value={selectedKategoria} onChange={handleSelectChange}>
+        <option value="">Select...</option>
+        {kategoriat.map((kategoria) => (
+          <option key={kategoria._id} value={kategoria.selite}>
+            {kategoria.selite}
+          </option>
+        ))}
+      </select>
+      </label>
         </label>
         <button type="submit">Submit</button>
       </form>
@@ -151,6 +187,7 @@ function Myynti(){
               key={product._id} 
               _id={product._id}
               nimi={product.nimi} 
+              kategoria={product.kategoria}
               lahtohinta={product.lahtohinta}
               hintavaraus={product.hintavaraus} 
               endingTime={product.endingTime} 
@@ -162,5 +199,6 @@ function Myynti(){
     </div>
   );
 };
+
 
 export default Myynti;
