@@ -51,6 +51,33 @@ router.post('/myynti', upload.single('kuva'), async (req, res) => {
   }
 });
 
+router.post('/palauteviesti', async (req, res) => {
+  const { nimi, viesti } = req.body;
+  try {
+    const palaute = schemat.Palaute({
+      nimi,
+      viesti
+    })
+    await palaute.save();
+    res.status(200).json({ message: 'Form submission successful' });
+  } catch (error) {
+    console.error('Error handling form submission:', error);
+    res.status(500).json({ error: 'Internal server error' });
+  }
+});
+
+router.get('/palauteviesti', async (req, res) => {
+  try {
+    const palautteet = schemat.Palaute;
+    const palaute = await palautteet.find();
+    res.json(palaute);
+    
+  } catch (error) {
+    console.error('Error fetching feedback messages:', error);
+    res.status(500).json({ error: 'Internal server error' });
+  }
+});
+
 router.get('/tuottet/:kategoria', async (req, res) => {
   try {
     const kategoriat = schemat.Kategoria;

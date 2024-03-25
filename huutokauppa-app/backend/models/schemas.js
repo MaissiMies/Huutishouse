@@ -32,7 +32,14 @@ const kategoriaSchema = new Schema({
     selite: { type: String, required: true }
 });
 
-
+const Palauteschema = new Schema ({
+nimi:{
+  type: String,
+  required: true 
+},
+  viesti:{type: String,
+  required: true}
+});
 // Määritellään viestin skeema
 const ViestiSchema = new mongoose.Schema({
     käyttäjänimi: {
@@ -58,6 +65,7 @@ const ViestiSchema = new mongoose.Schema({
   });
   
 // Luo Viesti-malli tietokantataululle
+const Palaute = mongoose.model('Palaute', Palauteschema, 'palautteet')
 const Viesti = mongoose.model('Viesti', ViestiSchema, 'viestit');
 const Kayttaja = mongoose.model('Kayttaja', kayttajatSchema, 'kayttajat');
 const Tuote = mongoose.model('Tuote', tuoteSchema, 'tuotteet');
@@ -69,5 +77,6 @@ module.exports = {
     Tuote,
     Kategoria,
     Viesti,
-    Keskustelu
+    Keskustelu,
+    Palaute
 };
