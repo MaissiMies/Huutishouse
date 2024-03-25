@@ -215,6 +215,7 @@ function UserPage() {
        {access ? (
         <>
           <h1>Laita uusi tuote myyntiin</h1>
+          
           <form onSubmit={handleSubmit} encType="multipart/form-data" className="add-product-form">
             <label>
               Nimi:
@@ -265,9 +266,9 @@ function UserPage() {
                 onChange={(e) => setKuva(e.target.files[0])}
               />
             </label>
-            <label htmlFor="kategoria">Choose a category:
+            <label htmlFor="kategoria">Valitse:
               <select id="kategoria" value={selectedKategoria} onChange={handleSelectChange}>
-                <option value="">Select...</option>
+                <option value="">Valitse...</option>
                 {kategoriat.map((kategoria) => (
                   <option key={kategoria._id} value={kategoria.selite}>
                     {kategoria.selite}
@@ -275,7 +276,7 @@ function UserPage() {
                 ))}
               </select>
             </label>
-            <button type="submit">Submit</button>
+            <button type="submit">Lisää tuote</button>
           </form>
         </>
       ) : (
