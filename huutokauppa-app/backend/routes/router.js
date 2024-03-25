@@ -23,6 +23,8 @@ const io = require('socket.io')();
 // res.end()
 // }
 
+
+
 //ottaa vastaan myynti sivun sumbitit, ja lähettää databaseen
 router.post('/myynti', upload.single('kuva'), async (req, res) => {
   const { kayttajaid, nimi, lahtohinta, endingTime, hintavaraus } = req.body;
@@ -51,7 +53,12 @@ router.post('/myynti', upload.single('kuva'), async (req, res) => {
   }
 });
 
+
+
+
+// GET /tuotteet/:kategoria - Hakee tuotteet tietyltä kategorialta
 router.get('/tuottet/:kategoria', async (req, res) => {
+  // Hae tuotteet annetulta kategorialta ja lähetä ne vastauksena
   try {
     const kategoriat = schemat.Kategoria;
     const valittukategoria = req.params.kategoria;
@@ -66,13 +73,23 @@ router.get('/tuottet/:kategoria', async (req, res) => {
   } 
 });
 
+
+
+
+
+// GET /uploads/:kuva - Palauttaa pyydetyt kuvat
 router.get('/uploads/:kuva', (req, res) => {
+  // Palauta pyydetty kuva
   const kuva = req.params.kuva;
   const filePath = path.join(__dirname, '../uploads', kuva);
   res.sendFile(filePath);
 });
 
+
+
+// GET /tuotteet - Hakee kaikki tuotteet
 router.get('/tuotteet', async (req, res) => {
+  // Hae kaikki tuotteet ja lähetä ne vastauksena
   try {
     const tuotteet = schemat.Tuote
     const products = await tuotteet.find();
@@ -83,7 +100,11 @@ router.get('/tuotteet', async (req, res) => {
   }
 });
 
+
+
+// GET /tuotteet/:_id - Hakee tietyn tuotteen
 router.get('/tuotteet/:_id', async (req, res) => {
+  // Hae tietty tuote id:n perusteella ja lähetä se vastauksena
   try {
     const tuotteet = schemat.Tuote;
     const tuoteId = req.params._id;
@@ -98,7 +119,11 @@ router.get('/tuotteet/:_id', async (req, res) => {
   }  
 });
 
+
+
+// PUT /tuotteet/:_id - Päivittää tietyn tuotteen tiedot
 router.put('/tuotteet/:_id', async (req, res) => {
+  // Päivitä tietyn tuotteen tiedot ja lähetä päivitetty tuote vastauksena
   const productId = req.params._id;
   const updatedProductData = req.body;
   try {
@@ -120,7 +145,10 @@ router.put('/tuotteet/:_id', async (req, res) => {
 });
 
 
+
+// POST /tuotteet/:_id/huudot - Lisää huudon tiettyyn tuotteeseen
 router.post('/tuotteet/:_id/huudot', async (req, res) => {
+  // Lisää huuto tiettyyn tuotteeseen ja lähetä vahvistus vastauksena
   const productId = req.params._id;
   const huuto = req.body
   try{
@@ -155,7 +183,12 @@ router.post('/tuotteet/:_id/huudot', async (req, res) => {
   
 
 });
+
+
+
+// GET /kategoriat - Hakee kaikki kategoriat
 router.get('/kategoriat', async (req, res) => {
+  // Hae kaikki kategoriat ja lähetä ne vastauksena
   try {
     const kategoriat = schemat.Kategoria
     const Kategoria = await kategoriat.find();
@@ -165,7 +198,13 @@ router.get('/kategoriat', async (req, res) => {
     res.status(500).json({ message: err.message });
   }
 });
+
+
+
+
+// GET /kayttajat - Hakee kaikki käyttäjät
 router.get('/kayttajat', async (req, res) => {
+  // Hae kaikki käyttäjät ja lähetä ne vastauksena
   try {
     const kayttajat = schemat.Kayttaja
     const Kayttaja = await kayttajat.find();
@@ -175,8 +214,13 @@ router.get('/kayttajat', async (req, res) => {
     res.status(500).json({ message: err.message });
   }
 });
+
+
+
+// GET /users/:_id - Hakee tietyn käyttäjän
 router.get('/users/:_id', async (req, res) => {
   try {
+  // Hae tietty käyttäjä id:n perusteella ja lähetä se vastauksena
     const kayttjat = schemat.Kayttaja;
     const userId = req.params._id;
     const user = await kayttjat.findOne({_id:userId});
@@ -190,7 +234,12 @@ router.get('/users/:_id', async (req, res) => {
   }
 });
 
+
+
+
+// PUT /users/:id - Päivittää tietyn käyttäjän tiedot
 router.put('/users/:id', async (req, res) => {
+  // Päivitä tietyn käyttäjän tiedot ja lähetä päivitetty käyttäjä vastauksena
   const id = (req.params.id);
   const updatedUserData = req.body;
   try {
@@ -212,7 +261,11 @@ router.put('/users/:id', async (req, res) => {
 });
 
 
+
+
+// POST /api/register - Rekisteröi uuden käyttäjän
 router.post('/api/register', async (req, res) => {
+  // Käsittele uuden käyttäjän rekisteröinti ja lähetä vastaus sen perusteella
   try {
     const { nimi, salasana, sposti, puhnum } = req.body;
     
@@ -235,7 +288,11 @@ router.post('/api/register', async (req, res) => {
 });
 
 
+
+
+// POST /api/login - Kirjaa käyttäjän sisään
 router.post('/api/login', async (req, res) => {
+  // Kirjaa käyttäjän sisään ja lähetä vastaus sen perusteella
   try {
     const { nimi, salasana } = req.body;
     const kayttajat = schemat.Kayttaja;
@@ -261,8 +318,14 @@ router.post('/api/login', async (req, res) => {
     res.status(500).send('Error logging in: ' + error.message);
   }
 });
+
+
+
+
+// POST /api/conversations - Luo uuden keskustelun
 router.post('/api/conversations', async (req, res) => {
   const { participants } = req.body;
+  // Luo uusi keskustelu ja lähetä vastaus sen perusteella
 
   try {
    
@@ -284,10 +347,16 @@ router.post('/api/conversations', async (req, res) => {
     res.status(500).json({ error: error.message });
   }
 });
+
+
+
+
+// POST /api/conversations/:conversationId/messages - Lisää uuden viestin keskusteluun
 router.post('/api/conversations/:conversationId/messages', async (req, res) => {
 
   const { conversationId } = req.params;
   const { senderId, messageText } = req.body;
+  // Lisää uusi viesti keskusteluun ja lähetä vahvistus vastauksena
 
   try {
     /*
@@ -332,8 +401,14 @@ router.post('/api/conversations/:conversationId/messages', async (req, res) => {
     res.status(500).json({ error: 'Internal server error' });
   }
 });
+
+
+
+
+// GET /api/user/:userId/conversations - Hakee käyttäjän kaikki keskustelut
 router.get('/api/user/:userId/conversations', async (req, res) => {
   const { userId } = req.params;
+  // Hae käyttäjän kaikki keskustelut ja lähetä ne vastauksena
 
   try {
     // Find all conversations where the user's ID appears in the participants array
@@ -343,6 +418,30 @@ router.get('/api/user/:userId/conversations', async (req, res) => {
   } catch (error) {
     console.error('Error finding conversations:', error);
     res.status(500).json({ error: 'Internal server error' });
+  }
+});
+
+
+
+
+// DELETE /users/:id - Poistaa tietyn käyttäjän
+
+router.delete('/users/:id', async (req, res) => {
+  const userId = req.params.id;
+  // Poista tietty käyttäjä ja lähetä vahvistus vastauksena
+
+  try {
+    // Etsi ja poista käyttäjä tietokannasta
+    const deletedUser = await schemat.Kayttaja.findByIdAndDelete(userId);
+
+    if (!deletedUser) {
+      return res.status(404).send('Käyttäjää ei löydetty');
+    }
+
+    res.status(200).send('Käyttäjä poistettu onnistuneesti');
+  } catch (error) {
+    console.error('Virhe käyttäjän poistossa:', error);
+    res.status(500).send('Internal Server Error');
   }
 });
 
