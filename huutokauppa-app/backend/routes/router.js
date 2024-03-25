@@ -244,8 +244,8 @@ router.put('/users/:id', async (req, res) => {
   const id = (req.params.id);
   const updatedUserData = req.body;
   try {
-    const user = await schemat.Kayttaja.findByIdAndUpdate(
-      { id }, // Find user by id
+    const user = await schemat.Kayttaja.findOneAndUpdate(
+      { _id:id }, // Find user by id
       updatedUserData, // Updated user data
       { new: true } // Return the modified user
     );
