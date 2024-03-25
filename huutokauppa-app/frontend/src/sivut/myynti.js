@@ -4,16 +4,16 @@ import UserContext from '../Komponentit/kayttajacontext';
 import axios from "axios";
 import '../App.css';
 
-function Myynti(){
+function Myynti() {
   const user = useContext(UserContext);
   const [nimi, setNimi] = useState('');
   const [lahtohinta, setLahtohinta] = useState('');
   const [hintavaraus, setHintavaraus] = useState('');
   const [kuva, setKuva] = useState('');
   const [aika, setAika] = useState('');
-  const [endingTime, setEndingTime] = useState('');
   const [selectedKategoria, setSelectedKategoria] = useState('');
   const [kategoriat, setKategoriat] = useState([]);
+  const [timeLeft, setTimeLeft] = useState({});
 
   const axiosPostData = async () => {
     const formData = new FormData();
@@ -46,15 +46,13 @@ function Myynti(){
       <h3>{nimi}</h3>
       <p>Lähtöhinta: {lahtohinta}€</p>
       <p>Hintavaraus: {hintavaraus}€</p>
-      <p>Aika: {new Date(endingTime).toLocaleString()}</p>
+      <p>Aika: {endingTime === 'Huutaminen päättynyt' ? endingTime : new Date(endingTime).toLocaleString()}</p>
       <img src={imageUrl} style={{ maxWidth: '100px', maxHeight: '100px' }} alt="Product" className="product-image" />
     </div>
   );
 
-  const [timeLeft, setTimeLeft] = useState({});
-
   const calculateTimeLeft = () => {
-    const difference = new Date(endingTime) - new Date();
+    const difference = new Date(aika) - new Date();
     let timeLeft = {};
 
     if (difference > 0) {
@@ -64,16 +62,18 @@ function Myynti(){
         minutes: Math.floor((difference / 1000 / 60) % 60),
         seconds: Math.floor((difference / 1000) % 60),
       };
+    } else {
+      timeLeft = 'Huutaminen päättynyt';
     }
 
     return timeLeft;
   };
+
   useEffect(() => {
     const fetchData = async () => {
       try {
         const response = await axios.get('http://localhost:3001/kategoriat');
         setKategoriat(response.data);
-        console.log(kategoriat,"tämä")
       } catch (error) {
         console.error('Error fetching data:', error);
       }
@@ -88,7 +88,7 @@ function Myynti(){
     }, 1000);
 
     return () => clearTimeout(timer);
-  }, [timeLeft, endingTime]);
+  }, [aika]);
 
   const [products, setProducts] = useState([]);
 
@@ -96,9 +96,6 @@ function Myynti(){
     try {
       const response = await axios.get('http://localhost:3001/tuotteet');
       setProducts(response.data);
-      response.data.forEach(product => {
-        setEndingTime(product.endingTime);
-      });
     } catch (error) {
       console.error('Error fetching products:', error);
     }
@@ -111,6 +108,7 @@ function Myynti(){
   const handleSelectChange = (event) => {
     setSelectedKategoria(event.target.value);
   }
+
   return (
     <div className="myynti-container">
       <h1>Laita uusi tuote myyntiin</h1>
@@ -164,20 +162,21 @@ function Myynti(){
             onChange={(e) => setKuva(e.target.files[0])}
           />
         </label>
+        <label htmlFor="kategoria">Valitse:
+          <select id="kategoria" value={selectedKategoria} onChange={handleSelectChange}>
+            <option value="">Valitse...</option>
+            {kategoriat.map((kategoria) => (
+              <option key={kategoria._id} value={kategoria.selite}>
+                {kategoria.selite}
+              </option>
+            ))}
+          </select>
+        </label>
+        <br />
         <button type="submit">Submit</button>
       </form>
-      <br/>
-      <label htmlFor="kategoria">Valitse:
-              <select id="kategoria" value={selectedKategoria} onChange={handleSelectChange}>
-                <option value="">Valitse...</option>
-                {kategoriat.map((kategoria) => (
-                  <option key={kategoria._id} value={kategoria.selite}>
-                    {kategoria.selite}
-                  </option>
-                ))}
-              </select>
-            </label>
-      <br/>
+      <br />
+
       <div className="product-list">
         {products.map(product => (
           <Link key={product._id} to={`/tuotteet/${product._id}`} onClick={() => window.scrollTo(0, 0)}>
@@ -197,3 +196,4 @@ function Myynti(){
 };
 
 export default Myynti;
+

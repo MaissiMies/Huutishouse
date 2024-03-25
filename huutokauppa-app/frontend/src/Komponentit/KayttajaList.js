@@ -70,6 +70,8 @@ export const KayttajaUL = () => {
 
   return (
     <div>
+      <br/>
+      
       {deleteSuccess && (
         <div style={style.successMessage}>
           Käyttäjä poistettu onnistuneesti.

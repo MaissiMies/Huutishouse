@@ -3,7 +3,7 @@ import { useParams } from 'react-router-dom';
 import axios from 'axios';
 import { useAuth } from '../Komponentit/kayttajacontext';
 
-function ProductPage() {
+const ProductPage = () => {
   const { productId } = useParams();
   const { user } = useAuth();
 
@@ -11,15 +11,14 @@ function ProductPage() {
   const [updatedProductData, setUpdatedProductData] = useState(null);
   const [HuutoData, setHuutoData] = useState([]);
   const [isEditable, setIsEditable] = useState(false);
-  const [buttonClicked, setButtonClicked] = useState(false); // Track if the button is clicked
+  const [buttonClicked, setButtonClicked] = useState(false);
 
   useEffect(() => {
     const fetchProductData = async () => {
       try {
-        console.log(productId)
         const response = await axios.get(`http://localhost:3001/tuotteet/${productId}`);
         setProductData(response.data);
-        setUpdatedProductData(response.data); // Initialize updatedProductData with existing data
+        setUpdatedProductData(response.data);
       } catch (error) {
         console.error('Error fetching product data:', error);
       }
@@ -48,13 +47,9 @@ function ProductPage() {
     
   const handleHuutoUpdate = async () =>{
     setHuutoData({...HuutoData, kayttajaid : user.objectId});
-    console.log("user", user);
-    console.log("Huutodata", HuutoData);
-    setHuutoData({...HuutoData, kayttajaid : user.objectId});
     try{
       const response = await axios.post(`http://localhost:3001/tuotteet/${productId}/huudot`, HuutoData)
       console.log('Product data updated successfully:', response.data);
-
     }catch(error){
       console.error('Error updating product data:', error);
     }
@@ -65,26 +60,27 @@ function ProductPage() {
   }
 
   return (
-    <div>
-      <h2>Tuotetiedot</h2>
-      <p>Nimi: {productData.nimi}</p>
-      <p>Lähtöhinta: {productData.lahtohinta}</p>
-      <p>Hintavaraus: {productData.hintavaraus}</p>
-      <p>Kuva:</p>
-      <p><img src={`http://localhost:3001/${productData.kuva}`} style={{ maxWidth: '400px', maxHeight: '400px' }} alt="Tuotekuva" /></p>
+    <div style={styles.container}>
+      <h2 style={styles.heading}>Tuotetiedot</h2>
+      <p style={styles.text}>Nimi: {productData.nimi}</p>
+      <p style={styles.text}>Lähtöhinta: {productData.lahtohinta}</p>
+      <p style={styles.text}>Hintavaraus: {productData.hintavaraus}</p>
+      <p style={styles.text}>Kuva:</p>
+      <p><img src={`http://localhost:3001/${productData.kuva}`} style={styles.image} alt="Tuotekuva" /></p>
 
-      <button onClick={handlePrivilegeCheck}>
+      <button onClick={handlePrivilegeCheck} style={styles.button}>
         {isEditable ? "Peruuta" : "Päivitä tuotteen tietoja"}
       </button>
       
       {isEditable && buttonClicked && (
         <>
-          <h3>Päivitä tuotteen tietoja</h3>
+          <h3 style={styles.subheading}>Päivitä tuotteen tietoja</h3>
           <input
             type="text"
             placeholder="Uusi nimi"
             value={updatedProductData?.nimi || ''}
             onChange={(e) => setUpdatedProductData({ ...updatedProductData, nimi: e.target.value })}
+            style={styles.input}
           />
           <br />
           <input
@@ -92,6 +88,7 @@ function ProductPage() {
             placeholder="Uusi lähtöhinta"
             value={updatedProductData?.lahtohinta || ''}
             onChange={(e) => setUpdatedProductData({ ...updatedProductData, lahtohinta: e.target.value })}
+            style={styles.input}
           />
           <br />
           <input
@@ -99,9 +96,10 @@ function ProductPage() {
             placeholder="Uusi hintavaraus"
             value={updatedProductData?.hintavaraus || ''}
             onChange={(e) => setUpdatedProductData({ ...updatedProductData, hintavaraus: e.target.value })}
+            style={styles.input}
           />
           <br />
-          <button onClick={handleUpdateProductData}>Päivitä</button>
+          <button onClick={handleUpdateProductData} style={styles.button}>Päivitä</button>
         </>
       )}
 
@@ -111,11 +109,56 @@ function ProductPage() {
           placeholder="Huuto hinta"
           value={HuutoData?.huuto || ''}
           onChange={(e) => setHuutoData({ ...HuutoData, huuto: e.target.value })}
+          style={styles.input}
         />
-        <button onClick={handleHuutoUpdate}>Huuda</button>
+      </div>
+      <div>
+        <button onClick={handleHuutoUpdate} style={styles.button}>Huuda</button>
       </div>
     </div>
   );
-}
+};
+
+const styles = {
+  container: {
+    display: 'flex',
+    flexDirection: 'column',
+    alignItems: 'center',
+  },
+  heading: {
+    fontSize: '24px',
+    marginBottom: '20px',
+  },
+  subheading: {
+    fontSize: '20px',
+    marginBottom: '10px',
+  },
+  text: {
+    fontSize: '16px',
+    marginBottom: '10px',
+  },
+  input: {
+    width: '300px',
+    height: '40px',
+    marginBottom: '10px',
+    padding: '5px',
+    fontSize: '16px',
+  },
+  button: {
+    width: '200px',
+    height: '40px',
+    backgroundColor: 'blue',
+    color: 'white',
+    border: 'none',
+    borderRadius: '5px',
+    cursor: 'pointer',
+    fontSize: '16px',
+    marginBottom: '10px',
+  },
+  image: {
+    maxWidth: '400px',
+    maxHeight: '400px',
+  },
+};
 
 export default ProductPage;
