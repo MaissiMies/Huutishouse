@@ -17,6 +17,7 @@ import HuudotList from './Komponentit/HuutoUL';
 import axios from "axios"
 import ProductPage from './sivut/tuotesivu';
 import Viestit from './Komponentit/Viestit';
+import Tuoteetsivu from'./sivut/tuotteetsivu';
 
 //routet pitäisi laittaa omaan tiedostoonsa,myös frontendissä esim komponentit/routes yms
 //routet käytännössä linkkejä, esim myynti haetaan hakemistosta, ja nimetään. käytetään sitten routessa elementtinä.
@@ -60,6 +61,7 @@ const Layout = ({ children }) => {
             <Route path="/kayttoehdot" element={<Kayttoehdot />} />
             <Route path="/users/:_id" element={<UserPage />} />
             <Route path="/tuotteet/:productId" element={<ProductPage />}/>
+            <Route path="/tuotteet/kategoria/:kategoria" element={<Tuoteetsivu />}/>
             <Route path="*" element={<Eiloyda />} />
             <Route path="/Viestit" element={<Viestit />} />
             <Route path="/rekisteröidy" element={<Register />} />

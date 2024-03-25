@@ -26,7 +26,7 @@ const KategoriaUL = () => {
           kategoria.map((category) => (
             <li key={category.id}>
               <label>
-                <a href={`http://localhost:3000/myynti/${category.selite}`}>
+                <a href={`http://localhost:3000/tuotteet/kategoria/${category.selite}`}>
                   {category.selite}
                 </a>
               </label>

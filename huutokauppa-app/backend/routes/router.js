@@ -116,19 +116,19 @@ router.get('/tuotteet/:nimi', async (req, res) => {
 */
 
 // GET /tuotteet/:kategoria - Hakee tuotteet tietyltä kategorialta
-router.get('/tuottet/:kategoria', async (req, res) => {
+router.get('/tuottet/kategoria/:kategoria', async (req, res) => {
   // Hae tuotteet annetulta kategorialta ja lähetä ne vastauksena
   try {
-    const kategoriat = schemat.Kategoria;
+    const tuoteet = schemat.Tuote;
     const valittukategoria = req.params.kategoria;
-    const kategoria = await kategoriat.findOne({ kategoria:valittukategoria});
+    const kategoria = await tuoteet.findOne({ kategoria:valittukategoria});
     if (!kategoria) {
       return res.status(404).json({ error: 'kategoria not found' });
     }
     res.json(kategoria);
   } catch (error) {
     console.error('Error fetching kategoria data:', error);
-    res.status(500).json({ error: 'Internal server error' });
+    res.status(500).json({ error: error.message });
   } 
 });
 router.get('/tuotteet/:itemId/huudot', async (req, res) => {
