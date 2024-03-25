@@ -25,7 +25,7 @@ const io = require('socket.io')();
 
 //ottaa vastaan myynti sivun sumbitit, ja lähettää databaseen
 router.post('/myynti', upload.single('kuva'), async (req, res) => {
-  const { kayttajaid, nimi, lahtohinta, endingTime, hintavaraus } = req.body;
+  const { kayttajaid, nimi,kategoria, lahtohinta, endingTime, hintavaraus } = req.body;
 
   try {
     const kuvaPath = req.file.path;
@@ -33,6 +33,7 @@ router.post('/myynti', upload.single('kuva'), async (req, res) => {
     const newTuote = new schemat.Tuote({
       kayttajaid,
       nimi,
+      kategoria,
       lahtohinta,
       hintavaraus,
       endingTime,
@@ -47,7 +48,7 @@ router.post('/myynti', upload.single('kuva'), async (req, res) => {
     res.send('vastaanotto onnistui');
   } catch (error) {
     console.error('virhe', error);
-    res.status(500).send('Internal Server Error');
+    res.status(500).send(  error.message);
   }
 });
 
