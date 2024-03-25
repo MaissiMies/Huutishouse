@@ -45,40 +45,106 @@ export function Otayhteytta() {
   };
 
   return (
-    <div>
-      <h2>Ota yhteyttä</h2>
-      <form onSubmit={kasitteleLahetys} style={{ display: 'flex', flexDirection: 'column', maxWidth: '300px' }}>
-        <div style={{ display: 'flex', flexDirection: 'column', marginBottom: '10px' }}>
-          <label htmlFor="nimi">Lähettäjän nimi:</label>
+    <div style={styles.container}>
+      <h2 style={styles.title}>Ota yhteyttä</h2>
+      <form onSubmit={kasitteleLahetys} style={styles.form}>
+        <div style={styles.inputGroup}>
+          <label htmlFor="nimi" style={styles.label}>Lähettäjän nimi:</label>
           <input
             type="text"
             id="nimi"
             value={nimi}
             onChange={(e) => setNimi(e.target.value)}
             required
+            style={styles.input}
           />
         </div>
-        <div style={{ display: 'flex', flexDirection: 'column', marginBottom: '10px' }}>
-          <label htmlFor="viesti">Viesti:</label>
+        <div style={styles.inputGroup}>
+          <label htmlFor="viesti" style={styles.label}>Viesti:</label>
           <textarea
             id="viesti"
             value={viesti}
             onChange={(e) => setViesti(e.target.value)}
             required
+            style={styles.textarea}
           />
         </div>
-        <button type="submit">Lähetä</button>
+        <button type="submit" style={styles.button}>Lähetä</button>
       </form>
 
-      <h2>Palauteviestit</h2>
-      <ul>
+      <h2 style={styles.title}>Palauteviestit</h2>
+      <ul style={styles.feedbackList}>
         {palaute.map((viesti, index) => (
-          <li key={index}>
-            <strong>Lähettäjä:</strong> {viesti.nimi}<br />
-            <strong>Viesti:</strong> {viesti.viesti}
+          <li key={index} style={styles.feedbackItem}>
+            <strong style={styles.feedbackLabel}>Lähettäjä:</strong> {viesti.nimi}<br />
+            <strong style={styles.feedbackLabel}>Viesti:</strong> {viesti.viesti}
           </li>
         ))}
       </ul>
     </div>
   );
 }
+
+const styles = {
+  container: {
+    display: 'flex',
+    flexDirection: 'column',
+    alignItems: 'center',
+  },
+  title: {
+    marginBottom: '20px',
+    fontSize: '24px',
+  },
+  form: {
+    display: 'flex',
+    flexDirection: 'column',
+    maxWidth: '300px',
+  },
+  inputGroup: {
+    display: 'flex',
+    flexDirection: 'column',
+    marginBottom: '10px',
+  },
+  label: {
+    marginBottom: '5px',
+    fontSize: '18px',
+  },
+  input: {
+    width: '300px',
+    height: '20px',
+    marginBottom: '10px',
+    padding: '5px',
+    fontSize: '16px',
+  },
+  textarea: {
+    width: '100%',
+    height: '100px',
+    marginBottom: '10px',
+    padding: '5px',
+    fontSize: '16px',
+  },
+  button: {
+    width: '300px',
+    height: '40px',
+    backgroundColor: 'blue',
+    color: 'white',
+    border: 'none',
+    borderRadius: '5px',
+    cursor: 'pointer',
+    fontSize: '16px',
+  },
+  feedbackList: {
+    listStyleType: 'none',
+    padding: '0',
+    margin: '0',
+    fontSize: '18px',
+  },
+  feedbackItem: {
+    marginBottom: '20px',
+  },
+  feedbackLabel: {
+    marginRight: '5px',
+  },
+};
+
+export default Otayhteytta;

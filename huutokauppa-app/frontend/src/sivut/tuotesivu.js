@@ -12,6 +12,7 @@ const ProductPage = () => {
   const [HuutoData, setHuutoData] = useState([]);
   const [isEditable, setIsEditable] = useState(false);
   const [buttonClicked, setButtonClicked] = useState(false);
+  const [remainingTime, setRemainingTime] = useState('');
 
   useEffect(() => {
     const fetchProductData = async () => {
@@ -19,6 +20,19 @@ const ProductPage = () => {
         const response = await axios.get(`http://localhost:3001/tuotteet/${productId}`);
         setProductData(response.data);
         setUpdatedProductData(response.data);
+
+        // Lasketaan jäljellä oleva aika
+        const difference = new Date(response.data.endingTime) - new Date();
+        if (difference > 0) {
+          const seconds = Math.floor((difference / 1000) % 60);
+          const minutes = Math.floor((difference / (1000 * 60)) % 60);
+          const hours = Math.floor((difference / (1000 * 60 * 60)) % 24);
+          const days = Math.floor(difference / (1000 * 60 * 60 * 24));
+
+          setRemainingTime(`${days} päiviä, ${hours} tuntia, ${minutes} minuuttia, ${seconds} sekunttia`);
+        } else {
+          setRemainingTime('Huutaminen päättynyt');
+        }
       } catch (error) {
         console.error('Error fetching product data:', error);
       }
@@ -67,6 +81,8 @@ const ProductPage = () => {
       <p style={styles.text}>Hintavaraus: {productData.hintavaraus}</p>
       <p style={styles.text}>Kuva:</p>
       <p><img src={`http://localhost:3001/${productData.kuva}`} style={styles.image} alt="Tuotekuva" /></p>
+
+      <p style={styles.text}>Jäljellä oleva huutoaika: {remainingTime}</p>
 
       <button onClick={handlePrivilegeCheck} style={styles.button}>
         {isEditable ? "Peruuta" : "Päivitä tuotteen tietoja"}

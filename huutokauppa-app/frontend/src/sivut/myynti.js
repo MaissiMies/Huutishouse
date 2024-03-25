@@ -14,6 +14,8 @@ function Myynti() {
   const [selectedKategoria, setSelectedKategoria] = useState('');
   const [kategoriat, setKategoriat] = useState([]);
   const [timeLeft, setTimeLeft] = useState({});
+  const [successMessage, setSuccessMessage] = useState('');
+
 
   const axiosPostData = async () => {
     const formData = new FormData();
@@ -30,6 +32,17 @@ function Myynti() {
         },
       });
       console.log(response);
+      setSuccessMessage('Tuote lisätty onnistuneesti!');
+      // Tyhjennä kentät
+      setNimi('');
+      setLahtohinta('');
+      setHintavaraus('');
+      setKuva('');
+      setAika('');
+      setSelectedKategoria('');
+      setTimeout(() => {
+        setSuccessMessage('');
+      }, 3000); // Näytä viesti 3 sekunnin ajan
     } catch (error) {
       console.log(error);
     }
@@ -46,27 +59,26 @@ function Myynti() {
       <h3>{nimi}</h3>
       <p>Lähtöhinta: {lahtohinta}€</p>
       <p>Hintavaraus: {hintavaraus}€</p>
-      <p>Aika: {endingTime === 'Huutaminen päättynyt' ? endingTime : new Date(endingTime).toLocaleString()}</p>
+      <p>Aika: {endingTime}</p>
       <img src={imageUrl} style={{ maxWidth: '100px', maxHeight: '100px' }} alt="Product" className="product-image" />
     </div>
   );
 
-  const calculateTimeLeft = () => {
-    const difference = new Date(aika) - new Date();
-    let timeLeft = {};
-
-    if (difference > 0) {
-      timeLeft = {
-        days: Math.floor(difference / (1000 * 60 * 60 * 24)),
-        hours: Math.floor((difference / (1000 * 60 * 60)) % 24),
-        minutes: Math.floor((difference / 1000 / 60) % 60),
-        seconds: Math.floor((difference / 1000) % 60),
-      };
+  const calculateTimeLeft = (endingTime) => {
+    if (endingTime) {
+      const difference = new Date(endingTime) - new Date();
+      if (difference > 0) {
+        const days = Math.floor(difference / (1000 * 60 * 60 * 24));
+        const hours = Math.floor((difference / (1000 * 60 * 60)) % 24);
+        const minutes = Math.floor((difference / 1000 / 60) % 60);
+        const seconds = Math.floor((difference / 1000) % 60);
+        return `${days} päivat ${hours} tunnit ${minutes} minuutit ${seconds} sekunnit`;
+      } else {
+        return 'Huutaminen päättynyt';
+      }
     } else {
-      timeLeft = 'Huutaminen päättynyt';
+      return 'Huutaminen päättynyt';
     }
-
-    return timeLeft;
   };
 
   useEffect(() => {
@@ -83,11 +95,11 @@ function Myynti() {
   }, []);
 
   useEffect(() => {
-    const timer = setTimeout(() => {
-      setTimeLeft(calculateTimeLeft());
+    const timer = setInterval(() => {
+      setTimeLeft(calculateTimeLeft(aika));
     }, 1000);
 
-    return () => clearTimeout(timer);
+    return () => clearInterval(timer);
   }, [aika]);
 
   const [products, setProducts] = useState([]);
@@ -112,6 +124,7 @@ function Myynti() {
   return (
     <div className="myynti-container">
       <h1>Laita uusi tuote myyntiin</h1>
+      {successMessage && <div style={{ color: 'green' }}>{successMessage}</div>}
       <form onSubmit={handleSubmit} encType="multipart/form-data" className="add-product-form">
         <label>
           Nimi:
@@ -185,7 +198,7 @@ function Myynti() {
               nimi={product.nimi} 
               lahtohinta={product.lahtohinta}
               hintavaraus={product.hintavaraus} 
-              endingTime={product.endingTime} 
+              endingTime={calculateTimeLeft(product.endingTime)} 
               imageUrl={`http://localhost:3001/${product.kuva}`} 
             />
           </Link>
