@@ -30,9 +30,8 @@ function ProductPage() {
 
   const handlePrivilegeCheck = () => {
     setIsEditable(!isEditable);
-    setButtonClicked(true); // Set buttonClicked to true when the button is clicked
+    setButtonClicked(true);
     if (!isEditable) {
-      // Reset updatedProductData to current productData when switching to "Päivitä" mode
       setUpdatedProductData(productData);
     }
   };
