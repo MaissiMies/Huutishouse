@@ -14,6 +14,8 @@ function Myynti(){
   const [products, setProducts] = useState([]);
   const [kategoriat, setKategoriat] = useState([]);
   const [selectedKategoria, setSelectedKategoria] = useState('');
+  const [notification, setNotification] = useState('');
+
 
   const axiosPostData = async () => {
     const formData = new FormData();
@@ -32,6 +34,17 @@ function Myynti(){
       });
       console.log(response);
       fetchData(); // Haetaan päivitetyt tiedot palvelimelta
+      setNotification('Tuote lisätty onnistuneesti.'); // Asetetaan ilmoitus onnistuneesta lisäyksestä
+      setTimeout(() => {
+        setNotification(''); // Tyhjennetään ilmoitus muutaman sekunnin kuluttua
+      }, 5000);
+      // Tyhjennetään lisäyskentät
+      setNimi('');
+      setLahtohinta('');
+      setHintavaraus('');
+      setKuva('');
+      setAika('');
+      setSelectedKategoria('');
     } catch (error) {
       console.log(error);
     }
@@ -115,6 +128,7 @@ function Myynti(){
   return (
     <div className="myynti-container">
       <h1>Laita uusi tuote myyntiin</h1>
+      {notification && <p style={{ fontSize: '18px', color: 'green' }} >{notification}</p>} {/* Näytetään ilmoitus, jos se on asetettu */}
       <form onSubmit={handleSubmit} encType="multipart/form-data" className="add-product-form">
         <label>
           Nimi:
@@ -165,18 +179,19 @@ function Myynti(){
             onChange={(e) => setKuva(e.target.files[0])}
           />
           
-      <label htmlFor="kategoria">Choose a category:
-      <select id="kategoria" value={selectedKategoria} onChange={handleSelectChange}>
-        <option value="">Select...</option>
-        {kategoriat.map((kategoria) => (
-          <option key={kategoria._id} value={kategoria.selite}>
-            {kategoria.selite}
-          </option>
-        ))}
-      </select>
-      </label>
+        <label htmlFor="kategoria">Valitse kategoria:
+          <select id="kategoria" value={selectedKategoria} onChange={handleSelectChange}>
+            <option value="">Valitse...</option>
+            {kategoriat.map((kategoria) => (
+              <option key={kategoria._id} value={kategoria.selite}>
+                {kategoria.selite}
+              </option>
+            ))}
+          </select>
         </label>
-        <button type="submit">Submit</button>
+      
+        </label>
+        <button type="submit">Lisää tuote</button>
       </form>
       <br/>
       <br/>

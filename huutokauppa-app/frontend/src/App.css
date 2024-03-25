@@ -171,3 +171,15 @@ li {
   margin-bottom: 0;
 }
 
+/* Lisätään tyyliä valintaelementille */
+select {
+  padding: 8px;
+  border: 1px solid #ccc;
+  border-radius: 4px;
+  width: 100%; /* Leveys täytä koko saatavilla oleva tila */
+}
+
+/* Tyylittele valintaelementin vaihtoehdot */
+select option {
+  padding: 8px;
+}
