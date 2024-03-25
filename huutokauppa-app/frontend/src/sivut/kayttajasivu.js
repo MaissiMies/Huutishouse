@@ -5,8 +5,13 @@ import { useAuth } from '../Komponentit/kayttajacontext';
 import '../App.css';
 
 function UserPage() {
+
+  // Haetaan käyttäjän id reitinpäästä
   const { _id } = useParams();
+  // Haetaan käyttäjän tiedot
   const { user } = useAuth();
+
+  // Tilamuuttujien määrittely
   const [nimi, setNimi] = useState('');
   const [lahtohinta, setLahtohinta] = useState('');
   const [hintavaraus, setHintavaraus] = useState('');
@@ -17,11 +22,14 @@ function UserPage() {
   const [selectedKategoria, setSelectedKategoria] = useState('');
   const [access, setaccess] = useState(false);
 
+  // Käyttäjän tiedot
   const [userData, setUserData] = useState(null);
+  // Päivitetyt käyttäjän tiedot
   const [updatedUserData, setUpdatedUserData] = useState(null);
+  // Tila, joka kertoo, ovatko käyttäjän tiedot muokattavissa
   const [isEditable, setIsEditable] = useState(false);
 
-  
+  // Funktio lähettää tuotetiedot backendiin
   const axiosPostData = async () => {
     const formData = new FormData();
     formData.append('kayttajaid', _id);
@@ -44,6 +52,7 @@ function UserPage() {
     }
   };
 
+  // Käyttäjän pääsyoikeuksien tarkistus
   useEffect(() => {
     if (user.objectId === _id || user.objectId === "temp") {
       setaccess(true);
@@ -52,6 +61,8 @@ function UserPage() {
       setaccess(false);
     }
   }, [user.objectId, _id]); //
+
+  // Tietojen hakeminen palvelimelta
   const fetchData = async () => {
     try {
       const response = await axios.get('http://localhost:3001/tuotteet');
@@ -61,6 +72,7 @@ function UserPage() {
     }
   };
 
+  // Kategorioiden hakeminen palvelimelta
   useEffect(() => {
     const fetchData = async () => {
       try {
@@ -74,15 +86,19 @@ function UserPage() {
 
     fetchData();
   }, []);
+
+  // Kategorian valinnan käsittely
   const handleSelectChange = (event) => {
     setSelectedKategoria(event.target.value);
   }
 
+  // Lomakkeen lähetyksen käsittely
   const handleSubmit = (e) => {
     e.preventDefault();
     axiosPostData();
   };
 
+  // Tuotekomponentti
   const Product = ({ _id, nimi, lahtohinta, imageUrl, hintavaraus, endingTime }) => {
     const [timeLeft, setTimeLeft] = useState({});
 
@@ -119,6 +135,7 @@ function UserPage() {
     );
   };
 
+  // Käyttäjän tietojen hakeminen palvelimelta
   useEffect(() => {
     const fetchUserData = async () => {
       try {

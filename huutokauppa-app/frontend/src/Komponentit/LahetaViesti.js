@@ -84,6 +84,9 @@ const LahetaViesti = ({ myyjanNimi, tuotteenNimi }) => {
         <button type="submit">Lähetä</button>
       </form>
       <button onClick={() => createConversation()}>luo keskustelu</button>
+      
+      <br/>  
+
       <table style={style.table}>
       <thead>
         <tr>

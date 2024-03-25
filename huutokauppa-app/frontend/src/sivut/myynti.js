@@ -5,7 +5,10 @@ import axios from "axios";
 import '../App.css';
 
 function Myynti() {
+
+  // Käyttäjäkontekstin käyttöön ottaminen
   const user = useContext(UserContext);
+  // Tilamuuttujien määrittely
   const [nimi, setNimi] = useState('');
   const [lahtohinta, setLahtohinta] = useState('');
   const [hintavaraus, setHintavaraus] = useState('');
@@ -16,7 +19,7 @@ function Myynti() {
   const [timeLeft, setTimeLeft] = useState({});
   const [successMessage, setSuccessMessage] = useState('');
 
-
+  // Funktio lähettää tiedot backendiin
   const axiosPostData = async () => {
     const formData = new FormData();
     formData.append('kayttajaid', user.user.objectId);
@@ -47,13 +50,14 @@ function Myynti() {
       console.log(error);
     }
   };
-
+  // Lomakkeen lähetyksen käsittely
   const handleSubmit = (e) => {
     e.preventDefault();
     axiosPostData();
     fetchData();
   };
 
+  // Tuotteen esittelykomponentti
   const Product = ({ nimi, lahtohinta, imageUrl, hintavaraus, endingTime }) => (
     <div className="product">
       <h3>{nimi}</h3>
@@ -64,6 +68,7 @@ function Myynti() {
     </div>
   );
 
+  // Ajan laskeminen
   const calculateTimeLeft = (endingTime) => {
     if (endingTime) {
       const difference = new Date(endingTime) - new Date();
@@ -81,6 +86,7 @@ function Myynti() {
     }
   };
 
+  // Kategorian haku
   useEffect(() => {
     const fetchData = async () => {
       try {
@@ -94,6 +100,7 @@ function Myynti() {
     fetchData();
   }, []);
 
+  // Ajan päivitys
   useEffect(() => {
     const timer = setInterval(() => {
       setTimeLeft(calculateTimeLeft(aika));
@@ -102,6 +109,7 @@ function Myynti() {
     return () => clearInterval(timer);
   }, [aika]);
 
+  // Tuotteiden haku
   const [products, setProducts] = useState([]);
 
   const fetchData = async () => {
@@ -117,6 +125,7 @@ function Myynti() {
     fetchData();
   }, []);
 
+  // Kategorian valinnan käsittely
   const handleSelectChange = (event) => {
     setSelectedKategoria(event.target.value);
   }
