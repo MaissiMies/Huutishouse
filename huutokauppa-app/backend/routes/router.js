@@ -52,6 +52,21 @@ router.post('/myynti', upload.single('kuva'), async (req, res) => {
   }
 });
 
+router.get('/tuottet/:kategoria', async (req, res) => {
+  try {
+    const kategoriat = schemat.Kategoria;
+    const valittukategoria = req.params.kategoria;
+    const kategoria = await kategoriat.findOne({ kategoria:valittukategoria});
+    if (!kategoria) {
+      return res.status(404).json({ error: 'kategoria not found' });
+    }
+    res.json(kategoria);
+  } catch (error) {
+    console.error('Error fetching kategoria data:', error);
+    res.status(500).json({ error: 'Internal server error' });
+  } 
+});
+
 router.get('/uploads/:kuva', (req, res) => {
   const kuva = req.params.kuva;
   const filePath = path.join(__dirname, '../uploads', kuva);
