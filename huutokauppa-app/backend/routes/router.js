@@ -5,6 +5,7 @@ const fs = require('fs');
 const bcrypt = require('bcryptjs');
 const path = require('path');
 const multer = require('multer');
+const { error } = require('console');
 const upload = multer({ dest: 'uploads/' }); // Specify the directory where you want to save the files
 
 const io = require('socket.io')();
@@ -130,6 +131,22 @@ router.get('/tuottet/:kategoria', async (req, res) => {
     res.status(500).json({ error: 'Internal server error' });
   } 
 });
+router.get('/tuotteet/:itemId/huudot', async (req, res) => {
+  try {
+   
+    const Item = schemat.Tuote;
+    const itemId = req.params.itemId;
+    const item = await Item.findOne({_id : itemId});
+    if (!item) {
+      return res.status(404).json({ message: 'Item not found' });
+    }
+    res.json(item.huudot);
+  } catch (err) {
+    console.error(err);
+    res.status(500).json({ message: error.message });
+  }
+});
+
 
 
 
