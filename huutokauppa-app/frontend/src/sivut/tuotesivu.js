@@ -16,10 +16,10 @@ function ProductPage() {
   useEffect(() => {
     const fetchProductData = async () => {
       try {
+        console.log(productId)
         const response = await axios.get(`http://localhost:3001/tuotteet/${productId}`);
         setProductData(response.data);
         setUpdatedProductData(response.data); // Initialize updatedProductData with existing data
-        console.log(response.data);
       } catch (error) {
         console.error('Error fetching product data:', error);
       }
