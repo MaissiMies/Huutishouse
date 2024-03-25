@@ -2,10 +2,14 @@ import React, { useState, useEffect } from 'react';
 import { useParams } from 'react-router-dom';
 import axios from 'axios';
 import { useAuth } from '../Komponentit/kayttajacontext';
+import HuudotList from '../Komponentit/HuutoUL';
+
 
 const ProductPage = () => {
   const { productId } = useParams();
   const { user } = useAuth();
+  const [ghettoid] = useState(productId)
+  console.log(productId, "product id")
 
   const [productData, setProductData] = useState(null);
   const [updatedProductData, setUpdatedProductData] = useState(null);
@@ -115,6 +119,7 @@ const ProductPage = () => {
       <div>
         <button onClick={handleHuutoUpdate} style={styles.button}>Huuda</button>
       </div>
+      <HuudotList productId={ghettoid} />
     </div>
   );
 };

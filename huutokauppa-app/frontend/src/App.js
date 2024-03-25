@@ -13,6 +13,7 @@ import { KategoriaUL } from './Komponentit/kategoriatUL';
 import { UserProvider } from './Komponentit/kayttajacontext';
 import UserPage from'./sivut/kayttajasivu';
 import React, { useState, useEffect } from 'react';
+import HuudotList from './Komponentit/HuutoUL';
 import axios from "axios"
 import ProductPage from './sivut/tuotesivu';
 import Viestit from './Komponentit/Viestit';
@@ -58,7 +59,7 @@ const Layout = ({ children }) => {
             <Route path="/otayhteytta" element={<Otayhteytta />} />
             <Route path="/kayttoehdot" element={<Kayttoehdot />} />
             <Route path="/users/:_id" element={<UserPage />} />
-            <Route path="/tuotteet/:productId" element={<ProductPage />} />
+            <Route path="/tuotteet/:productId" element={<ProductPage />}/>
             <Route path="*" element={<Eiloyda />} />
             <Route path="/Viestit" element={<Viestit />} />
             <Route path="/rekisteröidy" element={<Register />} />
