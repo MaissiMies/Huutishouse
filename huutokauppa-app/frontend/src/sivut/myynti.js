@@ -11,7 +11,7 @@ function Myynti(){
   const [hintavaraus, setHintavaraus] = useState('');
   const [kuva, setKuva] = useState('');
   const [aika, setAika] = useState('');
-  const [endingTime, setEndingTime] = useState('');
+  const [products, setProducts] = useState([]);
 
   const axiosPostData = async () => {
     const formData = new FormData();
@@ -28,6 +28,7 @@ function Myynti(){
         },
       });
       console.log(response);
+      fetchData(); // Haetaan päivitetyt tiedot palvelimelta
     } catch (error) {
       console.log(error);
     }
@@ -36,54 +37,47 @@ function Myynti(){
   const handleSubmit = (e) => {
     e.preventDefault();
     axiosPostData();
-    fetchData();
   };
 
-  const Product = ({ nimi, lahtohinta, imageUrl, hintavaraus, endingTime }) => (
-    <div className="product">
-      <h3>{nimi}</h3>
-      <p>Lähtöhinta: {lahtohinta}€</p>
-      <p>Hintavaraus: {hintavaraus}€</p>
-      <p>Aika: {new Date(endingTime).toLocaleString()}</p>
-      <img src={imageUrl} style={{ maxWidth: '100px', maxHeight: '100px' }} alt="Product" className="product-image" />
-    </div>
-  );
+  const Product = ({ _id, nimi, lahtohinta, imageUrl, hintavaraus, endingTime }) => {
+    const [timeLeft, setTimeLeft] = useState({});
 
-  const [timeLeft, setTimeLeft] = useState({});
-
-  const calculateTimeLeft = () => {
-    const difference = new Date(endingTime) - new Date();
-    let timeLeft = {};
-
-    if (difference > 0) {
-      timeLeft = {
-        days: Math.floor(difference / (1000 * 60 * 60 * 24)),
-        hours: Math.floor((difference / (1000 * 60 * 60)) % 24),
-        minutes: Math.floor((difference / 1000 / 60) % 60),
-        seconds: Math.floor((difference / 1000) % 60),
+    useEffect(() => {
+      const calculateTimeLeft = () => {
+        const difference = new Date(endingTime) - new Date();
+        if (difference > 0) {
+          const days = Math.floor(difference / (1000 * 60 * 60 * 24));
+          const hours = Math.floor((difference / (1000 * 60 * 60)) % 24);
+          const minutes = Math.floor((difference / 1000 / 60) % 60);
+          const seconds = Math.floor((difference / 1000) % 60);
+          return { days, hours, minutes, seconds };
+        } else {
+          return { days: 0, hours: 0, minutes: 0, seconds: 0 };
+        }
       };
-    }
 
-    return timeLeft;
+      const timer = setTimeout(() => {
+        setTimeLeft(calculateTimeLeft());
+      }, 1000);
+
+      return () => clearTimeout(timer);
+    }, [endingTime]);
+
+    return (
+      <div className="product">
+        <h3>{nimi}</h3>
+        <p>Lähtöhinta: {lahtohinta}€</p>
+        <p>Hintavaraus: {hintavaraus}€</p>
+        <p>Aika jäljellä: {timeLeft.days} päivää, {timeLeft.hours} tuntia, {timeLeft.minutes} minuuttia, {timeLeft.seconds} sekuntia</p>
+        <img src={imageUrl} style={{ maxWidth: '100px', maxHeight: '100px' }} alt="Product" className="product-image" />
+      </div>
+    );
   };
-
-  useEffect(() => {
-    const timer = setTimeout(() => {
-      setTimeLeft(calculateTimeLeft());
-    }, 1000);
-
-    return () => clearTimeout(timer);
-  }, [timeLeft, endingTime]);
-
-  const [products, setProducts] = useState([]);
 
   const fetchData = async () => {
     try {
       const response = await axios.get('http://localhost:3001/tuotteet');
       setProducts(response.data);
-      response.data.forEach(product => {
-        setEndingTime(product.endingTime);
-      });
     } catch (error) {
       console.error('Error fetching products:', error);
     }
@@ -155,6 +149,7 @@ function Myynti(){
           <Link key={product._id} to={`/tuotteet/${product._id}`} onClick={() => window.scrollTo(0, 0)}>
             <Product 
               key={product._id} 
+              _id={product._id}
               nimi={product.nimi} 
               lahtohinta={product.lahtohinta}
               hintavaraus={product.hintavaraus} 
