@@ -58,7 +58,7 @@ const ViestiSchema = new mongoose.Schema({
   });
 
   const conversationSchema = new mongoose.Schema({
-    participants: [], // Reference to User model
+    participants: [{user1:String, user2:String}], // Reference to User model
     messages: [{
       sender: { type: Schema.Types.ObjectId, ref: 'kayttajaschema' }, // Reference to User model
       sendername:String,
