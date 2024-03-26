@@ -28,6 +28,9 @@ function UserPage() {
   
 
 
+  const [notification, setNotification] = useState('');
+
+
   // Käyttäjän tiedot
   const [userData, setUserData] = useState(null);
   // Päivitetyt käyttäjän tiedot
@@ -158,10 +161,28 @@ function UserPage() {
   }
 
   // Lomakkeen lähetyksen käsittely
-  const handleSubmit = (e) => {
-    e.preventDefault();
-    axiosPostData();
-  };
+// Function to handle product addition
+const handleSubmit = async (e) => {
+  e.preventDefault();
+  try {
+    // Your axiosPostData function implementation...
+    await axiosPostData();
+    // Show success notification
+    setNotification('Product added successfully!');
+    // Clear input fields after 5 seconds
+    setTimeout(() => {
+      setNimi('');
+      setLahtohinta('');
+      setHintavaraus('');
+      setKuva('');
+      setAika('');
+      setSelectedKategoria('');
+      setNotification('');
+    }, 5000);
+  } catch (error) {
+    console.log(error);
+  }
+};
 
   // Tuotekomponentti
   const Product = ({ _id, nimi, lahtohinta, imageUrl, hintavaraus, endingTime }) => {
@@ -291,6 +312,12 @@ function UserPage() {
         </>
       )}
           <h1>Laita uusi tuote myyntiin</h1>
+
+          {notification && (
+        <div style={{ color: 'green' }}>
+          {notification}
+        </div>
+      )}
           
           <form onSubmit={handleSubmit} encType="multipart/form-data" className="add-product-form">
             <label>
