@@ -12,6 +12,10 @@ function Header(){
   const [salasana, setPassword] = useState('');
   const [userData, setUserData] = useState(null); // Muutettu tyhjästä taulukosta nulliksi
   const [showNotification, setShowNotification] = useState(false); // Tilaa ilmoitukselle
+  const [phoneNumber, setPhoneNumber] = useState('');
+  const [email, setEmail] = useState('');
+  const [newPassword, setNewPassword] = useState('');
+  const [notification, setNotification] = useState('');
 
   useEffect(() => {
     const savedUsername = localStorage.getItem('username');
@@ -45,6 +49,25 @@ function Header(){
     localStorage.removeItem('username'); // Poistetaan käyttäjänimi localStoragesta
     logout(); // Kirjaa käyttäjä ulos
   };
+  const handleResetPassword = async () => {
+        try {
+           if (!nimi || !phoneNumber || !email || !newPassword) {
+            setNotification('Täytä kaikki vaaditut kentät');
+             return;
+         }
+    
+         const response = await axios.post('/api/reset-password', {
+          nimi,
+          phoneNumber,
+          email,
+          newPassword
+         });
+         setNotification(response.data);
+        } catch (error) {
+         console.error('Virhe salasanan palautuksessa:', error);
+         setNotification('Salasanan palauttaminen epäonnistui');
+       }
+     };
 
   return (
     <header>

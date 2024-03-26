@@ -97,23 +97,7 @@ router.get('/recenttuotteet', async (req, res) => {
 });
 
 
-router.get('/tuotteet/:searchTerm', async (req, res) => {
-  try {
-    const searchTerm = req.params.searchTerm;
-    // Perform a case-insensitive search
-    const regex = new RegExp(searchTerm, 'i');
-    const searchResults = await schemat.Tuote.find({ nimi: regex });
 
-    if (!searchResults || searchResults.length === 0) {
-      return res.status(404).json({ error: 'No items found for the specified search term' });
-    }
-
-    res.json(searchResults);
-  } catch (error) {
-    console.error('Error searching items:', error);
-    res.status(500).json({ error: error.message });
-  }
-});
 
 // GET /tuotteet/:kategoria - Hakee tuotteet tietyltä kategorialta
 router.get('/tuotteet/kategoria/:kategoria', async (req, res) => {
@@ -178,7 +162,23 @@ router.get('/tuotteet', async (req, res) => {
   }
 });
 
+router.get('/tuotteet/search/:searchTerm', async (req, res) => {
+  try {
+    const searchTerm = req.params.searchTerm;
+    // Perform a case-insensitive search
+    const regex = new RegExp(searchTerm, 'i');
+    const searchResults = await schemat.Tuote.find({ nimi: regex });
 
+    if (!searchResults || searchResults.length === 0) {
+      return res.status(404).json({ error: 'No items found for the specified search term' });
+    }
+
+    res.json(searchResults);
+  } catch (error) {
+    console.error('Error searching items:', error);
+    res.status(500).json({ error: error.message });
+  }
+});
 
 // GET /tuotteet/:_id - Hakee tietyn tuotteen
 router.get('/tuotteet/:_id', async (req, res) => {
@@ -464,6 +464,7 @@ router.post('/api/conversations/:conversationId/messages', async (req, res) => {
     // Construct the new message object
     const newMessage = {
       sender: senderId,
+      sendername:sendernameid,
       text: messageText,
       timestamp: new Date()
     };
@@ -523,6 +524,33 @@ router.delete('/users/:id', async (req, res) => {
     res.status(500).send('Internal Server Error');
   }
 });
+
+router.post('/api/password-reset', async (req, res)=>{
+  try {
+    const { nimi,  sposti, salasana } = req.body;
+    
+    // Tarkista, onko sähköpostiosoite jo käytössä
+    const existingUser = await schemat.Kayttaja.findOne({$and:[{nimi},{sposti}]});
+    const updatedUserData = req.body;
+    const hashedPassword = await bcrypt.hash(salasana, 10);
+    const combineddata = new schemat.Kayttaja({ nimi : existingUser.nimi, salasana: hashedPassword, sposti, puhnum: existingUser.puhnum   });
+    if (existingUser) {
+
+    const finding = await schemat.Kayttaja.findOneAndUpdate(
+      {$and:[{nimi},{sposti}]},
+      combineddataa, // Updated user data
+      { new: true } // Return the modified user
+    );
+    res.status(201).send('Käyttäjä rekisteröityi onnistuneesti.');
+    }
+    
+  } catch (error) {
+    console.error('Virhe rekisteröidessä käyttäjää:', error);
+    res.status(500).send('Rekisteröinti epäonnistui.');
+  }
+});
+
+
 
 
 

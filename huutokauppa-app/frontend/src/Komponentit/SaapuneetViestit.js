@@ -10,7 +10,7 @@ const SaapuneetViestit = () => {
   const [replyText, setReplyText] = useState('');
   const [replying, setReplying] = useState(false); // Seurataan, onko vastaamassa
   const { user, login, logout } = useAuth();
-  const{userid, setuserid} = useState(user);
+  
 
   
 
@@ -21,11 +21,11 @@ const SaapuneetViestit = () => {
     
     const fetchData = async () => {
       try {
-        console.log("tämätapahtuii",userid)
-        const response = await axios.get(`http://localhost:3001/conversation/${userid}`);
+        console.log("tämätapahtuii",user.objectId)
+        const response = await axios.get(`http://localhost:3001/conversation/${user.objectId}`);
         console.log('Response:', response.data); // Log the response data
         setViestiketjut(response.data);
-        console.log(userid)
+        console.log(user.objectId)
         
       } catch (error) {
         console.error('help', error);
@@ -46,7 +46,8 @@ const SaapuneetViestit = () => {
       async function handleReply(conversationId) {
     try {
       const response = await axios.post(`/api/conversations/${conversationId}/messages`, {
-        senderId:userid,
+        senderId:user.objectId.objectId,
+        sendernameid:user.objectId.nimi,
         messageText:replyText
       });
       console.log(response)
