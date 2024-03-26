@@ -1,7 +1,5 @@
-
 import React, { useState, useEffect } from 'react';
 import axios from "axios"
-import { Link } from 'react-router-dom';
 import { useAuth } from './kayttajacontext';
 
 const style = {
@@ -22,19 +20,19 @@ const style = {
 };
 
 const LahetaViesti = ({ myyjanNimi, tuotteenNimi }) => {
-  const { user, login, logout } = useAuth();
-  const [otsikko, setOtsikko] = useState('');
-  const [viesti, setViesti] = useState('');
-  const [kayttaja, setkayttaja] = useState([])
-  const [kkayttaja1, setkkayttaj1] = useState([])
-  const[participants, setparticipants] = useState([])
+  const { user } = useAuth();
+  const [kayttaja, setkayttaja] = useState([]);
+  const [searchTerm, setSearchTerm] = useState('');
+  const [filteredKayttajat, setFilteredKayttajat] = useState([]);
+  const [participants, setParticipants] = useState([]);
+
   useEffect(() => {
     const fetchData = async () => {
       try {
         const response = await axios.get('http://localhost:3001/kayttajat');
-        console.log('Response:', response.data); // Log the response data
+        console.log('Response:', response.data);
         setkayttaja(response.data);
-        
+        setFilteredKayttajat(response.data);
       } catch (error) {
         console.error('Virhe kayttajien haussa:', error);
       }
@@ -42,83 +40,72 @@ const LahetaViesti = ({ myyjanNimi, tuotteenNimi }) => {
   
     fetchData();
   }, []);
-  const handleSubmit = (e) => {
-    e.preventDefault();
-    // Tässä voisi toteuttaa viestin lähetyksen
-  };
+
+  useEffect(() => {
+    const filteredUsers = kayttaja.filter(kayttaja => kayttaja.nimi.toLowerCase().includes(searchTerm.toLowerCase()));
+    setFilteredKayttajat(filteredUsers);
+  }, [searchTerm, kayttaja]);
+
+  const handlekayttaja = (kayttaja) => {
+    console.log(kayttaja, "usersasda");
+    setParticipants({ user1: user.objectId, user2: kayttaja });
+    console.log(participants);
+  }
+
   async function createConversation() {
     try {
-    
-      const response = await axios.post('/api/conversations', {participants});
+      const response = await axios.post('/api/conversations', { participants });
       console.log('New conversation created:', response.data);
-      return response.data; // Return the created conversation
+      return response.data;
     } catch (error) {
       console.error('Error creating conversation:', error.response.data.error);
-      throw error; // Propagate the error
+      throw error;
     }
-  }
-  const handlekayttaja = (kayttaja) =>{
-    console.log(kayttaja,"usersasda")
-    setkkayttaj1(kayttaja._id)
-    setparticipants({user1 : user.objectId, user2: kayttaja})
-    console.log(participants);
   }
 
   return (
     <div className="laheta-viesti">
-      <h2>Lähetä viesti myyjälle</h2>
-      <form onSubmit={handleSubmit}>
-        <input
-          type="text"
-          placeholder="Otsikko"
-          value={otsikko}
-          onChange={(e) => setOtsikko(e.target.value)}
-          required
-        />
-        <textarea
-          placeholder={`Olet voittanut ${tuotteenNimi} käyttäjä ${myyjanNimi}`}
-          value={viesti}
-          onChange={(e) => setViesti(e.target.value)}
-          required
-        ></textarea>
-        <button type="submit">Lähetä</button>
-      </form>
-      <button onClick={() => createConversation()}>luo keskustelu</button>
-      
-      <br/>  
-
+      <h2>Käyttäjähaku</h2>
+      <input
+        type="text"
+        value={searchTerm}
+        onChange={(e) => setSearchTerm(e.target.value)}
+        placeholder="Etsi käyttäjää nimellä..."
+        style={{ marginBottom: '10px', padding: '5px' }}
+      />
       <table style={style.table}>
-      <thead>
-        <tr>
-          <th style={style.th}>ID</th>
-          <th style={style.th}>Nimi</th>
-          <th style={style.th}>Puhelinnumero</th>
-          <th style={style.th}>Sähköposti</th>
-          <th style={style.th}>Käyttäjätunnus</th>
-          <th style={style.th}>Toiminnot</th>
-        </tr>
-      </thead>
-      <tbody>
-        {Array.isArray(kayttaja) ? (
-          kayttaja.map((kayttaja) => (
-            <tr key={kayttaja.id}>
-              <td style={style.td} title={kayttaja._id}>{kayttaja._id.slice(-6)}</td>
-              <td style={style.td}>{kayttaja.nimi}</td>
-              <td style={style.td}>{kayttaja.puhnum}</td>
-              <td style={style.td}>{kayttaja.sposti}</td>
-              <td style={style.td}>{kayttaja.kayttajatunnus}</td>
-              <td style={style.td}>
-              <button onClick={() => handlekayttaja(kayttaja._id)}></button>
-              </td>
-            </tr>
-          ))
-        ) : (
+        <thead>
           <tr>
-            <td style={style.td} colSpan="6">No users found</td>
+            <th style={style.th}>ID</th>
+            <th style={style.th}>Nimi</th>
+            <th style={style.th}>Puhelinnumero</th>
+            <th style={style.th}>Sähköposti</th>
+            <th style={style.th}>Käyttäjätunnus</th>
+            <th style={style.th}>Toiminnot</th>
           </tr>
-        )}
-      </tbody>
-    </table>
+        </thead>
+        <tbody>
+          {Array.isArray(filteredKayttajat) && filteredKayttajat.length > 0 ? (
+            filteredKayttajat.map((kayttaja) => (
+              <tr key={kayttaja.id}>
+                <td style={style.td} title={kayttaja._id}>{kayttaja._id.slice(-6)}</td>
+                <td style={style.td}>{kayttaja.nimi}</td>
+                <td style={style.td}>{kayttaja.puhnum}</td>
+                <td style={style.td}>{kayttaja.sposti}</td>
+                <td style={style.td}>{kayttaja.kayttajatunnus}</td>
+                <td style={style.td}>
+                  <button onClick={() => handlekayttaja(kayttaja)}>Valitse</button>
+                </td>
+              </tr>
+            ))
+          ) : (
+            <tr>
+              <td style={style.td} colSpan="6">No users found</td>
+            </tr>
+          )}
+        </tbody>
+      </table>
+      <button onClick={() => createConversation()}>luo keskustelu</button>
     </div>
   );
 };
