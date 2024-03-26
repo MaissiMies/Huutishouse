@@ -102,13 +102,13 @@ const LahetaViesti = ({ myyjanNimi, tuotteenNimi }) => {
           </tr>
         </thead>
         <tbody>
-  {filteredKayttajat.length > 0 && (
-    <tr key={filteredKayttajat[0].id}>
-      <td style={style.td} title={filteredKayttajat[0]._id}>{filteredKayttajat[0]._id.slice(-6)}</td>
-      <td style={style.td}><Link to={`/users/${filteredKayttajat[0].nimi}`}>{filteredKayttajat[0].nimi} </Link></td>
-      <td style={style.td}>{filteredKayttajat[0].puhnum}</td>
-      <td style={style.td}>{filteredKayttajat[0].sposti}</td>
-      <td style={style.td}>
+        {filteredKayttajat.length > 0 && (
+        <tr key={filteredKayttajat[0].id}>
+        <td style={style.td} title={filteredKayttajat[0]._id}>{filteredKayttajat[0]._id.slice(-6)}</td>
+        <td style={style.td}><Link to={`/users/${filteredKayttajat[0].nimi}`}>{filteredKayttajat[0].nimi} </Link></td>
+        <td style={style.td}>{filteredKayttajat[0].puhnum}</td>
+       <td style={style.td}>{filteredKayttajat[0].sposti}</td>
+        <td style={style.td}>
         <div style={style.buttonContainer}>
           <button
             style={{ ...style.button, ...(selectedUser === filteredKayttajat[0] && style.selectedButton) }}
