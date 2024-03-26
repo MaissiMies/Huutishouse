@@ -1,5 +1,6 @@
 import React, { useEffect, useState } from 'react';
-import { useParams } from 'react-router-dom';
+import { useParams, Link } from 'react-router-dom';
+
 import axios from 'axios';
 import { useAuth } from '../Komponentit/kayttajacontext';
 import '../App.css';
@@ -21,6 +22,11 @@ function UserPage() {
   const [kategoriat, setKategoriat] = useState([]);
   const [selectedKategoria, setSelectedKategoria] = useState('');
   const [access, setaccess] = useState(false);
+  const [selectedUser, setSelectedUser] = useState(null);
+  const [timeLeft, setTimeLeft] = useState({});
+  const [participants, setParticipants] = useState([]);
+  
+
 
   // Käyttäjän tiedot
   const [userData, setUserData] = useState(null);
@@ -52,8 +58,28 @@ function UserPage() {
     }
   };
 
+  const calculateTimeLeft = () => {
+    const difference = new Date(aika) - new Date();
+    let timeLeft = {};
+
+    if (difference > 0) {
+      timeLeft = {
+        days: Math.floor(difference / (1000 * 60 * 60 * 24)),
+        hours: Math.floor((difference / (1000 * 60 * 60)) % 24),
+        minutes: Math.floor((difference / 1000 / 60) % 60),
+        seconds: Math.floor((difference / 1000) % 60),
+      };
+    } else {
+      timeLeft = 'Huutaminen päättynyt';
+    }
+
+    return timeLeft;
+  };
+
+
   // Käyttäjän pääsyoikeuksien tarkistus
   useEffect(() => {
+    handlekayttaja();
     if (user.objectId === _id || user.objectId === "66029af4b6e195fa450ce67c") {
       setaccess(true);
       console.log(user.objectId,"1  2",_id)
@@ -72,6 +98,24 @@ function UserPage() {
     }
   };
 
+  async function createConversation() {
+    try {
+      const response = await axios.post('/api/conversations', { participants });
+      console.log('New conversation created:', response.data);
+      window.location.reload(); // Refresh the page
+      return response.data;
+    } catch (error) {
+      console.error('Error creating conversation:', error.response.data.error);
+      throw error;
+    }
+  }
+  const handlekayttaja = () => {
+    
+    setSelectedUser(_id);
+    setParticipants({ user1: user.objectId, user2: _id });
+    console.log(participants);
+  }
+
   // Kategorioiden hakeminen palvelimelta
   useEffect(() => {
     const fetchData = async () => {
@@ -86,6 +130,27 @@ function UserPage() {
 
     fetchData();
   }, []);
+
+  useEffect(() => {
+    const fetchData = async () => {
+      try {
+        const response = await axios.get(`http://localhost:3001/tuotteet/mytuotteet/${_id}`);
+        setProducts(response.data);
+      } catch (error) {
+        console.error('Error fetching products:', error);
+      }
+    };
+
+    const timer = setTimeout(() => {
+      setTimeLeft(calculateTimeLeft());
+    }, 1000);
+    
+    fetchData();
+
+    return () => {
+      clearTimeout(timer);
+    };
+  }, [aika]);
 
   // Kategorian valinnan käsittely
   const handleSelectChange = (event) => {
@@ -146,9 +211,13 @@ function UserPage() {
         console.error('Error fetching user data:', error);
       }
     };
+    
 
     fetchUserData();
   }, [_id]);
+
+  
+    
 
   const handlePrivilegeCheck = () => {
     setIsEditable(!isEditable);
@@ -287,8 +356,19 @@ function UserPage() {
           </form>
         </>
       ) : (
-        <h1>User objectId is not available.</h1>
+        <h1><button onClick={createConversation} style={styles.button}>Aloita Keskustelu Käyttäjän kanssa</button></h1>
       )}
+      {products.map(product => (
+        <Link key={product._id} to={`/tuotteet/${product._id}`} onClick={() => window.scrollTo(0, 0)}>
+          <div className="product">
+            <h3>{product.nimi}</h3>
+            <p>Lähtöhinta: {product.lahtohinta}€</p>
+            <p>Hintavaraus: {product.hintavaraus}€</p>
+            <p>Aika: {product.endingTime === 'Huutaminen päättynyt' ? product.endingTime : new Date(product.endingTime).toLocaleString()}</p>
+            <img src={`http://localhost:3001/${product.kuva}`} style={{ maxWidth: '100px', maxHeight: '100px' }} alt="Product" className="product-image" />
+          </div>
+        </Link>
+      ))}
     </div>
   );
 }

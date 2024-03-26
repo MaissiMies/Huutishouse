@@ -197,6 +197,21 @@ router.get('/tuotteet/:_id', async (req, res) => {
     res.status(500).json({ error: 'Internal server error' });
   }  
 });
+router.get('/tuotteet/mytuotteet/:user', async (req, res) => {
+  try {
+    const tuotteet = schemat.Tuote;
+    const user = req.params.user; // Corrected variable name
+    const product = await tuotteet.find({ kayttajaid: user }); // Corrected variable name
+
+    if (!product) {
+      return res.status(404).json({ error: 'Product not found' }); // Update error message
+    }
+    res.json(product);
+  } catch (error) {
+    console.error('Error fetching product data:', error);
+    res.status(500).json({ error: 'Internal server error' });
+  }  
+});
 
 // PUT /tuotteet/:_id - Päivittää tietyn tuotteen tiedot
 router.put('/tuotteet/:_id', async (req, res) => {

@@ -89,6 +89,7 @@
         return (
           <div style={styles.container}>
             <h2 style={styles.heading}>Tuotetiedot</h2>
+            
             <p style={styles.text}>Nimi: {productData.nimi}</p>
             <p style={styles.text}>Lähtöhinta: {productData.lahtohinta}</p>
             <p style={styles.text}>Hintavaraus: {productData.hintavaraus}</p>

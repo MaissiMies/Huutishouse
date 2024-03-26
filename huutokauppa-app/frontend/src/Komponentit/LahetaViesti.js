@@ -1,6 +1,7 @@
 import React, { useState, useEffect } from 'react';
 import axios from "axios"
 import { useAuth } from './kayttajacontext';
+import { Link } from 'react-router-dom';
 
 const style = {
   table: {
@@ -105,7 +106,9 @@ const LahetaViesti = ({ myyjanNimi, tuotteenNimi }) => {
             filteredKayttajat.map((kayttaja) => (
               <tr key={kayttaja.id}>
                 <td style={style.td} title={kayttaja._id}>{kayttaja._id.slice(-6)}</td>
-                <td style={style.td}>{kayttaja.nimi}</td>
+                
+                <td style={style.td}><Link to={`/users/${kayttaja.nimi}`}>{kayttaja.nimi} </Link></td>
+               
                 <td style={style.td}>{kayttaja.puhnum}</td>
                 <td style={style.td}>{kayttaja.sposti}</td>
                 <td style={style.td}>
