@@ -424,6 +424,21 @@ router.post('/api/conversations', async (req, res) => {
     res.status(500).json({ error: error.message });
   }
 });
+router.get('/conversation/:kayttaja', async (req, res) => {
+  try {
+  // Hae tietty käyttäjä id:n perusteella ja lähetä se vastauksena
+    const conversation = schemat.Keskustelu;
+    const kayttaja = req.params._id;
+    const user = await conversation.find({$or: [{user1: kayttaja}, {user2:kayttaja} ]});
+    if (!user) {
+      return res.status(404).json({ error: 'User not found' });
+    }
+    res.json(user);
+  } catch (error) {
+    console.error('Error fetching user data:', error);
+    res.status(500).json({ error: error.message });
+  }
+});
 
 
 
