@@ -84,7 +84,6 @@ export const KayttajaUL = () => {
             <th style={style.th}>Nimi</th>
             <th style={style.th}>Puhelinnumero</th>
             <th style={style.th}>Sähköposti</th>
-            <th style={style.th}>Käyttäjätunnus</th>
             <th style={style.th}>Toiminnot</th>
           </tr>
         </thead>
@@ -95,7 +94,6 @@ export const KayttajaUL = () => {
               <td style={style.td}>{user.nimi}</td>
               <td style={style.td}>{user.puhnum}</td>
               <td style={style.td}>{user.sposti}</td>
-              <td style={style.td}>{user.kayttajatunnus}</td>
               <td style={style.td}>
                 <Link to={`/users/${user._id}`} onClick={() => window.scrollTo(0, 0)}>
                   <button>Katso tiedot</button>
