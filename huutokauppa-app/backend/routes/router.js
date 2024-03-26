@@ -529,30 +529,37 @@ router.delete('/users/:id', async (req, res) => {
   }
 });
 
-router.post('/api/password-reset', async (req, res)=>{
-  try {
-    const { nimi,  sposti, salasana } = req.body;
-    
-    // Tarkista, onko sähköpostiosoite jo käytössä
-    const existingUser = await schemat.Kayttaja.findOne({$and:[{nimi},{sposti}]});
-    const updatedUserData = req.body;
-    const hashedPassword = await bcrypt.hash(salasana, 10);
-    const combineddata = new schemat.Kayttaja({ nimi : existingUser.nimi, salasana: hashedPassword, sposti, puhnum: existingUser.puhnum   });
-    if (existingUser) {
 
-    const finding = await schemat.Kayttaja.findOneAndUpdate(
-      {$and:[{nimi},{sposti}]},
-      combineddataa, // Updated user data
-      { new: true } // Return the modified user
-    );
-    res.status(201).send('Käyttäjä rekisteröityi onnistuneesti.');
+router.post('/api/password-reset', async (req, res) => {
+  try {
+    const { nimi, sposti, puhnum, salasana } = req.body;
+
+    // Check if the email is already in use
+    const existingUser = await schemat.Kayttaja.findOne({ nimi, sposti });
+
+    if (existingUser) {
+      // Hash the new password
+      const hashedPassword = await bcrypt.hash(salasana, 10);
+
+      // Update the user's password
+      const updatedUserData = { nimi, salasana: hashedPassword, sposti, puhnum:puhnum };
+      const finding = await schemat.Kayttaja.findOneAndUpdate(
+        { nimi, sposti },
+        updatedUserData,
+        { new: true }
+      );
+
+      res.status(200).send('Salasana vaihdettu onnistuneesti.');
+    } else {
+      res.status(404).send('Käyttäjää ei löydetty');
     }
-    
+
   } catch (error) {
-    console.error('Virhe rekisteröidessä käyttäjää:', error);
-    res.status(500).send('Rekisteröinti epäonnistui.');
+    console.error('Virhe salasanan palautuksessa:', error);
+    res.status(500).send('Salasanan palauttaminen epäonnistui');
   }
 });
+
 
 
 
