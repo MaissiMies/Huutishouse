@@ -24,6 +24,12 @@ const style = {
   },
   button: {
     width: '100%',
+    padding: '8px',
+    cursor: 'pointer',
+  },
+  selectedButton: {
+    backgroundColor: '#333',
+    color: '#fff',
   },
 };
 
@@ -32,6 +38,7 @@ const LahetaViesti = ({ myyjanNimi, tuotteenNimi }) => {
   const [kayttaja, setkayttaja] = useState([]);
   const [searchTerm, setSearchTerm] = useState('');
   const [filteredKayttajat, setFilteredKayttajat] = useState([]);
+  const [selectedUser, setSelectedUser] = useState(null);
   const [participants, setParticipants] = useState([]);
 
   useEffect(() => {
@@ -54,9 +61,10 @@ const LahetaViesti = ({ myyjanNimi, tuotteenNimi }) => {
     setFilteredKayttajat(filteredUsers);
   }, [searchTerm, kayttaja]);
 
-  const handlekayttaja = (kayttaja) => {
-    console.log(kayttaja, "usersasda");
-    setParticipants({ user1: user.objectId, user2: kayttaja });
+  const handlekayttaja = (selectedKayttaja) => {
+    console.log(selectedKayttaja, "usersasda");
+    setSelectedUser(selectedKayttaja);
+    setParticipants({ user1: user.objectId, user2: selectedKayttaja });
     console.log(participants);
   }
 
@@ -64,6 +72,7 @@ const LahetaViesti = ({ myyjanNimi, tuotteenNimi }) => {
     try {
       const response = await axios.post('/api/conversations', { participants });
       console.log('New conversation created:', response.data);
+      window.location.reload(); // Refresh the page
       return response.data;
     } catch (error) {
       console.error('Error creating conversation:', error.response.data.error);
@@ -100,9 +109,14 @@ const LahetaViesti = ({ myyjanNimi, tuotteenNimi }) => {
                 <td style={style.td}>{kayttaja.puhnum}</td>
                 <td style={style.td}>{kayttaja.sposti}</td>
                 <td style={style.td}>
-                <div style={style.buttonContainer}>
-                <button style={style.button} onClick={() => handlekayttaja(kayttaja)}>Valitse</button>
-                </div>
+                  <div style={style.buttonContainer}>
+                    <button
+                      style={{ ...style.button, ...(selectedUser === kayttaja && style.selectedButton) }}
+                      onClick={() => handlekayttaja(kayttaja)}
+                    >
+                      Valitse
+                    </button>
+                  </div>
                 </td>
               </tr>
             ))
