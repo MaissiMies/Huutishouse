@@ -45,10 +45,17 @@ function Header(){
   };
 
   const handleLogout = () => {
-    setUserData(null); // Tyhjennetään käyttäjänimi kun kirjaudutaan ulos
-    localStorage.removeItem('username'); // Poistetaan käyttäjänimi localStoragesta
-    logout(); // Kirjaa käyttäjä ulos
+    // Redirect to the homepage
+    window.location.href = '/';
+  
+    // Logout after redirecting
+    setTimeout(() => {
+      setUserData(null);
+      localStorage.removeItem('username');
+      logout();
+    }, 0); // Ajastin
   };
+  
   const handleResetPassword = async () => {
         try {
            if (!nimi || !phoneNumber || !email || !newPassword) {
