@@ -7,6 +7,9 @@ import '../App.css';
 function Kotisivu() {
   const [recentItems, setRecentItems] = useState([]);
   const [searchTerm, setSearchTerm] = useState('');
+  const [showRecentItemsLabel, setShowRecentItemsLabel] = useState(true); // State variable for toggling labels
+
+
 
   useEffect(() => {
     fetchRecentItems();
@@ -30,6 +33,7 @@ function Kotisivu() {
       const response = await axios.get(`http://localhost:3001/tuotteet/${searchTerm}`);
       const searchResults = response.data;
       setRecentItems(searchResults);
+      setShowRecentItemsLabel(false);
     } catch (error) {
       console.error('Error searching items:', error);
     }
@@ -90,6 +94,8 @@ function Kotisivu() {
     },
   };
 
+  const label = showRecentItemsLabel ? "Äskettäin lisätyt tavarat" : "Hakutulokset";
+
   return (
     <div>
       <h1>Tervetuloa Huutis Houseen</h1>
@@ -106,7 +112,7 @@ function Kotisivu() {
         </button>
       </form>
 
-      <h2>Äskettäin lisätyt tavarat</h2>
+       <h2>{label}</h2>
       <div style={styles.productList}>
         {recentItems.map((item) => (
           <div key={item._id} style={styles.product}>
