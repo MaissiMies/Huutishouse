@@ -12,7 +12,7 @@ const { user } = useAuth();
 
 
 useEffect(() => {
-    if (user.objectId === "temp") {
+    if (user.objectId === "66029af4b6e195fa450ce67c") {
       setaccess(true);
       console.log(user.objectId,"1  2")
     } else {

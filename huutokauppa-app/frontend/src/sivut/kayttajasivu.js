@@ -54,7 +54,7 @@ function UserPage() {
 
   // Käyttäjän pääsyoikeuksien tarkistus
   useEffect(() => {
-    if (user.objectId === _id || user.objectId === "temp") {
+    if (user.objectId === _id || user.objectId === "66029af4b6e195fa450ce67c") {
       setaccess(true);
       console.log(user.objectId,"1  2",_id)
     } else {

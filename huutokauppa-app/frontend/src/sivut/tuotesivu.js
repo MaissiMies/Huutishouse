@@ -18,6 +18,7 @@ const ProductPage = () => {
 
   useEffect(() => {
     const fetchProductData = async () => {
+      setHuutoData({ ...HuutoData, kayttajaid: user.objectId });
       try {
         const response = await axios.get(`http://localhost:3001/tuotteet/${productId}`);
         setProductData(response.data);
@@ -64,7 +65,7 @@ const ProductPage = () => {
   };
 
   const handleHuutoUpdate = async () => {
-    setHuutoData({ ...HuutoData, kayttajaid: user.objectId });
+   
     try {
       const response = await axios.post(`http://localhost:3001/tuotteet/${productId}/huudot`, HuutoData);
       console.log('Product data updated successfully:', response.data);
@@ -144,6 +145,7 @@ const ProductPage = () => {
     </div>
   );
 };
+
 
 const styles = {
   container: {
