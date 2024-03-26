@@ -527,18 +527,23 @@ router.delete('/users/:id', async (req, res) => {
 
 router.post('/api/password-reset', async (req, res)=>{
   try {
-    const { nimi,  sposti } = req.body;
+    const { nimi,  sposti, salasana } = req.body;
     
     // Tarkista, onko sähköpostiosoite jo käytössä
-    const existingUser = await schemat.Kayttaja.find({$and:[{nimi},{sposti}]});
+    const existingUser = await schemat.Kayttaja.findOne({$and:[{nimi},{sposti}]});
+    const updatedUserData = req.body;
+    const hashedPassword = await bcrypt.hash(salasana, 10);
+    const combineddata = new schemat.Kayttaja({ nimi : existingUser.nimi, salasana: hashedPassword, sposti, puhnum: existingUser.puhnum   });
     if (existingUser) {
-      const hashedPassword = await bcrypt.hash(salasana, 10);
-    const newUser = new schemat.Kayttaja({ nimi, salasana: hashedPassword, sposti, puhnum });
-    await newUser.save();
 
+    const finding = await schemat.Kayttaja.findOneAndUpdate(
+      {$and:[{nimi},{sposti}]},
+      combineddataa, // Updated user data
+      { new: true } // Return the modified user
+    );
     res.status(201).send('Käyttäjä rekisteröityi onnistuneesti.');
     }
-    res.status(201).send('Käyttäjä rekisteröityi onnistuneesti.');
+    
   } catch (error) {
     console.error('Virhe rekisteröidessä käyttäjää:', error);
     res.status(500).send('Rekisteröinti epäonnistui.');
