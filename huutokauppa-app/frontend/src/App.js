@@ -18,12 +18,26 @@ import axios from "axios"
 import ProductPage from './sivut/tuotesivu';
 import Viestit from './Komponentit/Viestit';
 import Tuoteetsivu from'./sivut/tuotteetsivu';
+import { useAuth } from './Komponentit/kayttajacontext';
 
 //routet pitäisi laittaa omaan tiedostoonsa,myös frontendissä esim komponentit/routes yms
 //routet käytännössä linkkejä, esim myynti haetaan hakemistosta, ja nimetään. käytetään sitten routessa elementtinä.
 //<outletin /> alle <Footer /> kun tehty
 function App() {
   
+
+const [access, setaccess] = useState(false);
+const { user } = useAuth();
+
+useEffect(() => {
+  if (user.objectId === "66029af4b6e195fa450ce67c") {
+    setaccess(true);
+    console.log(user.objectId,"1  2")
+  } else {
+    setaccess(false);
+  }
+}, [user.objectId]);
+
 const Layout = ({ children }) => {
   return (
     <div className="layout">
@@ -37,6 +51,12 @@ const Layout = ({ children }) => {
             <li><a href="/myynti">Myynti</a></li>
             <li><a href="/Viestit">Viestit  </a></li>
             <li><a href='/rekisteröidy'>Rekisteröidy</a></li>
+            {access ? (
+        <p><li><a href='/admin'>admin</a></li></p>
+      ) : (
+        <p></p>
+      )}
+            
             
             </ul>
            <KategoriaUL/>
