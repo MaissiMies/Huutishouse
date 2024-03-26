@@ -3,24 +3,25 @@ import { useParams } from 'react-router-dom';
 import axios from 'axios';
 import { useAuth } from '../Komponentit/kayttajacontext';
 import '../App.css';
+import { KategoriaUL } from '../Komponentit/kategoriatUL';
+import { KayttajaUL } from '../Komponentit/KayttajaList';
 
-function adminsivu(){
-const [access, setaccess] = useState(false);
+function Adminsivu(){
+const [access, setaccess] = useState(false)
 const { user } = useAuth();
 
 
 useEffect(() => {
-    if (user.objectId === _id || user.objectId === "temp") {
+    if (user.objectId === "temp") {
       setaccess(true);
-      console.log(user.objectId,"1  2",_id)
+      console.log(user.objectId,"1  2")
     } else {
       setaccess(false);
     }
-  }, [user.objectId, _id]);
+  }, [user.objectId]);
 
-  {condition ? (
-    <p>This will render if the condition is true.</p>
-  ) : (
-    <p>This will render if the condition is false.</p>
-  )}
+ return(
+  <KayttajaUL/>
+ )
 }
+export default Adminsivu

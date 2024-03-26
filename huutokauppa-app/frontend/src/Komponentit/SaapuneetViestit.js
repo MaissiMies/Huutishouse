@@ -39,15 +39,15 @@ const SaapuneetViestit = () => {
   const handleThreadClick = (threadId) => {
     setSelectedThread(threadId === selectedThread ? null : threadId);
   };
-
+ 
   
     
     
       async function handleReply(conversationId) {
     try {
       const response = await axios.post(`/api/conversations/${conversationId}/messages`, {
-        senderId:user.objectId.objectId,
-        sendernameid:user.objectId.nimi,
+        senderId:user.objectId,
+        sendernameid:user.nimi,
         messageText:replyText
       });
       console.log(response)
@@ -110,7 +110,7 @@ const SaapuneetViestit = () => {
                     <div className="viestihistoria">
                       {ketju.messages.map((viesti) => (
                         <div key={viesti._id} className="viesti">
-                          <p><strong>{viesti.sender}:</strong> {viesti.text}</p>
+                          <p><strong>{viesti.sendername}:</strong> {viesti.text}</p>
                         </div>
                       ))}
                       <div className="viestitoiminnot">

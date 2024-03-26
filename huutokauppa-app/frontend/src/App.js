@@ -10,7 +10,7 @@ import { BrowserRouter as Router, Route, Switch, Routes } from 'react-router-dom
 import { Otayhteytta } from './sivut/otayhteyytta';
 import { Kayttoehdot } from './sivut/kayttoehdot';
 import { KategoriaUL } from './Komponentit/kategoriatUL';
-import { UserProvider,useAuth } from './Komponentit/kayttajacontext';
+import { UserProvider, useAuth } from './Komponentit/kayttajacontext';
 import UserPage from'./sivut/kayttajasivu';
 import React, { useState, useEffect } from 'react';
 import HuudotList from './Komponentit/HuutoUL';
@@ -18,6 +18,7 @@ import axios from "axios"
 import ProductPage from './sivut/tuotesivu';
 import Viestit from './Komponentit/Viestit';
 import Tuoteetsivu from'./sivut/tuotteetsivu';
+import Adminsivu from './sivut/Adminsivu';
 
 
 //routet pitäisi laittaa omaan tiedostoonsa,myös frontendissä esim komponentit/routes yms
@@ -28,10 +29,10 @@ function App() {
   
 
 
-
 const Layout = ({ children }) => {
 
-  const [access, setaccess] = useState(false);
+const [access, setaccess] = useState(false);
+
 const { user } = useAuth();
 
 useEffect(() => {
@@ -89,6 +90,7 @@ useEffect(() => {
             <Route path="*" element={<Eiloyda />} />
             <Route path="/Viestit" element={<Viestit />} />
             <Route path="/rekisteröidy" element={<Register />} />
+            <Route path="/admin" element={<Adminsivu />} />
           </Routes>
         </Layout>
       </UserProvider>
