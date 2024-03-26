@@ -18,11 +18,13 @@ import axios from "axios"
 import ProductPage from './sivut/tuotesivu';
 import Viestit from './Komponentit/Viestit';
 import Tuoteetsivu from'./sivut/tuotteetsivu';
+import { useAuth } from './Komponentit/kayttajacontext';
 
 //routet pitäisi laittaa omaan tiedostoonsa,myös frontendissä esim komponentit/routes yms
 //routet käytännössä linkkejä, esim myynti haetaan hakemistosta, ja nimetään. käytetään sitten routessa elementtinä.
 //<outletin /> alle <Footer /> kun tehty
 function App() {
+
   
 const Layout = ({ children }) => {
   return (
