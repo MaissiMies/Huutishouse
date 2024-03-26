@@ -1,5 +1,6 @@
 import React, { useState, useEffect } from 'react';
 import axios from 'axios';
+import { Link } from 'react-router-dom';
 
 const HuudotList = ({ productId }) => {
   const [huudotWithUserData, setHuudotWithUserData] = useState([]);
@@ -17,6 +18,8 @@ const HuudotList = ({ productId }) => {
             return { ...huuto, userData: userResponse.data }; // Combine huuto and user data
           });
         const huudotWithUserDataArray = await Promise.all(userDataPromises);
+
+        huudotWithUserDataArray.sort((a, b) => parseInt(b.huuto) - parseInt(a.huuto));
         setHuudotWithUserData(huudotWithUserDataArray);
       } catch (error) {
         console.error('Error fetching data:', error);
@@ -32,13 +35,17 @@ const HuudotList = ({ productId }) => {
       <ul>
         {huudotWithUserData.map((huutoWithUserData, index) => (
           <li key={index}>
-            {huutoWithUserData.huuto} - {huutoWithUserData.userData ? huutoWithUserData.userData.nimi : 'Loading...'}
+            <Link to={`/users/${huutoWithUserData.kayttajaid}`}> {/* Link to the desired route */}
+              {huutoWithUserData.huuto} - {huutoWithUserData.userData ? huutoWithUserData.userData.nimi : 'Loading...'}
+            </Link>
           </li>
         ))}
       </ul>
     </div>
   );
 };
+
+
 
 export default HuudotList;
 
