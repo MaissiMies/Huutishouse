@@ -3,25 +3,29 @@ import axios from 'axios';
 import './Viestit.css'; // Tuodaan tyylitiedosto
 import { useAuth } from './kayttajacontext';
 
-
+// SaapuneetViestit-komponentti
 const SaapuneetViestit = () => {
 
-  const [selectedThread, setSelectedThread] = useState(null);
-  const [replyText, setReplyText] = useState('');
+  // Tilamuuttujien määrittely
+  const [selectedThread, setSelectedThread] = useState(null); // Valittu viestiketju
+  const [replyText, setReplyText] = useState(''); // Vastauksen teksti
   const [replying, setReplying] = useState(false); // Seurataan, onko vastaamassa
-  const { user, login, logout } = useAuth();
-  const [viestiketjut, setViestiketjut] = useState([]);
+  const { user, login, logout } = useAuth(); // Autentikaatiokontekstin käyttö
+  const [viestiketjut, setViestiketjut] = useState([]); // Viestiketjujen tila
   
 
+  // Tietojen haku käyttäjän ID:llä
   useEffect(() => {
-    
+
+    // fetchData-funktio, joka hakee viestiketjut käyttäjän ID:n perusteella
     const fetchData = async () => {
      
       try {
         console.log("tämätapahtuii",user.objectId)
+        // Tietojen haku palvelimelta
         const response = await axios.get(`http://localhost:3001/conversation/${user.objectId}`);
-        console.log('Response:', response.data); // Log the response data
-        setViestiketjut(response.data);
+        console.log('Response:', response.data); // Log the response data // Kirjaa vastauksen tietoja konsoliin
+        setViestiketjut(response.data); // Asettaa haetut viestiketjut tilaan
         console.log(user.objectId)
         
       } catch (error) {
@@ -30,24 +34,26 @@ const SaapuneetViestit = () => {
     };
   
     fetchData();
-  }, []);
+  }, []); // Tyhjä taulukko varmistaa, että useEffect suoritetaan vain kerran, komponentin alustuksen yhteydessä
   
 
+  // Klikkauskäsittelijä viestiketjun valitsemiselle
   const handleThreadClick = (threadId) => {
     setSelectedThread(threadId === selectedThread ? null : threadId);
   };
  
   
     
-    
+      // Vastauksen lähettämiskäsittelijä    
       async function handleReply(conversationId) {
     try {
+      // Lähetetään viesti palvelimelle
       const response = await axios.post(`/api/conversations/${conversationId}/messages`, {
         senderId:user.objectId,
         sendernameid:user.nimi,
         messageText:replyText
       });
-      window.location.reload();
+      window.location.reload(); // Päivitetään sivu
       console.log(response)
     // Clear reply text area
     
@@ -62,11 +68,12 @@ const SaapuneetViestit = () => {
   
   }
     
-
+  // Piilota viestihistoria -käsittelijä
   const handleHideHistory = () => {
     setSelectedThread(null);
   };
 
+  // Viestiketjun poistamiskäsittelijä
   const handleDeleteThread = (threadId) => {
     // Kopioidaan viestiketjut ja suodatetaan poistettava ketju pois
     const updatedThreads = viestiketjut.filter((ketju) => ketju.id !== threadId);
@@ -74,41 +81,48 @@ const SaapuneetViestit = () => {
     setViestiketjut(updatedThreads);
   };
   
-
+  // Vastauksen näyttämisen tilan vaihtokäsittelijä
   const toggleReplying = () => {
     setReplying(!replying);
     
   };
+
+  // Käyttäjän tietojen haku ID:n perusteella
   const fetchUserData = async (id) => {
     try {
       const response = await axios.get(`http://localhost:3001/users/${id}`);
       return(
-        response.data.nimi
+        response.data.nimi // Palautetaan käyttäjän nimi
       );
     } catch (error) {
-      console.error('Error fetching user data:', error);
+      console.error('Error fetching user data:', error); // Virheenkäsittely
     }
   };
+
+  // Käyttäjänimet tila
   const [userNames, setUserNames] = useState({});
 
+  // Tietojen haku käyttäjänimien kanssa
   useEffect(() => {
+    // fetchUserNames-funktio, joka hakee käyttäjänimet
     const fetchUserNames = async () => {
       const names = {};
+      // Käydään läpi viestiketjut ja haetaan käyttäjänimet
       for (const ketju of viestiketjut) {
-        const participants = ketju.participants[0]; // Access the first object in the participants array
+        const participants = ketju.participants[0]; // Käydään läpi viestiketjut ja haetaan käyttäjänimet
         if (participants && participants.user1 && participants.user2) {
           const user1Id = participants.user1;
           const user2Id = participants.user2;
           const user1Name = await fetchUserData(user1Id);
           const user2Name = await fetchUserData(user2Id);
-          names[ketju._id] = { user1Name, user2Name }; // Use ketju._id as the key
+          names[ketju._id] = { user1Name, user2Name }; 
         }
       }
-      setUserNames(names);
+      setUserNames(names); // Asetetaan käyttäjänimet tilaan
     };
   
-    fetchUserNames();
-  }, [viestiketjut]);
+    fetchUserNames(); // Kutsutaan fetchUserNames-funktiota
+  }, [viestiketjut]); // Suoritetaan aina, kun viestiketjujen tila muuttuu
 
 
 
@@ -125,6 +139,7 @@ const SaapuneetViestit = () => {
           </tr>
         </thead>
         <tbody>
+        {/* Viestiketjujen käsittely ja esittäminen */}  
         {viestiketjut.map((ketju) => (
   <React.Fragment key={ketju._id}>
     <tr onClick={() => handleThreadClick(ketju.id)} className="viesti-rivi">
