@@ -107,7 +107,7 @@ const LahetaViesti = ({ myyjanNimi, tuotteenNimi }) => {
               <tr key={kayttaja.id}>
                 <td style={style.td} title={kayttaja._id}>{kayttaja._id.slice(-6)}</td>
                 
-                <td style={style.td}><Link to={`/users/${kayttaja.nimi}`}>{kayttaja.nimi} </Link></td>
+                <td style={style.td}><Link to={`/users/${kayttaja._id}`}>{kayttaja.nimi} </Link></td>
                
                 <td style={style.td}>{kayttaja.puhnum}</td>
                 <td style={style.td}>{kayttaja.sposti}</td>
