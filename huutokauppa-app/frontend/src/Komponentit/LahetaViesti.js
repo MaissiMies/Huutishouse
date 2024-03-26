@@ -102,33 +102,30 @@ const LahetaViesti = ({ myyjanNimi, tuotteenNimi }) => {
           </tr>
         </thead>
         <tbody>
-          {Array.isArray(filteredKayttajat) && filteredKayttajat.length > 0 ? (
-            filteredKayttajat.map((kayttaja) => (
-              <tr key={kayttaja.id}>
-                <td style={style.td} title={kayttaja._id}>{kayttaja._id.slice(-6)}</td>
-                
-                <td style={style.td}><Link to={`/users/${kayttaja.nimi}`}>{kayttaja.nimi} </Link></td>
-               
-                <td style={style.td}>{kayttaja.puhnum}</td>
-                <td style={style.td}>{kayttaja.sposti}</td>
-                <td style={style.td}>
-                  <div style={style.buttonContainer}>
-                    <button
-                      style={{ ...style.button, ...(selectedUser === kayttaja && style.selectedButton) }}
-                      onClick={() => handlekayttaja(kayttaja)}
-                    >
-                      Valitse
-                    </button>
-                  </div>
-                </td>
-              </tr>
-            ))
-          ) : (
-            <tr>
-              <td style={style.td} colSpan="6">No users found</td>
-            </tr>
-          )}
-        </tbody>
+  {filteredKayttajat.length > 0 && (
+    <tr key={filteredKayttajat[0].id}>
+      <td style={style.td} title={filteredKayttajat[0]._id}>{filteredKayttajat[0]._id.slice(-6)}</td>
+      <td style={style.td}><Link to={`/users/${filteredKayttajat[0].nimi}`}>{filteredKayttajat[0].nimi} </Link></td>
+      <td style={style.td}>{filteredKayttajat[0].puhnum}</td>
+      <td style={style.td}>{filteredKayttajat[0].sposti}</td>
+      <td style={style.td}>
+        <div style={style.buttonContainer}>
+          <button
+            style={{ ...style.button, ...(selectedUser === filteredKayttajat[0] && style.selectedButton) }}
+            onClick={() => handlekayttaja(filteredKayttajat[0])}
+          >
+            Valitse
+          </button>
+        </div>
+      </td>
+    </tr>
+  )}
+  {filteredKayttajat.length === 0 && (
+    <tr>
+      <td style={style.td} colSpan="6">No users found</td>
+    </tr>
+  )}
+</tbody>
       </table>
       <button onClick={() => createConversation()}>luo keskustelu</button>
     </div>
