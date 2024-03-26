@@ -34,9 +34,11 @@ const SaapuneetViestit = () => {
   
 
   const handleThreadClick = (threadId) => {
+    console.log('Clicked thread id:', threadId); 
     setSelectedThread(threadId === selectedThread ? null : threadId);
   };
  
+
   
     
     
@@ -110,7 +112,10 @@ const SaapuneetViestit = () => {
     fetchUserNames();
   }, [viestiketjut]);
 
+ 
 
+ 
+  
 
   return (
     <div className="saapuneet-viestit">
@@ -125,17 +130,17 @@ const SaapuneetViestit = () => {
           </tr>
         </thead>
         <tbody>
-        {viestiketjut.map((ketju) => (
-  <React.Fragment key={ketju._id}>
-    <tr onClick={() => handleThreadClick(ketju.id)} className="viesti-rivi">
-      <td></td>
-      <td>{userNames[ketju._id] ? `${userNames[ketju._id].user1Name}, ${userNames[ketju._id].user2Name}` : 'Loading...'}</td>
-      <td>aika</td>
-      <td>
-        <button onClick={(e) => { e.stopPropagation(); handleDeleteThread(ketju._id); }}>Poista</button>
-      </td>
-    </tr>
-              {selectedThread === ketju.id && (
+          {viestiketjut.map((ketju, index) => (
+            <React.Fragment key={index}>
+              <tr onClick={() => handleThreadClick(index)} className="viesti-rivi">
+                <td>{ketju.title}</td>
+                <td>{userNames[ketju._id] ? `${userNames[ketju._id].user1Name}, ${userNames[ketju._id].user2Name}` : 'Loading...'}</td>
+                <td>{ketju.time}</td>
+                <td>
+                  <button onClick={(e) => { e.stopPropagation(); handleDeleteThread(ketju._id); }}>Poista</button>
+                </td>
+              </tr>
+              {selectedThread === index && (
                 <tr className="viestiketju">
                   <td colSpan="4">
                     <div className="viestihistoria">
@@ -152,7 +157,7 @@ const SaapuneetViestit = () => {
                               onChange={(e) => setReplyText(e.target.value)}
                               placeholder="Vastaa viestiin..."
                             ></textarea>
-                            <button onClick={() => handleReply(ketju._id)}>Lähetä</button>
+                            <button onClick={() => handleReply(ketju.id)}>Lähetä</button>
                           </div>
                         )}
                         <div className="viestitoiminnot-buttons">
