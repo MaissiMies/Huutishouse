@@ -10,8 +10,15 @@ function Header(){
   const [isOpen, setIsOpen] = useState(false);
   const [nimi, setUsername] = useState('');
   const [salasana, setPassword] = useState('');
-  const [userData, setUserData] = useState([]);
+  const [userData, setUserData] = useState(null); // Muutettu tyhjästä taulukosta nulliksi
   const [showNotification, setShowNotification] = useState(false); // Tilaa ilmoitukselle
+
+  useEffect(() => {
+    const savedUsername = localStorage.getItem('username');
+    if (savedUsername) {
+      setUserData({ nimi: savedUsername }); // Asetetaan käyttäjänimi userDataan
+    }
+  }, []);
 
   const handleLogin = async () => {
     try {
@@ -24,16 +31,19 @@ function Header(){
       const response = await axios.post('/api/login', { nimi, salasana });
       console.log('Login successful');
       console.log(response.data)
-      setUserData(response.data)
-      setUserData(prevData =>({
-        ...prevData, // Spread existing JSON data
-        nimi: nimi
-      }))
-      login(userData);
+      setUserData({ nimi }); // Tallenna käyttäjänimi userDataan
+      login(response.data); // Kirjaa käyttäjä sisään
+      localStorage.setItem('username', nimi); // Tallennetaan käyttäjänimi localStorageen
       console.log(userData, "tämä")
     } catch (error) {
       console.error('Error logging in:', error);
     }
+  };
+
+  const handleLogout = () => {
+    setUserData(null); // Tyhjennetään käyttäjänimi kun kirjaudutaan ulos
+    localStorage.removeItem('username'); // Poistetaan käyttäjänimi localStoragesta
+    logout(); // Kirjaa käyttäjä ulos
   };
 
   return (
@@ -48,9 +58,14 @@ function Header(){
         </div>
         <div className="drop-popout-login">
           <div className="login-area">
-            <p className='loggedintext'>Kirjaudu {userData.nimi}</p>
+            {userData && ( // Näytä käyttäjänimi jos se on olemassa
+              <p className='loggedintext'>Kirjauduttu {userData.nimi}</p>
+            )}
+            {!userData && ( // Näytä "Kirjaudu" jos käyttäjänimiä ei ole
+              <p className='loggedintext'>Kirjaudu</p>
+            )}
             <button className="login-button" onClick={() => setIsOpen(!isOpen)}>
-              Login
+              {userData ? 'Logout' : 'Login'} {/* Vaihda tekstin "Login" tai "Logout" mukaan käyttäjän kirjautumistilan perusteella */}
             </button>
             {showNotification && ( // Näytä ilmoitus jos showNotification on true
               <div className="notification">
@@ -73,8 +88,8 @@ function Header(){
                 value={salasana}
                 onChange={(e) => setPassword(e.target.value)}
               />
-              <button className="login-submit" onClick={handleLogin}>
-                Submit
+              <button className="login-submit" onClick={userData ? handleLogout : handleLogin}>
+                {userData ? 'Logout' : 'Login'} {/* Vaihda tekstin "Login" tai "Logout" mukaan käyttäjän kirjautumistilan perusteella */}
               </button>
             </div>
           )}
@@ -85,10 +100,6 @@ function Header(){
 }
 
 export default Header;
-
-
-
-
 
 
 // HOMOSTELUA, SALASANAN PALATUS YRITYS PLUS MUUTA SEURAAVASSA 
