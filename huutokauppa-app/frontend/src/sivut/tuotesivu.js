@@ -145,7 +145,6 @@ const ProductPage = () => {
   );
 };
 
-
 const styles = {
   container: {
     display: 'flex',
