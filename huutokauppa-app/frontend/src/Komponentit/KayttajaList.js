@@ -1,10 +1,13 @@
 import React, { useState, useEffect } from 'react';
 import axios from "axios"
 import { Link } from 'react-router-dom';
+import { useAuth } from '../Komponentit/kayttajacontext';
 
 export const KayttajaUL = () => {
   const [kayttaja, setkayttaja] = useState([]);
   const [deleteSuccess, setDeleteSuccess] = useState(false);
+  const [access, setaccess] = useState(false)
+  const { user } = useAuth();
 
   useEffect(() => {
     const fetchData = async () => {
@@ -19,6 +22,15 @@ export const KayttajaUL = () => {
   
     fetchData();
   }, [deleteSuccess]);
+
+  useEffect(() => {
+    if (user.objectId === "66029af4b6e195fa450ce67c") {
+      setaccess(true);
+      console.log(user.objectId,"1  2")
+    } else {
+      setaccess(false);
+    }
+  }, [user.objectId]);
 
   const handleDeleteUser = async (id) => {
     const confirmDelete = window.confirm('Haluatko varmasti poistaa käyttäjän?');
@@ -98,7 +110,12 @@ export const KayttajaUL = () => {
                 <Link to={`/users/${user._id}`} onClick={() => window.scrollTo(0, 0)}>
                   <button>Katso tiedot</button>
                 </Link>
-                <button style={style.button} onClick={() => handleDeleteUser(user._id)}>Poista käyttäjä</button>
+                {access ? (
+        <button style={style.button} onClick={() => handleDeleteUser(user._id)}>Poista käyttäjä</button>
+      ) : (
+        <p></p>
+      )}
+                
               </td>
             </tr>
           ))}
