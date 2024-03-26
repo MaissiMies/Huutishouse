@@ -11,10 +11,12 @@ const SaapuneetViestit = () => {
   const [replying, setReplying] = useState(false); // Seurataan, onko vastaamassa
   const { user, login, logout } = useAuth();
   const [viestiketjut, setViestiketjut] = useState([]);
+  
 
   useEffect(() => {
     
     const fetchData = async () => {
+     
       try {
         console.log("tämätapahtuii",user.objectId)
         const response = await axios.get(`http://localhost:3001/conversation/${user.objectId}`);
@@ -76,6 +78,38 @@ const SaapuneetViestit = () => {
     setReplying(!replying);
     
   };
+  const fetchUserData = async (id) => {
+    try {
+      const response = await axios.get(`http://localhost:3001/users/${id}`);
+      return(
+        response.data.nimi
+      );
+    } catch (error) {
+      console.error('Error fetching user data:', error);
+    }
+  };
+  const [userNames, setUserNames] = useState({});
+
+  useEffect(() => {
+    const fetchUserNames = async () => {
+      const names = {};
+      for (const ketju of viestiketjut) {
+        const participants = ketju.participants[0]; // Access the first object in the participants array
+        if (participants && participants.user1 && participants.user2) {
+          const user1Id = participants.user1;
+          const user2Id = participants.user2;
+          const user1Name = await fetchUserData(user1Id);
+          const user2Name = await fetchUserData(user2Id);
+          names[ketju._id] = { user1Name, user2Name }; // Use ketju._id as the key
+        }
+      }
+      setUserNames(names);
+    };
+  
+    fetchUserNames();
+  }, [viestiketjut]);
+
+
 
   return (
     <div className="saapuneet-viestit">
@@ -90,15 +124,15 @@ const SaapuneetViestit = () => {
           </tr>
         </thead>
         <tbody>
-          {viestiketjut.map((ketju) => (
-            <React.Fragment key={ketju.id}>
-              <tr onClick={() => handleThreadClick(ketju.id)} className="viesti-rivi">
-                <td></td>
-                <td>{ketju._id}</td>
-                <td>
-                <button onClick={(e) => { e.stopPropagation(); handleDeleteThread(ketju.id); }}>Poista</button>
-                </td>
-              </tr>
+        {viestiketjut.map((ketju) => (
+  <React.Fragment key={ketju._id}>
+    <tr onClick={() => handleThreadClick(ketju._id)} className="viesti-rivi">
+      <td></td>
+      <td>{userNames[ketju._id] ? `${userNames[ketju._id].user1Name}, ${userNames[ketju._id].user2Name}` : 'Loading...'}</td>
+      <td>
+        <button onClick={(e) => { e.stopPropagation(); handleDeleteThread(ketju._id); }}>Poista</button>
+      </td>
+    </tr>
               {selectedThread === ketju.id && (
                 <tr className="viestiketju">
                   <td colSpan="4">
