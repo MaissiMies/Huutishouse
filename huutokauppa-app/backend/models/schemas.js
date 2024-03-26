@@ -62,6 +62,7 @@ const ViestiSchema = new mongoose.Schema({
     messages: [{
       sender: { type: Schema.Types.ObjectId, ref: 'kayttajaschema' }, // Reference to User model
       text: String,
+      timestamp: { type: Date, default: Date.now }
     }]
   });
   

@@ -431,7 +431,7 @@ router.get('/conversation/:kayttaja', async (req, res) => {
     const kayttaja = req.params._id;
     const user = await conversation.find({$or: [{user1: kayttaja}, {user2:kayttaja} ]});
     if (!user) {
-      return res.status(404).json({ error: 'User not found' });
+      return res.status(404).json({ error: 'User convo found' });
     }
     res.json(user);
   } catch (error) {
@@ -449,23 +449,10 @@ router.post('/api/conversations/:conversationId/messages', async (req, res) => {
   const { conversationId } = req.params;
   const { senderId, messageText } = req.body;
   // Lisää uusi viesti keskusteluun ja lähetä vahvistus vastauksena
+    try{
+ 
 
-  try {
-    /*
-    Koodi Frontendissä uudelle viestille keskustelun sisällä
-    async function addMessageToConversation(conversationId, senderId, messageText) {
-  try {
-    const response = await axios.post(`/api/conversations/${conversationId}/messages`, {
-      senderId,
-      messageText
-    });
-    console.log(response.data.message);
-  } catch (error) {
-    console.error('Error adding message to conversation:', error.response.data.error);
-  }
-}
-
-    */ 
+    
     const Conversation = schemat.Keskustelu
     // Retrieve the conversation document from the database
     const conversation = await Conversation.findById(conversationId);
