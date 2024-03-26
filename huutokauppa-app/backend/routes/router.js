@@ -468,14 +468,11 @@ router.post('/api/conversations/:conversationId/messages', async (req, res) => {
       text: messageText,
       timestamp: new Date()
     };
-
-    // Update the messages array in the conversation document
+    console.log(newMessage,"tämä")
     conversation.messages.push(newMessage);
-
-    // Save the updated conversation document back to the database
     await conversation.save();
 
-    res.status(200).json({ message: 'Message added to conversation' });
+    res.status(200).json({ message: 'Message added to conversation',newMessage });
   } catch (error) {
     console.error('Error adding message to conversation:', error);
     res.status(500).json({ error: error.message });
