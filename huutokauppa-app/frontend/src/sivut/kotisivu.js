@@ -30,7 +30,7 @@ function Kotisivu() {
     e.preventDefault();
     try {
       // Perform search based on the searchTerm
-      const response = await axios.get(`http://localhost:3001/tuotteet/${searchTerm}`);
+      const response = await axios.get(`http://localhost:3001/tuotteet/search/${searchTerm}`);
       const searchResults = response.data;
       setRecentItems(searchResults);
       setShowRecentItemsLabel(false);
