@@ -140,7 +140,6 @@ function Kotisivu() {
           </div>
         ))}
       </div>
-      <KayttajaUL />
     </div>
   );
 }
