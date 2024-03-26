@@ -12,6 +12,10 @@ function Header(){
   const [salasana, setPassword] = useState('');
   const [userData, setUserData] = useState(null); // Muutettu tyhjästä taulukosta nulliksi
   const [showNotification, setShowNotification] = useState(false); // Tilaa ilmoitukselle
+  const [phoneNumber, setPhoneNumber] = useState('');
+  const [email, setEmail] = useState('');
+  const [newPassword, setNewPassword] = useState('');
+  const [notification, setNotification] = useState('');
 
   useEffect(() => {
     const savedUsername = localStorage.getItem('username');

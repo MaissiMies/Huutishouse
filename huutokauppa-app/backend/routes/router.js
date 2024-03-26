@@ -525,6 +525,25 @@ router.delete('/users/:id', async (req, res) => {
   }
 });
 
+router.post('/api/password-reset', async (req, res)=>{
+  try {
+    const { nimi,  sposti } = req.body;
+    
+    // Tarkista, onko sähköpostiosoite jo käytössä
+    const existingUser = await schemat.Kayttaja.find({$and:[{nimi},{sposti}]});
+    if (existingUser) {
+      const hashedPassword = await bcrypt.hash(salasana, 10);
+    const newUser = new schemat.Kayttaja({ nimi, salasana: hashedPassword, sposti, puhnum });
+    await newUser.save();
+
+    res.status(201).send('Käyttäjä rekisteröityi onnistuneesti.');
+    }
+    res.status(201).send('Käyttäjä rekisteröityi onnistuneesti.');
+  } catch (error) {
+    console.error('Virhe rekisteröidessä käyttäjää:', error);
+    res.status(500).send('Rekisteröinti epäonnistui.');
+  }
+});
 
 
 
