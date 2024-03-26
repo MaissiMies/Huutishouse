@@ -50,7 +50,7 @@ function Tuoteetsivu() {
     const timer = setTimeout(() => {
       setTimeLeft(calculateTimeLeft());
     }, 1000);
-
+    
     fetchData();
 
     return () => {
@@ -62,18 +62,18 @@ function Tuoteetsivu() {
     <div className="product-list">
       {products.map(product => (
         <Link key={product._id} to={`/tuotteet/${product._id}`} onClick={() => window.scrollTo(0, 0)}>
-          <Product
-            key={product._id}
-            nimi={product.nimi}
-            lahtohinta={product.lahtohinta}
-            hintavaraus={product.hintavaraus}
-            endingTime={product.endingTime}
-            imageUrl={`http://localhost:3001/${product.kuva}`}
-          />
+          <div className="product">
+            <h3>{product.nimi}</h3>
+            <p>Lähtöhinta: {product.lahtohinta}€</p>
+            <p>Hintavaraus: {product.hintavaraus}€</p>
+            <p>Aika: {product.endingTime === 'Huutaminen päättynyt' ? product.endingTime : new Date(product.endingTime).toLocaleString()}</p>
+            <img src={`http://localhost:3001/${product.kuva}`} style={{ maxWidth: '100px', maxHeight: '100px' }} alt="Product" className="product-image" />
+          </div>
         </Link>
       ))}
     </div>
   );
 }
+
 
 export default Tuoteetsivu;

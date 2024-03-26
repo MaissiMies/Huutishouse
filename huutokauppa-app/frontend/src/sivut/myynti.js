@@ -28,15 +28,15 @@ function Myynti() {
     formData.append('hintavaraus', hintavaraus);
     formData.append('kuva', kuva);
     formData.append('endingTime', new Date(aika).toISOString());
+    formData.append('kategoria', selectedKategoria);
     try {
       const response = await axios.post('http://localhost:3001/myynti', formData, {
         headers: {
           'Content-Type': 'multipart/form-data',
         },
       });
-      console.log(response);
       setSuccessMessage('Tuote lisätty onnistuneesti!');
-      // Tyhjennä kentät
+      // Clear fields
       setNimi('');
       setLahtohinta('');
       setHintavaraus('');
@@ -45,7 +45,7 @@ function Myynti() {
       setSelectedKategoria('');
       setTimeout(() => {
         setSuccessMessage('');
-      }, 3000); // Näytä viesti 3 sekunnin ajan
+      }, 3000); // Display message for 3 seconds
     } catch (error) {
       console.log(error);
     }

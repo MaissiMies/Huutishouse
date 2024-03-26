@@ -116,21 +116,24 @@ router.get('/tuotteet/:nimi', async (req, res) => {
 */
 
 // GET /tuotteet/:kategoria - Hakee tuotteet tietyltä kategorialta
-router.get('/tuottet/kategoria/:kategoria', async (req, res) => {
-  // Hae tuotteet annetulta kategorialta ja lähetä ne vastauksena
+router.get('/tuotteet/kategoria/:kategoria', async (req, res) => {
   try {
     const tuoteet = schemat.Tuote;
     const valittukategoria = req.params.kategoria;
-    const kategoria = await tuoteet.findOne({ kategoria:valittukategoria});
-    if (!kategoria) {
-      return res.status(404).json({ error: 'kategoria not found' });
+    console.log(valittukategoria);
+    const tuotteetKategoriassa = await tuoteet.find({ kategoria: valittukategoria });
+    
+    if (!tuotteetKategoriassa || tuotteetKategoriassa.length === 0) {
+      return res.status(404).json({ error: 'No products found for the specified category' });
     }
-    res.json(kategoria);
+    
+    res.json(tuotteetKategoriassa);
   } catch (error) {
-    console.error('Error fetching kategoria data:', error);
+    console.error('Error fetching products by category:', error);
     res.status(500).json({ error: error.message });
   } 
 });
+
 router.get('/tuotteet/:itemId/huudot', async (req, res) => {
   try {
    
@@ -194,8 +197,6 @@ router.get('/tuotteet/:_id', async (req, res) => {
     res.status(500).json({ error: 'Internal server error' });
   }  
 });
-
-
 
 // PUT /tuotteet/:_id - Päivittää tietyn tuotteen tiedot
 router.put('/tuotteet/:_id', async (req, res) => {
@@ -520,87 +521,6 @@ router.delete('/users/:id', async (req, res) => {
     res.status(500).send('Internal Server Error');
   }
 });
-
-//haku function
-router.get(' ', (req, res) => {
-    const userData = 
-    [
-        {
-          "id": 1,
-          "name": "Leanne Graham",
-          "username": "Bret",
-          "email": "Sincere@april.biz",
-          "address": {
-            "street": "Kulas Light",
-            "suite": "Apt. 556",
-            "city": "Gwenborough",
-            "zipcode": "92998-3874",
-            "geo": {
-              "lat": "-37.3159",
-              "lng": "81.1496"
-            }
-          },
-          "phone": "1-770-736-8031 x56442",
-          "website": "hildegard.org",
-          "company": {
-            "name": "Romaguera-Crona",
-            "catchPhrase": "Multi-layered client-server neural-net",
-            "bs": "harness real-time e-markets"
-          }
-        },
-        {
-          "id": 2,
-          "name": "Ervin Howell",
-          "username": "Antonette",
-          "email": "Shanna@melissa.tv",
-          "address": {
-            "street": "Victor Plains",
-            "suite": "Suite 879",
-            "city": "Wisokyburgh",
-            "zipcode": "90566-7771",
-            "geo": {
-              "lat": "-43.9509",
-              "lng": "-34.4618"
-            }
-          },
-          "phone": "010-692-6593 x09125",
-          "website": "anastasia.net",
-          "company": {
-            "name": "Deckow-Crist",
-            "catchPhrase": "Proactive didactic contingency",
-            "bs": "synergize scalable supply-chains"
-          }
-        },
-        {
-          "id": 3,
-          "name": "Clementine Bauch",
-          "username": "Samantha",
-          "email": "Nathan@yesenia.net",
-          "address": {
-            "street": "Douglas Extension",
-            "suite": "Suite 847",
-            "city": "McKenziehaven",
-            "zipcode": "59590-4157",
-            "geo": {
-              "lat": "-68.6102",
-              "lng": "-47.0653"
-            }
-          },
-          "phone": "1-463-123-4447",
-          "website": "ramiro.info",
-          "company": {
-            "name": "Romaguera-Jacobson",
-            "catchPhrase": "Face to face bifurcated interface",
-            "bs": "e-enable strategic applications"
-          }
-        }
-    ]
-
-    res.send(userData)
-})
-
-
-
 
 
 
