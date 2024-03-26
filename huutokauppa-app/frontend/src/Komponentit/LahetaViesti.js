@@ -17,6 +17,14 @@ const style = {
     textAlign: 'left',
     padding: '8px',
   },
+  buttonContainer: {
+    display: 'flex',
+    justifyContent: 'center',
+    alignItems: 'center',
+  },
+  button: {
+    width: '100%',
+  },
 };
 
 const LahetaViesti = ({ myyjanNimi, tuotteenNimi }) => {
@@ -80,7 +88,6 @@ const LahetaViesti = ({ myyjanNimi, tuotteenNimi }) => {
             <th style={style.th}>Nimi</th>
             <th style={style.th}>Puhelinnumero</th>
             <th style={style.th}>Sähköposti</th>
-            <th style={style.th}>Käyttäjätunnus</th>
             <th style={style.th}>Toiminnot</th>
           </tr>
         </thead>
@@ -92,9 +99,10 @@ const LahetaViesti = ({ myyjanNimi, tuotteenNimi }) => {
                 <td style={style.td}>{kayttaja.nimi}</td>
                 <td style={style.td}>{kayttaja.puhnum}</td>
                 <td style={style.td}>{kayttaja.sposti}</td>
-                <td style={style.td}>{kayttaja.kayttajatunnus}</td>
                 <td style={style.td}>
-                  <button onClick={() => handlekayttaja(kayttaja)}>Valitse</button>
+                <div style={style.buttonContainer}>
+                <button style={style.button} onClick={() => handlekayttaja(kayttaja)}>Valitse</button>
+                </div>
                 </td>
               </tr>
             ))

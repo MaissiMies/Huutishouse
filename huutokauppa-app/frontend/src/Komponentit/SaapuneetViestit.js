@@ -10,11 +10,6 @@ const SaapuneetViestit = () => {
   const [replyText, setReplyText] = useState('');
   const [replying, setReplying] = useState(false); // Seurataan, onko vastaamassa
   const { user, login, logout } = useAuth();
-  
-
-  
-
-  
   const [viestiketjut, setViestiketjut] = useState([]);
 
   useEffect(() => {
