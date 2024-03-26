@@ -24,6 +24,7 @@ import Tuoteetsivu from'./sivut/tuotteetsivu';
 //routet käytännössä linkkejä, esim myynti haetaan hakemistosta, ja nimetään. käytetään sitten routessa elementtinä.
 //<outletin /> alle <Footer /> kun tehty
 function App() {
+
   
 
 

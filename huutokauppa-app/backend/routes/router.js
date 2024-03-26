@@ -447,7 +447,7 @@ router.get('/conversation/:kayttaja', async (req, res) => {
 router.post('/api/conversations/:conversationId/messages', async (req, res) => {
 
   const { conversationId } = req.params;
-  const { senderId, messageText } = req.body;
+  const { senderId, messageText, sendernameid } = req.body;
   // Lisää uusi viesti keskusteluun ja lähetä vahvistus vastauksena
     try{
  
@@ -464,7 +464,7 @@ router.post('/api/conversations/:conversationId/messages', async (req, res) => {
     // Construct the new message object
     const newMessage = {
       sender: senderId,
-      sendername:sendernameid,
+      sendername: sendernameid,
       text: messageText,
       timestamp: new Date()
     };
@@ -478,7 +478,7 @@ router.post('/api/conversations/:conversationId/messages', async (req, res) => {
     res.status(200).json({ message: 'Message added to conversation' });
   } catch (error) {
     console.error('Error adding message to conversation:', error);
-    res.status(500).json({ error: 'Internal server error' });
+    res.status(500).json({ error: error.message });
   }
 });
 
