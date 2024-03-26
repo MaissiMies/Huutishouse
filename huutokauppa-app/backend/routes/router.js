@@ -464,6 +464,7 @@ router.post('/api/conversations/:conversationId/messages', async (req, res) => {
     // Construct the new message object
     const newMessage = {
       sender: senderId,
+      sendername:sendernameid,
       text: messageText,
       timestamp: new Date()
     };
@@ -523,6 +524,9 @@ router.delete('/users/:id', async (req, res) => {
     res.status(500).send('Internal Server Error');
   }
 });
+
+
+
 
 
 
