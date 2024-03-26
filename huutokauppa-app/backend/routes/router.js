@@ -227,6 +227,22 @@ router.get('/tuotteet/mytuotteet/:user', async (req, res) => {
   }  
 });
 
+router.delete('/tuotteet/delete/:_id', async (req, res) => {
+  // Delete a user with the given ID
+  const productId = req.params._id;
+  try {
+    const product = await schemat.Tuote.findOneAndDelete({ _id: productId });
+
+    if (!product) {
+      return res.status(404).send('Product not found');
+    }
+
+    res.json({ message: 'Product deleted successfully' });
+  } catch (error) {
+    console.error('Error deleting product:', error);
+    res.status(500).send(error.message);
+  }
+});
 // PUT /tuotteet/:_id - Päivittää tietyn tuotteen tiedot
 router.put('/tuotteet/:_id', async (req, res) => {
   // Päivitä tietyn tuotteen tiedot ja lähetä päivitetty tuote vastauksena

@@ -145,6 +145,7 @@ const SaapuneetViestit = () => {
     <tr onClick={() => handleThreadClick(ketju.id)} className="viesti-rivi">
       <td></td>
       <td>{userNames[ketju._id] ? `${userNames[ketju._id].user1Name}, ${userNames[ketju._id].user2Name}` : 'Loading...'}</td>
+      <td>aika</td>
       <td>
         <button onClick={(e) => { e.stopPropagation(); handleDeleteThread(ketju._id); }}>Poista</button>
       </td>
