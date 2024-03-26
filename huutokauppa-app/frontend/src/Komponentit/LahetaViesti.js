@@ -64,7 +64,7 @@ const LahetaViesti = ({ myyjanNimi, tuotteenNimi }) => {
   const handlekayttaja = (selectedKayttaja) => {
     console.log(selectedKayttaja, "usersasda");
     setSelectedUser(selectedKayttaja);
-    setParticipants({ user1: user.objectId, user2: selectedKayttaja });
+    setParticipants({ user1: user.objectId, user2: selectedKayttaja._id });
     console.log(participants);
   }
 

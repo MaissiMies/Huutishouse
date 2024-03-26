@@ -126,7 +126,7 @@ const SaapuneetViestit = () => {
         <tbody>
         {viestiketjut.map((ketju) => (
   <React.Fragment key={ketju._id}>
-    <tr onClick={() => handleThreadClick(ketju._id)} className="viesti-rivi">
+    <tr onClick={() => handleThreadClick(ketju.id)} className="viesti-rivi">
       <td></td>
       <td>{userNames[ketju._id] ? `${userNames[ketju._id].user1Name}, ${userNames[ketju._id].user2Name}` : 'Loading...'}</td>
       <td>

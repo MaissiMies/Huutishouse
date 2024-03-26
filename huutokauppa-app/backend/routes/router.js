@@ -428,11 +428,18 @@ router.get('/conversation/:kayttaja', async (req, res) => {
   try {
   // Hae tietty käyttäjä id:n perusteella ja lähetä se vastauksena
     const conversation = schemat.Keskustelu;
-    const kayttaja = req.params._id;
-    const user = await conversation.find({$or: [{user1: kayttaja}, {user2:kayttaja} ]});
+    const kayttaja = req.params.kayttaja;
+    console.log(kayttaja)
+    const user = await conversation.find({
+      $or: [
+        { participants: { $elemMatch: { user1: kayttaja} } },
+        { participants: { $elemMatch: { user2: kayttaja} } }
+      ]
+    });
     if (!user) {
       return res.status(404).json({ error: 'User convo found' });
     }
+    console.log(user)
     res.json(user);
   } catch (error) {
     console.error('Error fetching user data:', error);
