@@ -10,7 +10,7 @@ import { BrowserRouter as Router, Route, Switch, Routes } from 'react-router-dom
 import { Otayhteytta } from './sivut/otayhteyytta';
 import { Kayttoehdot } from './sivut/kayttoehdot';
 import { KategoriaUL } from './Komponentit/kategoriatUL';
-import { UserProvider } from './Komponentit/kayttajacontext';
+import { UserProvider,useAuth } from './Komponentit/kayttajacontext';
 import UserPage from'./sivut/kayttajasivu';
 import React, { useState, useEffect } from 'react';
 import HuudotList from './Komponentit/HuutoUL';
@@ -18,7 +18,7 @@ import axios from "axios"
 import ProductPage from './sivut/tuotesivu';
 import Viestit from './Komponentit/Viestit';
 import Tuoteetsivu from'./sivut/tuotteetsivu';
-import { useAuth } from './Komponentit/kayttajacontext';
+
 
 //routet pitäisi laittaa omaan tiedostoonsa,myös frontendissä esim komponentit/routes yms
 //routet käytännössä linkkejä, esim myynti haetaan hakemistosta, ja nimetään. käytetään sitten routessa elementtinä.
@@ -26,7 +26,11 @@ import { useAuth } from './Komponentit/kayttajacontext';
 function App() {
   
 
-const [access, setaccess] = useState(false);
+
+
+const Layout = ({ children }) => {
+
+  const [access, setaccess] = useState(false);
 const { user } = useAuth();
 
 useEffect(() => {
@@ -38,7 +42,6 @@ useEffect(() => {
   }
 }, [user.objectId]);
 
-const Layout = ({ children }) => {
   return (
     <div className="layout">
       <Header />
