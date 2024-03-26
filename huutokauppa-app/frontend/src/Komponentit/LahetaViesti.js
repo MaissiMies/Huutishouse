@@ -39,7 +39,7 @@ const LahetaViesti = ({ myyjanNimi, tuotteenNimi }) => {
   const [kayttaja, setkayttaja] = useState([]);
   const [searchTerm, setSearchTerm] = useState('');
   const [filteredKayttajat, setFilteredKayttajat] = useState([]);
-  const [selectedUser, setSelectedUser] = useState(null);
+  const [selectedUser, setSelectedUser] = useState('');
   const [participants, setParticipants] = useState([]);
 
   useEffect(() => {

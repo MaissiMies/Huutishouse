@@ -34,7 +34,6 @@ const Layout = ({ children }) => {
 const [access, setaccess] = useState(false);
 
 const { user } = useAuth();
-
 useEffect(() => {
   if (user.objectId === "66029af4b6e195fa450ce67c") {
     setaccess(true);

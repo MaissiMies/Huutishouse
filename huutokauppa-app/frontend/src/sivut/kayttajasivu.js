@@ -22,7 +22,7 @@ function UserPage() {
   const [kategoriat, setKategoriat] = useState([]);
   const [selectedKategoria, setSelectedKategoria] = useState('');
   const [access, setaccess] = useState(false);
-  const [selectedUser, setSelectedUser] = useState(null);
+  const [selectedUser, setSelectedUser] = useState('');
   const [timeLeft, setTimeLeft] = useState({});
   const [participants, setParticipants] = useState([]);
   
@@ -133,6 +133,8 @@ function UserPage() {
 
     fetchData();
   }, []);
+
+  
 
   useEffect(() => {
     const fetchData = async () => {

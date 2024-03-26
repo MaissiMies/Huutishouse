@@ -10,7 +10,7 @@ function Header(){
   const [isOpen, setIsOpen] = useState(false);
   const [nimi, setUsername] = useState('');
   const [salasana, setPassword] = useState('');
-  const [userData, setUserData] = useState(null);
+  const [userData, setUserData] = useState('');
   const [showNotification, setShowNotification] = useState(false);
   const [puhnum, setPuhnum] = useState('');
   const [sposti, setSposti] = useState('');
@@ -46,7 +46,7 @@ function Header(){
   };
 
   const handleLogout = () => {
-    setUserData(null);
+    setUserData("1");
     localStorage.removeItem('username');
     logout();
   };

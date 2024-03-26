@@ -1,30 +1,48 @@
    
       import React, { useState, useEffect } from 'react';
-      import { useParams } from 'react-router-dom';
+      import { useParams,Link } from 'react-router-dom';
       import axios from 'axios';
       import { useAuth } from '../Komponentit/kayttajacontext';
       import HuudotList from '../Komponentit/HuutoUL';
       
       const ProductPage = () => {
         const { productId } = useParams();
-        const { user } = useAuth();
+        const { user, login } = useAuth();
         const [ghettoid] = useState(productId);
       
-        const [productData, setProductData] = useState(null);
-        const [updatedProductData, setUpdatedProductData] = useState(null);
+        const [productData, setProductData] = useState([]);
+        const [updatedProductData, setUpdatedProductData] = useState([]);
         const [HuutoData, setHuutoData] = useState({ huuto: '' });
         const [isEditable, setIsEditable] = useState(false);
         const [buttonClicked, setButtonClicked] = useState(false);
         const [remainingTime, setRemainingTime] = useState('');
         const [huutoError, setHuutoError] = useState('');
+        const [userData, setUserData] = useState("");
+        const [access, setaccess] = useState(false);
+
+       
+
+        
+        
       
         useEffect(() => {
           const fetchProductData = async () => {
+            
             setHuutoData({ ...HuutoData, kayttajaid: user.objectId });
+            
             try {
               const response = await axios.get(`http://localhost:3001/tuotteet/${productId}`);
               setProductData(response.data);
               setUpdatedProductData(response.data);
+              const uresponse = await axios.get(`http://localhost:3001/users/${response.data.kayttajaid}`);
+              setUserData(uresponse.data);
+              
+              if (user.objectId === "66029af4b6e195fa450ce67c" || user.objectId === response.data.kayttajaid) {
+                setaccess(true);
+                console.log(user.objectId,"1  2")
+              } else {
+                setaccess(false);
+              }
       
               const difference = new Date(response.data.endingTime) - new Date();
               if (difference > 0) {
@@ -45,6 +63,10 @@
       
           fetchProductData();
         }, [productId]);
+
+        
+
+        
       
         const handlePrivilegeCheck = () => {
           setIsEditable(!isEditable);
@@ -89,7 +111,7 @@
         return (
           <div style={styles.container}>
             <h2 style={styles.heading}>Tuotetiedot</h2>
-            
+            <p style={styles.text}><Link to={`/users/${userData._id}`}>Myyjä: {userData.nimi}</Link></p>
             <p style={styles.text}>Nimi: {productData.nimi}</p>
             <p style={styles.text}>Lähtöhinta: {productData.lahtohinta}</p>
             <p style={styles.text}>Hintavaraus: {productData.hintavaraus}</p>
@@ -97,10 +119,16 @@
             <p><img src={`http://localhost:3001/${productData.kuva}`} style={styles.image} alt="Tuotekuva" /></p>
       
             <p style={styles.text}>Jäljellä oleva huutoaika: {remainingTime}</p>
-      
-            <button onClick={handlePrivilegeCheck} style={styles.button}>
-              {isEditable ? "Peruuta" : "Päivitä tuotteen tietoja"}
-            </button>
+            {access ? (
+        <p> <button onClick={handlePrivilegeCheck} style={styles.button}>
+              
+        {isEditable ? "Peruuta" : "Päivitä tuotteen tietoja"}
+      </button></p>
+      ) : (
+        <p></p>
+      )}
+
+           
       
             {isEditable && buttonClicked && (
               <>
@@ -129,6 +157,7 @@
                   style={styles.input}
                 />
                 <br />
+                
                 <button onClick={handleUpdateProductData} style={styles.button}>Päivitä</button>
               </>
             )}
