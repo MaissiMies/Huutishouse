@@ -178,7 +178,6 @@ function UserPage() {
       <p>Nimi: {userData.nimi}</p>
       <p>Puhelinnumero: {userData.puhnum}</p>
       <p>Sähköposti: {userData.sposti}</p>
-      <p>Käyttäjänimi: {userData.kayttajatunnus}</p>
       
        {access ? (
         <>
@@ -216,16 +215,6 @@ function UserPage() {
             placeholder="Uusi sposti"
             value={updatedUserData?.sposti || ''}
             onChange={(e) => setUpdatedUserData({ ...updatedUserData, sposti: e.target.value })}
-            style={styles.input}
-          />
-          <br />
-          <label htmlFor="newUsername" style={styles.label}>Käyttäjätunnus:</label>
-          <input
-            id="newUsername"
-            type="text"
-            placeholder="Uusi käyttäjätunnus"
-            value={updatedUserData?.kayttajatunnus || ''}
-            onChange={(e) => setUpdatedUserData({ ...updatedUserData, kayttajatunnus: e.target.value })}
             style={styles.input}
           />
           <br />
