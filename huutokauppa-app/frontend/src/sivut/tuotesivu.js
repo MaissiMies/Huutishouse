@@ -29,6 +29,7 @@
             try {
               const response = await axios.get(`http://localhost:3001/tuotteet/${productId}`);
               setProductData(response.data);
+              console.log(response.data)
               setUpdatedProductData(response.data);
               const uresponse = await axios.get(`http://localhost:3001/users/${response.data.kayttajaid}`);
               setUserData(uresponse.data);
@@ -86,6 +87,7 @@
           if (!HuutoData.huuto || isNaN(Number(HuutoData.huuto)) || Number(HuutoData.huuto) <= 0) {
             setHuutoData({ ...HuutoData, huuto: '' });
             setHuutoError('Tarkista huutotarjous!');
+            handleUpdate()
             return;
           } else {
             setHuutoError('');
@@ -103,13 +105,37 @@
         if (!productData) {
           return <div>Loading...</div>;
         }
+       
+       
+          const handleUpdate = async () => {
+            const huudot = productData.huudot;
+
+            // Filter out invalid huudot entries
+            const validHuudot = huudot.filter(huuto => huuto.huuto !== undefined);
+          
+            // Sort the validHuudot array based on the huuto value
+            validHuudot.sort((a, b) => parseInt(b.huuto) - parseInt(a.huuto));
+           
+            try {
+              await axios.post(`/tuote-updatesingle/${productId}`, { fieldToUpdate: 'lahtohinta', newValue: validHuudot[0].huuto });
+              console.log('Field updated successfully');
+            } catch (error) {
+              console.error('Error updating field:', error);
+            }
+          };
+          
+       
+  
+
+        
       
         return (
           <div style={styles.container}>
+            
             <h2 style={styles.heading}>Tuotetiedot</h2>
             <p style={styles.text}><Link to={`/users/${userData._id}`}>Myyjä: {userData.nimi}</Link></p>
             <p style={styles.text}>Nimi: {productData.nimi}</p>
-            <p style={styles.text}>Lähtöhinta: {productData.lahtohinta}</p>
+            <p style={styles.text}>Viimesin hinta: {productData.lahtohinta}</p>
             <p style={styles.text}>Hintavaraus: {productData.hintavaraus}</p>
             <p style={styles.text}>Kuva:</p>
             <p><img src={`http://localhost:3001/${productData.kuva}`} style={styles.image} alt="Tuotekuva" /></p>

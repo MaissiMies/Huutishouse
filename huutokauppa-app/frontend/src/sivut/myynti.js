@@ -61,7 +61,7 @@ function Myynti() {
   const Product = ({ nimi, lahtohinta, imageUrl, hintavaraus, endingTime }) => (
     <div className="product">
       <h3>{nimi}</h3>
-      <p>Lähtöhinta: {lahtohinta}€</p>
+      <p>Viimeisin Hinta: {lahtohinta}€</p>
       <p>Hintavaraus: {hintavaraus}€</p>
       <p>Aika: {endingTime}</p>
       <img src={imageUrl} style={{ maxWidth: '100px', maxHeight: '100px' }} alt="Product" className="product-image" />

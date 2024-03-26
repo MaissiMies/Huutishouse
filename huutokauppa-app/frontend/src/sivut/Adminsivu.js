@@ -20,6 +20,19 @@ useEffect(() => {
     }
   }, [user.objectId]);
 
+  const fetchData = async () => {
+    try {
+      const response = await axios.get('http://localhost:3001/tuotteet');
+      setProducts(response.data);
+    } catch (error) {
+      console.error('Error fetching products:', error);
+    }
+  };
+
+  useEffect(() => {
+    fetchData();
+  }, []);
+
  return(
   <KayttajaUL/>
  )

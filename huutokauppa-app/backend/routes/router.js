@@ -55,6 +55,20 @@ router.post('/myynti', upload.single('kuva'), async (req, res) => {
   }
 });
 
+router.post('/tuote-updatesingle/:id', async (req, res) => {
+  const { id } = req.params;
+  const { fieldToUpdate, newValue } = req.body;
+
+  try {
+      // Assuming schemat.Tuote is your Mongoose model
+      await schemat.Tuote.findByIdAndUpdate(id, { $set: { [fieldToUpdate]: newValue } });
+      res.status(200).json({ message: 'Document updated successfully' });
+  } catch (error) {
+      console.error('Error updating document:', error);
+      res.status(500).json({ error: 'Error updating document' });
+  }
+});
+
 router.post('/palauteviesti', async (req, res) => {
   const { nimi, viesti } = req.body;
   try {

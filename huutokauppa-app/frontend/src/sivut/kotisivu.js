@@ -134,7 +134,7 @@ function Kotisivu() {
                 style={{ maxWidth: '100px', maxHeight: '100px' }} // Limiting size to 100px by 100px
               />
               <p style={styles.productP}>Nimi: {item.nimi}</p>
-              <p style={styles.productP}>Hinta: {item.lahtohinta}€</p>
+              <p style={styles.productP}>Viimeisin hinta: {item.lahtohinta}€</p>
               <p style={styles.productP}>Lisätty: {new Date(item.createdAt).toLocaleString(undefined, { hour12: false, hour: '2-digit', minute: '2-digit', year: 'numeric', month: '2-digit', day: '2-digit' })}</p>
             </Link>
           </div>
