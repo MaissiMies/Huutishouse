@@ -47,6 +47,7 @@ const SaapuneetViestit = () => {
         sendernameid:user.nimi,
         messageText:replyText
       });
+      window.location.reload();
       console.log(response)
     // Clear reply text area
     
