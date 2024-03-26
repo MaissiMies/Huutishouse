@@ -240,7 +240,7 @@ router.delete('/tuotteet/delete/:_id', async (req, res) => {
     res.json({ message: 'Product deleted successfully' });
   } catch (error) {
     console.error('Error deleting product:', error);
-    res.status(500).send('Internal Server Error');
+    res.status(500).send(error.message);
   }
 });
 // PUT /tuotteet/:_id - Päivittää tietyn tuotteen tiedot

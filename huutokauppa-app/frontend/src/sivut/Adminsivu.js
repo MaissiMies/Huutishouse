@@ -39,7 +39,7 @@ useEffect(() => {
   const confirmDelete = window.confirm('Haluatko varmasti poistaa Tuotteen?');
     if (confirmDelete) {
       try {
-        await axios.delete(`/tuotteet/delete/:${id}`);
+        await axios.delete(`/tuotteet/delete/${id}`);
         // Poista käyttäjä taulukosta
         setProducts(products.filter(user => products._id !== id));
         setDeleteSuccess(true); // Näytä onnistumisviesti
@@ -75,7 +75,7 @@ useEffect(() => {
               <td>{product.kategoria}</td>
               <td>{product.lahtohinta}</td>
               <td>{product.kayttajaid}</td>
-              <button onClick={() => handleDeleteproduct(product._id)}>Poista käyttäjä</button>
+              <button onClick={() => handleDeleteproduct(product._id)}>Poista Tuotteet</button>
               {/* Add more table data cells as needed */}
             </tr>
           ))}
