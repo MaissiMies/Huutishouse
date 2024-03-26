@@ -63,6 +63,7 @@ function Kotisivu() {
       borderRadius: '4px',
       cursor: 'pointer',
       transition: 'background-color 0.3s ease',
+      width: '100px',
     },
     buttonHover: {
       backgroundColor: '#0056b3',
@@ -92,6 +93,13 @@ function Kotisivu() {
     selectOption: {
       padding: '8px',
     },
+    Text: {
+      width: '300px',
+      height: '20px',
+      marginBottom: '10px',
+      padding: '5px',
+      fontSize: '16px',
+    }
   };
 
   const label = showRecentItemsLabel ? "Äskettäin lisätyt tavarat" : "Hakutulokset";
@@ -105,8 +113,11 @@ function Kotisivu() {
           value={searchTerm}
           onChange={(e) => setSearchTerm(e.target.value)}
           placeholder="Etsi tavaroita nimellä..."
-          style={styles.addProductForm}
+          style={styles.Text}
         />
+
+        <br/>
+
         <button type="submit" style={{ ...styles.button, ...styles.buttonHover }}>
           Etsi
         </button>
