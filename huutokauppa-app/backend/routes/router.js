@@ -97,23 +97,7 @@ router.get('/recenttuotteet', async (req, res) => {
 });
 
 
-router.get('/tuotteet/:searchTerm', async (req, res) => {
-  try {
-    const searchTerm = req.params.searchTerm;
-    // Perform a case-insensitive search
-    const regex = new RegExp(searchTerm, 'i');
-    const searchResults = await schemat.Tuote.find({ nimi: regex });
 
-    if (!searchResults || searchResults.length === 0) {
-      return res.status(404).json({ error: 'No items found for the specified search term' });
-    }
-
-    res.json(searchResults);
-  } catch (error) {
-    console.error('Error searching items:', error);
-    res.status(500).json({ error: error.message });
-  }
-});
 
 // GET /tuotteet/:kategoria - Hakee tuotteet tietyltä kategorialta
 router.get('/tuotteet/kategoria/:kategoria', async (req, res) => {
@@ -178,7 +162,23 @@ router.get('/tuotteet', async (req, res) => {
   }
 });
 
+router.get('/tuotteet/search/:searchTerm', async (req, res) => {
+  try {
+    const searchTerm = req.params.searchTerm;
+    // Perform a case-insensitive search
+    const regex = new RegExp(searchTerm, 'i');
+    const searchResults = await schemat.Tuote.find({ nimi: regex });
 
+    if (!searchResults || searchResults.length === 0) {
+      return res.status(404).json({ error: 'No items found for the specified search term' });
+    }
+
+    res.json(searchResults);
+  } catch (error) {
+    console.error('Error searching items:', error);
+    res.status(500).json({ error: error.message });
+  }
+});
 
 // GET /tuotteet/:_id - Hakee tietyn tuotteen
 router.get('/tuotteet/:_id', async (req, res) => {
