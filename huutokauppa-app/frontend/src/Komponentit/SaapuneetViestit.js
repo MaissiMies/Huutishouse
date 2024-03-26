@@ -32,9 +32,13 @@ const SaapuneetViestit = () => {
         console.error('help', error);
       }
     };
-  
+    
     fetchData();
-  }, []); // Tyhjä taulukko varmistaa, että useEffect suoritetaan vain kerran, komponentin alustuksen yhteydessä
+    // Set up interval for fetching new messages every 30 seconds
+    const interval = setInterval(fetchData, 5000);
+    // Cleanup interval on component unmount
+    return () => clearInterval(interval);
+  }, []);// Tyhjä taulukko varmistaa, että useEffect suoritetaan vain kerran, komponentin alustuksen yhteydessä
   
 
   // Klikkauskäsittelijä viestiketjun valitsemiselle
@@ -55,7 +59,7 @@ const SaapuneetViestit = () => {
         sendernameid:user.nimi,
         messageText:replyText
       });
-      window.location.reload(); // Päivitetään sivu
+      // Päivitetään sivu
       console.log(response)
     // Clear reply text area
     
@@ -67,7 +71,7 @@ const SaapuneetViestit = () => {
     
     // Clear reply text area
     
-  
+    
   }
     
   // Piilota viestihistoria -käsittelijä
@@ -142,8 +146,8 @@ const SaapuneetViestit = () => {
               <th>Lähettäjä</th>
               <th>Aika</th>
               <th>Toiminnot</th>
-            </tr>
-          </thead>
+            </tr>          
+            </thead>
           <tbody>
             {viestiketjut.map((ketju, index) => (
               <React.Fragment key={index}>
@@ -172,7 +176,7 @@ const SaapuneetViestit = () => {
                                 onChange={(e) => setReplyText(e.target.value)}
                                 placeholder="Vastaa viestiin..."
                               ></textarea>
-                              <button onClick={() => handleReply(ketju.id)}>Lähetä</button>
+                              <button onClick={() => handleReply(ketju._id)}>Lähetä</button>
                             </div>
                           )}
                           <div className="viestitoiminnot-buttons">
