@@ -97,23 +97,23 @@ router.get('/recenttuotteet', async (req, res) => {
 });
 
 
-/*HAKUKENTÄN ROUTER, EI TOIMINNASSA
-router.get('/tuotteet/:nimi', async (req, res) => {
+router.get('/tuotteet/:searchTerm', async (req, res) => {
   try {
-    const tuotteet = schemat.Tuote;
-    const tuotenimi = req.params.nimi;
+    const searchTerm = req.params.searchTerm;
+    // Perform a case-insensitive search
+    const regex = new RegExp(searchTerm, 'i');
+    const searchResults = await schemat.Tuote.find({ nimi: regex });
 
-    const product = await tuotteet.findOne({ nimi:tuotenimi});
-    if (!product) {
-      return res.status(404).json({ error: 'Product not found' });
+    if (!searchResults || searchResults.length === 0) {
+      return res.status(404).json({ error: 'No items found for the specified search term' });
     }
-    res.json(product);
+
+    res.json(searchResults);
   } catch (error) {
-    console.error('Error fetching product data:', error);
-    res.status(500).json({ error: 'Internal server error' });
-  } 
+    console.error('Error searching items:', error);
+    res.status(500).json({ error: error.message });
+  }
 });
-*/
 
 // GET /tuotteet/:kategoria - Hakee tuotteet tietyltä kategorialta
 router.get('/tuotteet/kategoria/:kategoria', async (req, res) => {

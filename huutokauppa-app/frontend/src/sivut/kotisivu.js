@@ -7,6 +7,9 @@ import '../App.css';
 function Kotisivu() {
   const [recentItems, setRecentItems] = useState([]);
   const [searchTerm, setSearchTerm] = useState('');
+  const [showRecentItemsLabel, setShowRecentItemsLabel] = useState(true); // State variable for toggling labels
+
+
 
   useEffect(() => {
     fetchRecentItems();
@@ -30,6 +33,7 @@ function Kotisivu() {
       const response = await axios.get(`http://localhost:3001/tuotteet/${searchTerm}`);
       const searchResults = response.data;
       setRecentItems(searchResults);
+      setShowRecentItemsLabel(false);
     } catch (error) {
       console.error('Error searching items:', error);
     }
@@ -59,6 +63,7 @@ function Kotisivu() {
       borderRadius: '4px',
       cursor: 'pointer',
       transition: 'background-color 0.3s ease',
+      width: '100px',
     },
     buttonHover: {
       backgroundColor: '#0056b3',
@@ -88,7 +93,16 @@ function Kotisivu() {
     selectOption: {
       padding: '8px',
     },
+    Text: {
+      width: '300px',
+      height: '20px',
+      marginBottom: '10px',
+      padding: '5px',
+      fontSize: '16px',
+    }
   };
+
+  const label = showRecentItemsLabel ? "Äskettäin lisätyt tavarat" : "Hakutulokset";
 
   return (
     <div>
@@ -99,14 +113,17 @@ function Kotisivu() {
           value={searchTerm}
           onChange={(e) => setSearchTerm(e.target.value)}
           placeholder="Etsi tavaroita nimellä..."
-          style={styles.addProductForm}
+          style={styles.Text}
         />
+
+        <br/>
+
         <button type="submit" style={{ ...styles.button, ...styles.buttonHover }}>
           Etsi
         </button>
       </form>
 
-      <h2>Äskettäin lisätyt tavarat</h2>
+       <h2>{label}</h2>
       <div style={styles.productList}>
         {recentItems.map((item) => (
           <div key={item._id} style={styles.product}>
