@@ -18,11 +18,13 @@ export const UserProvider = ({ children }) => {
   const login = (userData) => {
     setUser(userData);
     localStorage.setItem('user', JSON.stringify(userData));
+    window.location.reload();
   };
 
   const logout = () => {
     setUser("1");
     localStorage.removeItem('user');
+    window.location.reload();
   };
 
   return (
