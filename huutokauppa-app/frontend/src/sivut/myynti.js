@@ -18,6 +18,7 @@ function Myynti() {
   const [kategoriat, setKategoriat] = useState([]);
   const [timeLeft, setTimeLeft] = useState({});
   const [successMessage, setSuccessMessage] = useState('');
+  const [access, setaccess] = useState(false);
 
   // Funktio lähettää tiedot backendiin
   const axiosPostData = async () => {
@@ -113,6 +114,7 @@ function Myynti() {
   const [products, setProducts] = useState([]);
 
   const fetchData = async () => {
+   
     try {
       const response = await axios.get('http://localhost:3001/tuotteet');
       setProducts(response.data);
@@ -132,72 +134,75 @@ function Myynti() {
 
   return (
     <div className="myynti-container">
+      
+        <p>{successMessage && <div style={{ color: 'green' }}>{successMessage}</div>}
+        <form onSubmit={handleSubmit} encType="multipart/form-data" className="add-product-form">
+          <label>
+            Nimi:
+            <input
+              type="text"
+              id="nimi"
+              name="nimi"
+              value={nimi}
+              onChange={(e) => setNimi(e.target.value)}
+            />
+          </label>
+          <label>
+            Lähtöhinta:
+            <input
+              type="number"
+              id="lahtohinta"
+              name="lahtohinta"
+              value={lahtohinta}
+              onChange={(e) => setLahtohinta(e.target.value)}
+            />
+          </label>
+          <label>
+            Hintavaraus:
+            <input
+              type="number"
+              id="hintavaraus"
+              name="hintavaraus"
+              value={hintavaraus}
+              onChange={(e) => setHintavaraus(e.target.value)}
+            />
+          </label>
+          <label>
+            Aika:
+            <input
+              type="datetime-local"
+              id="aika"
+              name="aika"
+              value={aika}
+              onChange={(e) => setAika(e.target.value)}
+            />
+          </label>
+          <label>
+            Kuva:
+            <input
+              type="file"
+              accept="image/*"
+              id="kuva"
+              onChange={(e) => setKuva(e.target.files[0])}
+            />
+          </label>
+          <label htmlFor="kategoria">Valitse:
+            <select id="kategoria" value={selectedKategoria} onChange={handleSelectChange}>
+              <option value="">Valitse...</option>
+              {kategoriat.map((kategoria) => (
+                <option key={kategoria._id} value={kategoria.selite}>
+                  {kategoria.selite}
+                </option>
+              ))}
+            </select>
+          </label>
+          <br />
+          <button type="submit">Submit</button>
+        </form>
+        <br /></p>
+    
       <h1>Laita uusi tuote myyntiin</h1>
-      {successMessage && <div style={{ color: 'green' }}>{successMessage}</div>}
-      <form onSubmit={handleSubmit} encType="multipart/form-data" className="add-product-form">
-        <label>
-          Nimi:
-          <input
-            type="text"
-            id="nimi"
-            name="nimi"
-            value={nimi}
-            onChange={(e) => setNimi(e.target.value)}
-          />
-        </label>
-        <label>
-          Lähtöhinta:
-          <input
-            type="number"
-            id="lahtohinta"
-            name="lahtohinta"
-            value={lahtohinta}
-            onChange={(e) => setLahtohinta(e.target.value)}
-          />
-        </label>
-        <label>
-          Hintavaraus:
-          <input
-            type="number"
-            id="hintavaraus"
-            name="hintavaraus"
-            value={hintavaraus}
-            onChange={(e) => setHintavaraus(e.target.value)}
-          />
-        </label>
-        <label>
-          Aika:
-          <input
-            type="datetime-local"
-            id="aika"
-            name="aika"
-            value={aika}
-            onChange={(e) => setAika(e.target.value)}
-          />
-        </label>
-        <label>
-          Kuva:
-          <input
-            type="file"
-            accept="image/*"
-            id="kuva"
-            onChange={(e) => setKuva(e.target.files[0])}
-          />
-        </label>
-        <label htmlFor="kategoria">Valitse:
-          <select id="kategoria" value={selectedKategoria} onChange={handleSelectChange}>
-            <option value="">Valitse...</option>
-            {kategoriat.map((kategoria) => (
-              <option key={kategoria._id} value={kategoria.selite}>
-                {kategoria.selite}
-              </option>
-            ))}
-          </select>
-        </label>
-        <br />
-        <button type="submit">Submit</button>
-      </form>
-      <br />
+      
 
       <div className="product-list">
         {products.map(product => (
